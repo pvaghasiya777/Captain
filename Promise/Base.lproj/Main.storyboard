@@ -752,7 +752,7 @@
             </objects>
             <point key="canvasLocation" x="900" y="240"/>
         </scene>
-        <!--Document-->
+        <!--Tree View Data Source-->
         <scene sceneID="GCr-ZX-QGV">
             <objects>
                 <viewController storyboardIdentifier="DocumentVC" id="SAL-0P-PBk" customClass="DocumentVC" customModule="Promise" customModuleProvider="target" sceneMemberID="viewController">
@@ -764,8 +764,8 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <connections>
-                                    <outlet property="dataSource" destination="SAL-0P-PBk" id="OlT-N4-iT4"/>
-                                    <outlet property="delegate" destination="SAL-0P-PBk" id="YdH-sK-Y6K"/>
+                                    <outlet property="treeViewDataSource" destination="SAL-0P-PBk" id="FGC-wS-bgv"/>
+                                    <outlet property="treeViewDelegate" destination="SAL-0P-PBk" id="t5K-rC-As7"/>
                                 </connections>
                             </tableView>
                         </subviews>

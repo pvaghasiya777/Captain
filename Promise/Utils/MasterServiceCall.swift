@@ -390,7 +390,7 @@ class MasterServiceCall: NSObject
                     if statusCode == 200 {
                         print(responseObject)
                         SVProgressHUD.dismiss()
-//                        Document_VC.getDefaultCITreeViewData(arr_data: jsonObject.object as! NSDictionary)
+                        Document_VC.getDefaultCITreeViewData(arr_data: jsonObject.object as! NSDictionary)
                     }else {
                         print("Error")
                     }

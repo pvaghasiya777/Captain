@@ -66,7 +66,7 @@ class SidebarVC: UITableViewController
         print(indexPath.section)
         if String(describing:Arr_sideMenu[indexPath.section]) == "Dashboard" {
             self.performSegue(withIdentifier: "Dashboard", sender: nil)
-        }else if String(describing:Arr_sideMenu[indexPath.section]) == "Document"  {
+        }else if String(describing:Arr_sideMenu[indexPath.section]) == "Documents"  {
             self.performSegue(withIdentifier: "Document", sender: nil)
         }else if String(describing:Arr_sideMenu[indexPath.section]) == "Purchase"  {
             self.performSegue(withIdentifier: "Purchase", sender: nil)

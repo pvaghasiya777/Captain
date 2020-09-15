@@ -381,6 +381,32 @@ class MasterServiceCall: NSObject
             Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
         }
     }
+    func Get_Document(Api_Str: String,Viewcontroller : UIViewController) {
+        if AppDelegate.NetworkRechability(){
+            let Document_VC = Viewcontroller as! DocumentVC
+            SVProgressHUD.show(withStatus: "Loading...")
+            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers:["Authorization": DEFAULTS.Get_TOKEN()], params: [:], success: { (responseObject,statusCode,jsonObject) in
+                do {
+                    if statusCode == 200 {
+                        print(responseObject)
+                        SVProgressHUD.dismiss()
+                        Document_VC.getDefaultCITreeViewData(arr_data: jsonObject.object as! NSDictionary)
+                    }else {
+                        print("Error")
+                    }
+                }catch let jsonErr{
+                    SVProgressHUD.dismiss()
+                    print("json error : \(jsonErr.localizedDescription)")
+                }
+            })
+            { (error) in
+                SVProgressHUD.dismiss()
+                print(error.localizedDescription)
+            }
+        }else {
+            Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
+        }
+    }
 }
 
 

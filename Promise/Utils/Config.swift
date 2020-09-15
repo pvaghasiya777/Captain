@@ -72,6 +72,7 @@ struct Api_Urls
     static let GET_API_packingList = BASE_URL + "packing/packing_list/"
     static let GET_API_drawing = BASE_URL + "drawing/"
     static let GET_API_reportingProjects = BASE_URL + "reporting/projects/"
+    static let GET_API_Document = BASE_URL + "masters/folders/"
     // Master API
     static let GET_API_masterCountry = BASE_URL + "masters/country/"
     static let GET_API_masterAddress = BASE_URL + "masters/address/"
@@ -79,7 +80,6 @@ struct Api_Urls
     static let GET_API_masterPurchase = BASE_URL + "masters/purchase/"
     static let GET_API_masterKOP = BASE_URL + "masters/package/"
     static let GET_API_masterProject = BASE_URL + "masters/project/"
-    
     static let GET_API_masterEmployee = BASE_URL + "masters/employee/"
     static let GET_API_masterVendor = BASE_URL + "masters/vendor/"
     static let GET_API_masterPOType = BASE_URL + "masters/potype/"

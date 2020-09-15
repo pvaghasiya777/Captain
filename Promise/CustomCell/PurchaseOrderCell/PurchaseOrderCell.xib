@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="64" id="KGk-i7-Jjw" customClass="PurchaseOrderCell" customModule="Promise" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="1024" height="64"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="1024" height="64"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7z0-Fi-eL1">
+                        <rect key="frame" x="8" y="17" width="61" height="30"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="P86-Qe-Zrf"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="skA-Pa-4Fw"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jRN-qA-j9w">
+                        <rect key="frame" x="77" y="17" width="78" height="30"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="ivR-MC-n1g"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gratings" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="scz-ca-fT6">
+                        <rect key="frame" x="163" y="17" width="103" height="30"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Eex-qR-FXW"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Supply and prefabrication of hot galvanized gratings,Supply and prefabrication of hot galvanized gratings," textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jjg-Dx-NNV">
+                        <rect key="frame" x="274" y="17" width="236" height="30"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="fTg-hW-FDx"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I11329217" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bkj-iK-fEf">
+                        <rect key="frame" x="518" y="17" width="101.5" height="30"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="iec-jp-YdF"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="254899.280" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OAA-Ln-jj0">
+                        <rect key="frame" x="627.5" y="17" width="96" height="30"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Eic-ND-DuS"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kg" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Dp-hr-ykf">
+                        <rect key="frame" x="731.5" y="17" width="106.5" height="30"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Mc8-wZ-t2D"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11.60" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MxZ-9E-f1H">
+                        <rect key="frame" x="846" y="17" width="81" height="30"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="ERm-aX-i7m"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AJI5418" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g4e-kR-PXv">
+                        <rect key="frame" x="935" y="17" width="81" height="30"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="jV6-7l-jFb"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="4Dp-hr-ykf" firstAttribute="width" secondItem="MxZ-9E-f1H" secondAttribute="width" multiplier="1.3125" id="2f7-kY-YxI"/>
+                    <constraint firstItem="MxZ-9E-f1H" firstAttribute="width" secondItem="g4e-kR-PXv" secondAttribute="width" id="7c6-Wv-WpL"/>
+                    <constraint firstAttribute="bottom" secondItem="OAA-Ln-jj0" secondAttribute="bottom" constant="17" id="9Qb-F6-V9d"/>
+                    <constraint firstItem="7z0-Fi-eL1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="BYw-5o-QJb"/>
+                    <constraint firstAttribute="bottom" secondItem="4Dp-hr-ykf" secondAttribute="bottom" constant="17" id="Exc-re-2Ai"/>
+                    <constraint firstAttribute="bottom" secondItem="7z0-Fi-eL1" secondAttribute="bottom" constant="17" id="HMn-k4-HV8"/>
+                    <constraint firstItem="scz-ca-fT6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="HwS-dn-d7V"/>
+                    <constraint firstAttribute="bottom" secondItem="scz-ca-fT6" secondAttribute="bottom" constant="17" id="IiM-Up-mTq"/>
+                    <constraint firstItem="jRN-qA-j9w" firstAttribute="width" secondItem="scz-ca-fT6" secondAttribute="width" multiplier="0.754902" id="MFl-wV-S7g"/>
+                    <constraint firstItem="MxZ-9E-f1H" firstAttribute="leading" secondItem="4Dp-hr-ykf" secondAttribute="trailing" constant="8" id="MKE-kS-PLH"/>
+                    <constraint firstItem="bkj-iK-fEf" firstAttribute="width" secondItem="OAA-Ln-jj0" secondAttribute="width" multiplier="1.05263" id="NMv-9l-h5L"/>
+                    <constraint firstItem="scz-ca-fT6" firstAttribute="leading" secondItem="jRN-qA-j9w" secondAttribute="trailing" constant="8" id="Oj1-wF-xD2"/>
+                    <constraint firstAttribute="bottom" secondItem="MxZ-9E-f1H" secondAttribute="bottom" constant="17" id="Orf-ho-l2C"/>
+                    <constraint firstItem="scz-ca-fT6" firstAttribute="width" secondItem="jjg-Dx-NNV" secondAttribute="width" multiplier="0.437768" id="QxE-CY-383"/>
+                    <constraint firstItem="4Dp-hr-ykf" firstAttribute="leading" secondItem="OAA-Ln-jj0" secondAttribute="trailing" constant="8" id="SEc-2r-YxZ"/>
+                    <constraint firstAttribute="bottom" secondItem="g4e-kR-PXv" secondAttribute="bottom" constant="17" id="U7Y-5n-bMU"/>
+                    <constraint firstItem="jjg-Dx-NNV" firstAttribute="leading" secondItem="scz-ca-fT6" secondAttribute="trailing" constant="8" id="Unp-Xk-Gwz"/>
+                    <constraint firstItem="jjg-Dx-NNV" firstAttribute="width" secondItem="bkj-iK-fEf" secondAttribute="width" multiplier="2.33" id="VOA-G7-m2T"/>
+                    <constraint firstItem="jRN-qA-j9w" firstAttribute="leading" secondItem="7z0-Fi-eL1" secondAttribute="trailing" constant="8" id="Vow-rD-0Ns"/>
+                    <constraint firstItem="g4e-kR-PXv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="YnM-L2-gIn"/>
+                    <constraint firstItem="bkj-iK-fEf" firstAttribute="leading" secondItem="jjg-Dx-NNV" secondAttribute="trailing" constant="8" id="Zq2-jZ-8Mt"/>
+                    <constraint firstItem="4Dp-hr-ykf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="bRq-sW-tEe"/>
+                    <constraint firstItem="jRN-qA-j9w" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="bZc-vt-5db"/>
+                    <constraint firstItem="OAA-Ln-jj0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="bsl-s3-5t6"/>
+                    <constraint firstItem="OAA-Ln-jj0" firstAttribute="leading" secondItem="bkj-iK-fEf" secondAttribute="trailing" constant="8" id="cGA-s9-Xmh"/>
+                    <constraint firstItem="jjg-Dx-NNV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="cxi-rn-mvc"/>
+                    <constraint firstItem="bkj-iK-fEf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="dlL-7D-Pdv"/>
+                    <constraint firstItem="MxZ-9E-f1H" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="hv2-0a-IsK"/>
+                    <constraint firstItem="OAA-Ln-jj0" firstAttribute="width" secondItem="4Dp-hr-ykf" secondAttribute="width" multiplier="0.904762" id="iEo-Zi-aqV"/>
+                    <constraint firstAttribute="bottom" secondItem="jjg-Dx-NNV" secondAttribute="bottom" constant="17" id="iae-Eq-pfe"/>
+                    <constraint firstItem="g4e-kR-PXv" firstAttribute="leading" secondItem="MxZ-9E-f1H" secondAttribute="trailing" constant="8" id="mvO-gE-Evb"/>
+                    <constraint firstItem="7z0-Fi-eL1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="nGf-cV-TDt"/>
+                    <constraint firstAttribute="bottom" secondItem="jRN-qA-j9w" secondAttribute="bottom" constant="17" id="rw1-Cj-WfM"/>
+                    <constraint firstItem="7z0-Fi-eL1" firstAttribute="width" secondItem="jRN-qA-j9w" secondAttribute="width" multiplier="0.779221" id="xXG-UO-mRk"/>
+                    <constraint firstAttribute="bottom" secondItem="bkj-iK-fEf" secondAttribute="bottom" constant="17" id="yja-Vd-D9O"/>
+                    <constraint firstAttribute="trailing" secondItem="g4e-kR-PXv" secondAttribute="trailing" constant="8" id="zh1-7W-R6g"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="lbl_CommodityCode" destination="OAA-Ln-jj0" id="VfK-6M-LTf"/>
+                <outlet property="lbl_Description" destination="jjg-Dx-NNV" id="la6-Bl-4Rf"/>
+                <outlet property="lbl_IdentCode" destination="bkj-iK-fEf" id="qqy-Um-uC7"/>
+                <outlet property="lbl_Item" destination="scz-ca-fT6" id="7pc-O4-wEe"/>
+                <outlet property="lbl_POPosition" destination="jRN-qA-j9w" id="Unh-IA-ORw"/>
+                <outlet property="lbl_POamd" destination="7z0-Fi-eL1" id="5mE-yV-2ih"/>
+                <outlet property="lbl_Quantity" destination="4Dp-hr-ykf" id="5Li-jK-zbe"/>
+                <outlet property="lbl_UnitPrice" destination="g4e-kR-PXv" id="nNh-HU-W80"/>
+                <outlet property="lbl_UnitofMeasure" destination="MxZ-9E-f1H" id="LLW-Ue-Pod"/>
+            </connections>
+            <point key="canvasLocation" x="192.75362318840581" y="101.11607142857143"/>
+        </tableViewCell>
+    </objects>
+</document>

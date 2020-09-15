@@ -2,19 +2,34 @@
 //  AppDelegate.swift
 //  Promise
 //
-//  Created by Captain on 24/07/20.
+//  Created by Prime Inspection
 //  Copyright © 2020 Captain. All rights reserved.
 //
 
 import UIKit
-
+import IQKeyboardManagerSwift
+import SCLAlertView
+import SVProgressHUD
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    var window: UIWindow?
+    static var appDelegate : AppDelegate?
+    static var window1 : UIWindow?
+    var orientationLock = UIInterfaceOrientationMask.portrait
+    var myOrientation: UIInterfaceOrientationMask = .landscape
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        AppDelegate.appDelegate = self
+        AppDelegate.window1 = self.window
+        IQKeyboardManager.shared.enable = true
+        if #available(iOS 13.0, *) {
+            window = UIWindow(frame: UIScreen.main.bounds)
+        }
+//        let containerOrigin = requiredView.origin
+//        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: -containerOrigin.x, vertical: -containerOrigin.y))
+
+        SVProgressHUD.setDefaultMaskType(.black)
         return true
     }
 
@@ -31,7 +46,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-
+    // MARK:- Check Reachability
+    static func NetworkRechability() -> Bool {
+        let reachability = Reachability()!
+        if reachability.isReachable {
+            if reachability.isReachableViaWiFi || reachability.isReachableViaWWAN {
+                return true
+            } else {
+                return false
+            }
+        }
+        else {
+            return false
+        }
+    }
 }
 

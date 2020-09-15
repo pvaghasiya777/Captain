@@ -2,22 +2,25 @@
 //  SceneDelegate.swift
 //  Promise
 //
-//  Created by Captain on 24/07/20.
+//  Created Prime Inspection
 //  Copyright © 2020 Captain. All rights reserved.
 //
 
 import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate,SWRevealViewControllerDelegate {
 
     var window: UIWindow?
-
+    static var sceneDelegate : SceneDelegate?
+    private(set) static var shared: SceneDelegate?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        guard let windowScene = (scene as? UIWindowScene) else { return }
         guard let _ = (scene as? UIWindowScene) else { return }
+        Self.shared = self
+        self.window = UIWindow(windowScene: windowScene)
+        print("Login Status :\(DEFAULTS.Is_User_LoggedIn())")
+        Utils.Set_Root_ViewController()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

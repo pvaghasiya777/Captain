@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FilterPopup" customModule="Promise" customModuleProvider="target">
+            <connections>
+                <outlet property="BG_View" destination="yOT-5h-g4X" id="LX2-sP-kjg"/>
+                <outlet property="btn_Apply" destination="mGh-sO-ROZ" id="rYG-xl-oug"/>
+                <outlet property="btn_Clear" destination="6W1-uG-Whr" id="hxh-dk-U44"/>
+                <outlet property="btn_FirstFilter" destination="ReH-md-inE" id="oso-aL-eok"/>
+                <outlet property="btn_SecondFilter" destination="flp-na-RPf" id="Cxl-k2-Cx6"/>
+                <outlet property="txt_ValueFilter" destination="OPq-gi-g9r" id="AZu-p0-0DV"/>
+                <outlet property="txt_ValueFilter_Height" destination="5Mx-Cb-I3k" id="ozt-OT-upr"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="289"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yOT-5h-g4X">
+                    <rect key="frame" x="8" y="8" width="398" height="264"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Filter Value" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OPq-gi-g9r">
+                            <rect key="frame" x="8" y="138" width="382" height="50"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="5Mx-Cb-I3k"/>
+                            </constraints>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="17"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6W1-uG-Whr">
+                            <rect key="frame" x="14" y="200" width="181" height="50"/>
+                            <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="dcB-mj-ONi"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="16"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" red="0.95294117649999999" green="0.98039215690000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mGh-sO-ROZ">
+                            <rect key="frame" x="203" y="200" width="181" height="50"/>
+                            <color key="backgroundColor" red="0.20784313725490194" green="0.19607843137254902" blue="0.51372549019607838" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="0jq-3v-UoL"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="16"/>
+                            <state key="normal" title="Apply">
+                                <color key="titleColor" red="0.95294117649999999" green="0.98039215690000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ReH-md-inE" customClass="NiceButton" customModule="Promise" customModuleProvider="target">
+                            <rect key="frame" x="12" y="14" width="374" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="02f-S2-VTR"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="16"/>
+                            <state key="normal" title="Select">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="btn_FirstFilterClick:" destination="-1" eventType="touchUpInside" id="El9-Pg-9ln"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="flp-na-RPf" customClass="NiceButton" customModule="Promise" customModuleProvider="target">
+                            <rect key="frame" x="12" y="76" width="374" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="3q4-eD-szp"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="16"/>
+                            <state key="normal" title="Filter value">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="btn_SecondFilterClick:" destination="-1" eventType="touchUpInside" id="stj-iV-Czb"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.92549019610000005" green="0.97647058819999999" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="flp-na-RPf" firstAttribute="leading" secondItem="yOT-5h-g4X" secondAttribute="leading" constant="12" id="1VQ-6R-FzY"/>
+                        <constraint firstItem="ReH-md-inE" firstAttribute="leading" secondItem="yOT-5h-g4X" secondAttribute="leading" constant="12" id="2Rf-9F-wl3"/>
+                        <constraint firstItem="mGh-sO-ROZ" firstAttribute="leading" secondItem="6W1-uG-Whr" secondAttribute="trailing" constant="8" id="8Nz-ir-s4A"/>
+                        <constraint firstAttribute="trailing" secondItem="mGh-sO-ROZ" secondAttribute="trailing" constant="14" id="CA2-V4-RsN"/>
+                        <constraint firstItem="6W1-uG-Whr" firstAttribute="width" secondItem="mGh-sO-ROZ" secondAttribute="width" id="Ca6-Sy-0bS"/>
+                        <constraint firstAttribute="trailing" secondItem="ReH-md-inE" secondAttribute="trailing" constant="12" id="N1H-Fa-jgN"/>
+                        <constraint firstItem="6W1-uG-Whr" firstAttribute="top" secondItem="OPq-gi-g9r" secondAttribute="bottom" constant="12" id="RFO-Wq-Dv3"/>
+                        <constraint firstItem="ReH-md-inE" firstAttribute="top" secondItem="yOT-5h-g4X" secondAttribute="top" constant="14" id="ToJ-tX-Yu7"/>
+                        <constraint firstItem="OPq-gi-g9r" firstAttribute="leading" secondItem="yOT-5h-g4X" secondAttribute="leading" constant="8" id="UXW-02-FPG"/>
+                        <constraint firstAttribute="bottom" secondItem="mGh-sO-ROZ" secondAttribute="bottom" constant="14" id="Uld-8g-7Rc"/>
+                        <constraint firstAttribute="trailing" secondItem="OPq-gi-g9r" secondAttribute="trailing" constant="8" id="YfV-1f-qem"/>
+                        <constraint firstAttribute="bottom" secondItem="6W1-uG-Whr" secondAttribute="bottom" constant="14" id="bwg-dd-VUZ"/>
+                        <constraint firstItem="mGh-sO-ROZ" firstAttribute="top" secondItem="OPq-gi-g9r" secondAttribute="bottom" constant="12" id="cU3-oa-QfI"/>
+                        <constraint firstItem="flp-na-RPf" firstAttribute="top" secondItem="ReH-md-inE" secondAttribute="bottom" constant="12" id="hqi-sw-Lm6"/>
+                        <constraint firstItem="OPq-gi-g9r" firstAttribute="top" secondItem="flp-na-RPf" secondAttribute="bottom" constant="12" id="qkc-fR-Sq8"/>
+                        <constraint firstAttribute="trailing" secondItem="flp-na-RPf" secondAttribute="trailing" constant="12" id="qyM-ad-Yct"/>
+                        <constraint firstItem="6W1-uG-Whr" firstAttribute="leading" secondItem="yOT-5h-g4X" secondAttribute="leading" constant="14" id="sEW-J6-04k"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="yOT-5h-g4X" secondAttribute="trailing" constant="8" id="EhL-Vv-YX7"/>
+                <constraint firstItem="yOT-5h-g4X" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="R2t-G1-u8o"/>
+                <constraint firstItem="yOT-5h-g4X" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="8" id="c6e-D5-d0o"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="136.23188405797103" y="-73.325892857142847"/>
+        </view>
+    </objects>
+</document>

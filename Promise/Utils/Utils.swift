@@ -1,6 +1,6 @@
 //Utils.swift
 import UIKit
-//import SKActivityIndicatorView
+import SKActivityIndicatorView
 class Utils: NSObject,SWRevealViewControllerDelegate
 {
     class func Disable_Front_ViewController(viewController: UIViewController, position : FrontViewPosition) {
@@ -11,6 +11,11 @@ class Utils: NSObject,SWRevealViewControllerDelegate
                 view.isUserInteractionEnabled = (view.tag != 9999) ? false : true
             }
         }
+    }
+    class func ShowActivityIndicator(message : String) {
+        SKActivityIndicator.show(message, userInteractionStatus: false)
+        SKActivityIndicator.spinnerStyle(.spinningFadeCircle)
+        SKActivityIndicator.spinnerColor(.darkGray)
     }
     class func set_Badge(Count : Int)  -> UILabel
     {
@@ -68,10 +73,10 @@ class Utils: NSObject,SWRevealViewControllerDelegate
         if DEFAULTS.Is_User_LoggedIn() == true {
             let revealController = SWRevealViewController()
             let sidebar_vc = Config.StoryBoard.instantiateViewController(withIdentifier:  "SidebarVC")as! SidebarVC
-            let Homevc = Config.StoryBoard.instantiateViewController(withIdentifier:  "HomeVC")as! HomeVC
+            let Homevc = Config.StoryBoard.instantiateViewController(withIdentifier:  "DashBoardVC")as! DashBoardVC
             revealController.frontViewController = UINavigationController(rootViewController: Homevc)
             revealController.rearViewController = UINavigationController(rootViewController: sidebar_vc)
-            revealController.delegate = self as! SWRevealViewControllerDelegate
+            revealController.delegate = (self as! SWRevealViewControllerDelegate)
             SceneDelegate.shared?.window?.rootViewController = revealController
         } else {
             guard let rootVC = Config.StoryBoard.instantiateViewController(identifier: "LoginVC") as? LoginVC else {

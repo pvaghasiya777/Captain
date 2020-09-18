@@ -5,6 +5,7 @@ PODS:
   - iOSDropDown (0.3.4)
   - IQKeyboardManagerSwift (6.5.5)
   - SCLAlertView (0.8)
+  - SKActivityIndicatorView (0.1.0)
   - SVProgressHUD (2.2.5)
 
 DEPENDENCIES:
@@ -14,6 +15,7 @@ DEPENDENCIES:
   - iOSDropDown
   - IQKeyboardManagerSwift
   - SCLAlertView
+  - SKActivityIndicatorView
   - SVProgressHUD
 
 SPEC REPOS:
@@ -24,6 +26,7 @@ SPEC REPOS:
     - iOSDropDown
     - IQKeyboardManagerSwift
     - SCLAlertView
+    - SKActivityIndicatorView
     - SVProgressHUD
 
 SPEC CHECKSUMS:
@@ -33,8 +36,9 @@ SPEC CHECKSUMS:
   iOSDropDown: c10a761f9a00c3f1cc9d3bce43ae504628e2f692
   IQKeyboardManagerSwift: 0fb93310284665245591f50f7a5e38de615960b7
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
+  SKActivityIndicatorView: f46936f760d33eb8235333242269bf01cc9248ae
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 753a3f5226607ebb606ff1994ee28ff2a4b78593
+PODFILE CHECKSUM: ddd1e16f9b183ed6d9dd032e43113e4638a680ab
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.8.4

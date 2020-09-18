@@ -26,6 +26,9 @@ class UpdateProfileVC: UIViewController
     @IBOutlet var txt_Firstname: UITextField!
     @IBOutlet var txt_Email: UITextField!
     @IBOutlet var txt_Username: UITextField!
+    var KLC_obj: KLCPopup?
+    var obj_popUpVC : UserProfilePopUP!
+    
     //MARK:- Variable
     var Dic_userDetail : NSDictionary = NSDictionary()
     //MARK:-
@@ -74,13 +77,41 @@ class UpdateProfileVC: UIViewController
         self.txt_Email.addPadding(.left(8))
     }
     func Set_userData() {
-        self.lbl_name.text = Dic_userDetail.value(forKey: "username") as! String
-        self.txt_Username.text = Dic_userDetail.value(forKey: "username") as! String
-        self.txt_Firstname.text = Dic_userDetail.value(forKey: "first_name") as! String
-        self.txt_Lastname.text = Dic_userDetail.value(forKey: "last_name") as! String
-        self.txt_Email.text = Dic_userDetail.value(forKey: "email") as! String
-        self.btn_Timezone.setTitle(Dic_userDetail.value(forKey: "timezone") as! String, for: .normal)
-        
+        self.lbl_name.text = (Dic_userDetail.value(forKey: "username") as! String)
+        self.txt_Username.text = (Dic_userDetail.value(forKey: "username") as! String)
+        self.txt_Firstname.text = (Dic_userDetail.value(forKey: "first_name") as! String)
+        self.txt_Lastname.text = (Dic_userDetail.value(forKey: "last_name") as! String)
+        self.txt_Email.text = (Dic_userDetail.value(forKey: "email") as! String)
+        self.btn_Timezone.setTitle((Dic_userDetail.value(forKey: "timezone") as! String), for: .normal)
+        if Dic_userDetail.value(forKey: "default_project")! is NSNull {
+            self.btn_SelectProject.setTitle("All", for: .normal)
+        }else {
+            self.btn_SelectProject.setTitle(DEFAULTS.Get_UserPermission().data!.projects!.filter{$0.id! == Int(String(describing: Dic_userDetail.value(forKey: "default_project")!))!}[0].name!, for: .normal)
+        }
+    }
+    //MARK:- Show Filter Popup Onsite
+    func Get_Filter_popUp(str_Navigate : String) {
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.obj_popUpVC = UserProfilePopUP(nibName: "UserProfilePopUP", bundle: nil)
+        self.obj_popUpVC.str_Navigate = str_Navigate
+        self.obj_popUpVC!.view.clipsToBounds = true
+        self.obj_popUpVC!.view.layer.cornerRadius = 5.0
+        self.KLC_obj = KLCPopup(contentView: self.obj_popUpVC!.view, showType: .bounceInFromTop , dismissType: .bounceOutToTop, maskType: .dimmed, dismissOnBackgroundTouch: true, dismissOnContentTouch: false)
+        self.KLC_obj?.didFinishDismissingCompletion =
+            {() -> Void in
+                if !(self.obj_popUpVC?.Is_CancelButtonClick)! {
+                    self.navigationController?.navigationBar.isTranslucent = true
+                   print("Filter Did select")
+                    if self.obj_popUpVC.str_Navigate == "TimeZone" {
+                        self.btn_Timezone.setTitle(self.obj_popUpVC.str_Selected, for: .normal)
+                    }else {
+                        self.btn_SelectProject.setTitle(self.obj_popUpVC.str_Selected, for: .normal)
+                    }
+                } else {
+                    print("Filter PopUp Dismiss")
+                }
+        }
+        self.KLC_obj?.show(withRoot: self.view)
     }
     //MARK:- Button Action Click
     @IBAction func btn_Click_Notification(_ sender: UIBarButtonItem) {
@@ -94,10 +125,11 @@ class UpdateProfileVC: UIViewController
     @IBAction func btn_Click_TD(_ sender: UIButton) {
         if sender.tag == 1 {
             print("TimeZone Button Selected")
-            Utils.showToastWithMessageAtCenter(message: "TimeZone Button Selected")
+            self.Get_Filter_popUp(str_Navigate: "TimeZone")
+//            Utils.showToastWithMessageAtCenter(message: "TimeZone Button Selected")
         }else if sender.tag == 2 {
             print("Default Project Button Selected")
-            Utils.showToastWithMessageAtCenter(message: "Default Project Button Selected")
+            self.Get_Filter_popUp(str_Navigate: "Project")
         }
     }
     @IBAction func btn_Click_Save(_ sender: UIButton) {
@@ -112,7 +144,6 @@ class UpdateProfileVC: UIViewController
         revealController.delegate = self as SWRevealViewControllerDelegate?
         SceneDelegate.shared?.window?.rootViewController = revealController
         SceneDelegate.shared?.window?.makeKeyAndVisible()
-        
     }
 }
 //MARK:- SWRevealViewController Methods

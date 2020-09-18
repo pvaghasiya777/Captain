@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserProfilePopUP" customModule="Promise" customModuleProvider="target">
+            <connections>
+                <outlet property="btn_Cancel" destination="cmJ-U6-vk0" id="9qW-8h-lVV"/>
+                <outlet property="tbl_Data" destination="BeP-QX-Imt" id="qEb-sk-Yin"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="506"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TI3-N9-8Be">
+                    <rect key="frame" x="0.0" y="5" width="414" height="501"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BeP-QX-Imt">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="438"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="Zvf-aq-tp8"/>
+                                <outlet property="delegate" destination="-1" id="5fK-vC-96h"/>
+                            </connections>
+                        </tableView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cmJ-U6-vk0">
+                            <rect key="frame" x="82" y="446" width="250" height="50"/>
+                            <color key="backgroundColor" red="0.18823529410000001" green="0.1764705882" blue="0.48627450979999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="250" id="DtB-i2-FCh"/>
+                                <constraint firstAttribute="height" constant="50" id="ttn-s6-tWu"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="20"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstItem="cmJ-U6-vk0" firstAttribute="top" secondItem="BeP-QX-Imt" secondAttribute="bottom" constant="8" id="8Nw-hB-4zn"/>
+                        <constraint firstAttribute="trailing" secondItem="BeP-QX-Imt" secondAttribute="trailing" id="Ggb-fc-DlQ"/>
+                        <constraint firstAttribute="bottom" secondItem="cmJ-U6-vk0" secondAttribute="bottom" constant="5" id="SNe-8c-kKV"/>
+                        <constraint firstItem="BeP-QX-Imt" firstAttribute="top" secondItem="TI3-N9-8Be" secondAttribute="top" id="VnI-Xl-Ljp"/>
+                        <constraint firstItem="BeP-QX-Imt" firstAttribute="leading" secondItem="TI3-N9-8Be" secondAttribute="leading" id="nMK-9z-tuA"/>
+                        <constraint firstItem="cmJ-U6-vk0" firstAttribute="centerX" secondItem="TI3-N9-8Be" secondAttribute="centerX" id="qjd-SM-nPb"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="TI3-N9-8Be" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="5" id="OAR-4p-G0Z"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="TI3-N9-8Be" secondAttribute="bottom" id="OP3-Bx-gfe"/>
+                <constraint firstItem="TI3-N9-8Be" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Ohd-U7-0Ux"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TI3-N9-8Be" secondAttribute="trailing" id="PEM-MU-l8W"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="131.8840579710145" y="377.67857142857139"/>
+        </view>
+    </objects>
+</document>

@@ -85,7 +85,17 @@ struct Api_Urls
     static let GET_API_masterPOType = BASE_URL + "masters/potype/"
     static let GET_API_masterCurrency = BASE_URL + "masters/currency/"
     static let GET_API_masterUOM = BASE_URL + "masters/uom"
-    
+    //Report Section
+    static let GET_API_DetailFigureReport = BASE_URL + "reporting/detail_figure_report/"
+    static let GET_API_MarkWiseReport = BASE_URL + "reporting/markwise_report/"
+    static let GET_API_MarkCummReport = BASE_URL + "reporting/mark_cumm_report/"
+    static let GET_API_PackagWiseReport = BASE_URL + "reporting/package_report/"
+    static let GET_API_PackingListReport = BASE_URL + "reporting/pl_report/"
+    static let GET_API_POPositionReport = BASE_URL + "reporting/po_report/"
+    static let GET_API_IdentCodeWiseReport = BASE_URL + "reporting/ident_report/"
+    static let GET_API_StrucherWiseReport = BASE_URL + "reporting/structure_report/"
+    static let GET_API_GroupStrucherWiseReport = BASE_URL + "reporting/group_report/"
+    static let GET_API_SummaryReport = BASE_URL + "reporting/summary_report/"
     //Filter API
     static let GET_API_onsiteFilter = BASE_URL + "packing/packages_filters/"
     

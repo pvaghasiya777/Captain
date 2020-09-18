@@ -43,6 +43,7 @@ class PurchaseOrderformCell: UITableViewCell {
         super.awakeFromNib()
         view_DocumentAttachment.isHidden = true
         lbl_DocumentAttachment.isHidden = true
+        Utils.EnableTextField(textFields: [txt_Number,txt_Vendor,txt_Project,txt_WeightUOM,txt_Dimension,txt_Volume,txt_DeliveryDate,txt_Date,txt_Project,txt_POType,txt_Address,txt_Currency])
     }
     func DisplayCell(Arr_Data : [SingleMasterPurchaseModel],indexpath : IndexPath) {
         print(Arr_Data)

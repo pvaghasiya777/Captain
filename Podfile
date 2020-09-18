@@ -7,9 +7,11 @@ target 'Promise' do
   pod 'IQKeyboardManagerSwift'
   pod 'SVProgressHUD'
   pod 'SCLAlertView'
-#  pod 'GaugeMeterView'
+  #  pod 'GaugeMeterView'
   pod 'ABGaugeViewKit'
-    pod 'DropDown'
+  pod 'DropDown'
+  pod 'iOSDropDown'
+  pod 'SKActivityIndicatorView'
   # Pods for Promise
-
+  
 end

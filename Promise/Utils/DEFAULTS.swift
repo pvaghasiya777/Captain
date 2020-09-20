@@ -32,7 +32,7 @@ class DEFAULTS: NSObject {
         UserDefaults.standard.synchronize()
     }
     
-    /// SET master Data
+    /// SET Master Data
     class func Set_UserPermission(UserData : GetPermissionModel) {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(UserData) {
@@ -220,5 +220,92 @@ class DEFAULTS: NSObject {
         }
         return MasterProjectData!
     }
+//    ******Set Filter Data**********
+    class func Set_FilterProject(FilterData : [FilterProjectModel]) {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(FilterData) {
+            UserDefaults.standard.set(encoded, forKey: "Filter_Project")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    class func Get_FilterProject() -> [FilterProjectModel] {
+        var FilterData : [FilterProjectModel]?
+        if let savedPerson = UserDefaults.standard.object(forKey: "Filter_Project") as? Data {
+            let decoder = JSONDecoder()
+            if let loadedPerson = try? decoder.decode([FilterProjectModel].self, from: savedPerson) {
+                FilterData = loadedPerson
+            }
+        }
+        return FilterData!
+    }
+    class func Set_FilterPurchaseOrder(FilterData : [FilterPurchaseOrderModel]) {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(FilterData) {
+            UserDefaults.standard.set(encoded, forKey: "Filter_PurchaseOrder")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    class func Get_FilterPurchaseOrder() -> [FilterPurchaseOrderModel] {
+        var FilterData : [FilterPurchaseOrderModel]?
+        if let savedPerson = UserDefaults.standard.object(forKey: "Filter_PurchaseOrder") as? Data {
+            let decoder = JSONDecoder()
+            if let loadedPerson = try? decoder.decode([FilterPurchaseOrderModel].self, from: savedPerson) {
+                FilterData = loadedPerson
+            }
+        }
+        return FilterData!
+    }
+    class func Set_FilterStrucher(FilterData : [FilterStructureModel]) {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(FilterData) {
+            UserDefaults.standard.set(encoded, forKey: "Filter_Strucher")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    class func Get_FilterStrucher() -> [FilterStructureModel] {
+        var FilterData : [FilterStructureModel]?
+        if let savedPerson = UserDefaults.standard.object(forKey: "Filter_Strucher") as? Data {
+            let decoder = JSONDecoder()
+            if let loadedPerson = try? decoder.decode([FilterStructureModel].self, from: savedPerson) {
+                FilterData = loadedPerson
+            }
+        }
+        return FilterData!
+    }
+    class func Set_FilterPackingList(FilterData : [FilterPackingListModel]) {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(FilterData) {
+            UserDefaults.standard.set(encoded, forKey: "Filter_PackingList")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    class func Get_FilterPackingList() -> [FilterPackingListModel] {
+        var FilterData : [FilterPackingListModel]?
+        if let savedPerson = UserDefaults.standard.object(forKey: "Filter_PackingList") as? Data {
+            let decoder = JSONDecoder()
+            if let loadedPerson = try? decoder.decode([FilterPackingListModel].self, from: savedPerson) {
+                FilterData = loadedPerson
+            }
+        }
+        return FilterData!
+    }
+    class func Set_FilterMark(FilterData : [FilterMarkModel]) {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(FilterData) {
+            UserDefaults.standard.set(encoded, forKey: "Filter_Mark")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    class func Get_FilterMark() -> [FilterMarkModel] {
+        var FilterData : [FilterMarkModel]?
+        if let savedPerson = UserDefaults.standard.object(forKey: "Filter_Mark") as? Data {
+            let decoder = JSONDecoder()
+            if let loadedPerson = try? decoder.decode([FilterMarkModel].self, from: savedPerson) {
+                FilterData = loadedPerson
+            }
+        }
+        return FilterData!
+    }
+    
 }
 

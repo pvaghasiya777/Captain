@@ -25,6 +25,8 @@ class PackageDetailsVC: UIViewController {
     @IBOutlet weak var txt_PLSequence: UITextField!
     @IBOutlet weak var txt_VendorPackage: UITextField!
     @IBOutlet weak var txt_TruckNumber: UITextField!
+    @IBOutlet weak var btn_Save: UIButton!
+    @IBOutlet weak var btn_cancel: UIButton!
      
     var Arr_PLDetail = [PlreportDetailModel]()
     var IndexpathRow = 0
@@ -36,6 +38,7 @@ class PackageDetailsVC: UIViewController {
    //MARK:- Initialisation
     func initializeview() {
         Utils.EnableTextField(textFields: [txt_PackageName,txt_KindOfPackage,txt_Length_ft,txt_WidthFt,txt_Heightft,txt_GrossWeightlb,txt_Stackable,txt_OnDeckShipment,txt_StorageSymbol,txt_MinTemperature_F,txt_MaxTemperature_F,txt_PLSequence,txt_VendorPackage,txt_TruckNumber])
+        Utils.Set_Corner_Radius(views: [btn_Save,btn_cancel], radius: 5)
         self.SetData()
     }
     func SetData() {
@@ -53,5 +56,13 @@ class PackageDetailsVC: UIViewController {
         self.txt_PLSequence.text = Arr_InputMasterID.plSequence!
         self.txt_VendorPackage.text = Arr_InputMasterID.vendorPackage!
         self.txt_TruckNumber.text = Arr_InputMasterID.truckNumber!
+    }
+    //MARK:- Button Click
+    @IBAction func btn_Click(_ sender: UIButton) {
+        if sender.tag == 1 {
+            print("Save Button Click")
+        }else {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }

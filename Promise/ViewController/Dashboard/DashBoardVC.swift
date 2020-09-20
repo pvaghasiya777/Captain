@@ -45,6 +45,10 @@ class DashBoardVC: UIViewController {
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             self.revealViewController()?.rearViewRevealWidth = 280
         }
+        MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterProject, tag: 1)
+        MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPurchaseOrder, tag: 2)
+        MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3)
+        MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4)
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
 //        if UIDevice.isPad == true {

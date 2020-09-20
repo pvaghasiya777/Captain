@@ -44,6 +44,14 @@ class HomeVC: UIViewController
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             self.revealViewController()?.rearViewRevealWidth = 280
         }
+        self.Device_Orientaction()
+        self.Design()
+    }
+    func Design() {
+        Utils.Set_Same_Corner_Radius(views: [View_TotalPiece,View_TotalWeight], cornerRadius: 10)
+        self.Select_segment.setTitleTextAttributes( [NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)
+    }
+    func Device_Orientaction() {
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
         if UIDevice.isPad == true {
@@ -59,12 +67,8 @@ class HomeVC: UIViewController
             self.lbl_Shipping_Pieces.font = lbl_shipping_Weight.font.withSize(25)
             self.lbl_Shipping_Pieces_Height.constant = 25
         }
-        self.Design()
     }
-    func Design() {
-        Utils.Set_Same_Corner_Radius(views: [View_TotalPiece,View_TotalWeight], cornerRadius: 10)
-        Select_segment.setTitleTextAttributes( [NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)
-    }
+    
     override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
            return .portrait
     }

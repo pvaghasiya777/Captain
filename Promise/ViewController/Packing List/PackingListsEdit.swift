@@ -107,6 +107,8 @@ class PackingListsEdit: UIViewController {
         Utils.setcornerRadius(view: btn_Save, cornerradius: 5)
         Utils.setcornerRadius(view: btn_Discard, cornerradius: 5)
         Utils.setcornerRadius(view: btn_SubmitforApproval, cornerradius: 5)
+        
+        
     }
     @IBAction func btn_Click_Revision(_ sender: UIButton) {
         print("Revision Click")
@@ -151,6 +153,7 @@ class PackingListsEdit: UIViewController {
     func dataset(){
         let rowdata = arrPackingListsID_Model[0]
 //        self.btn_RivisonHistory.addSubview(Utils.set_Badge(Count: Int(rowdata.revision!)!))
+        Utils.EnableTextField(textFields: [txt_PackingListNumber,txt_Revision,txt_PLInput,txt_Structure,txt_ReleasedDate,txt_Releasenote,txt_PurchaseOrder,txt_Project,txt_Vendor,txt_TotalVolume,txt_TotalNetWeight,txt_TotalGrossWeight,txt_PLSequence,txt_Status])
         //Packing List Details
         txt_PackingListNumber.text = rowdata.number
         txt_Revision.text = rowdata.revision

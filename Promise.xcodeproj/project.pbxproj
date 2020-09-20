@@ -160,6 +160,7 @@
 		E4EAEA0924D4201A003DA453 /* ProjectDetail_Cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4EAEA0724D4201A003DA453 /* ProjectDetail_Cell.xib */; };
 		E4F73C4D24EFD8E600431FA4 /* MasterPurchse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F73C4C24EFD8E600431FA4 /* MasterPurchse.swift */; };
 		E4FB04A424E525B300F585F4 /* PLreportsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FB04A324E525B200F585F4 /* PLreportsModel.swift */; };
+		E4FC4BF025164A840067AEF2 /* ReportFilterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FC4BEF25164A840067AEF2 /* ReportFilterModel.swift */; };
 		E4FD20EA24CB08B7008A491D /* AFWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FD20E824CB08B7008A491D /* AFWrapper.swift */; };
 		E4FD20EB24CB08B7008A491D /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FD20E924CB08B7008A491D /* SwiftyJSON.swift */; };
 		EECFE22F93893B6E2DEEAB82 /* Pods_Promise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B7C4257612074F49C9027E4 /* Pods_Promise.framework */; };
@@ -376,6 +377,7 @@
 		E4EAEA0724D4201A003DA453 /* ProjectDetail_Cell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectDetail_Cell.xib; sourceTree = "<group>"; };
 		E4F73C4C24EFD8E600431FA4 /* MasterPurchse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterPurchse.swift; sourceTree = "<group>"; };
 		E4FB04A324E525B200F585F4 /* PLreportsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PLreportsModel.swift; sourceTree = "<group>"; };
+		E4FC4BEF25164A840067AEF2 /* ReportFilterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportFilterModel.swift; sourceTree = "<group>"; };
 		E4FD20E824CB08B7008A491D /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
 		E4FD20E924CB08B7008A491D /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		FA621E4D24F0E7F900971586 /* ShippedStatusVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShippedStatusVC.swift; sourceTree = "<group>"; };
@@ -457,6 +459,7 @@
 				FA7478FB24EA8C5B00DE06B5 /* DrawingModel.swift */,
 				E417386A24EBC4D000E949B2 /* PlreportDetailModel.swift */,
 				E47EF9D32511213000CEBF0F /* CITreeViewData.swift */,
+				E4FC4BEF25164A840067AEF2 /* ReportFilterModel.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -1323,6 +1326,7 @@
 				E4AC234424E90BB300FAEA3E /* PlinputsVc.swift in Sources */,
 				E44CD7692514AF5F005325ED /* NiceButton.swift in Sources */,
 				E47604A524D1850A00AB6806 /* ReportVC.swift in Sources */,
+				E4FC4BF025164A840067AEF2 /* ReportFilterModel.swift in Sources */,
 				E44CD7822514D498005325ED /* BannerCell.swift in Sources */,
 				E48E235824CAF86300316E4C /* Extention.swift in Sources */,
 				E44CD7A12514DA24005325ED /* PackingListReportcell.swift in Sources */,

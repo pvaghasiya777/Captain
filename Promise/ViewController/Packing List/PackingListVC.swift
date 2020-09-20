@@ -251,7 +251,7 @@ extension PackingListVC : UITableViewDataSource , UITableViewDelegate{
         viewAction.backgroundColor = Config.bgColor
         editAction.backgroundColor = Config.bgColor
         deleteAction.backgroundColor = Config.bgColor
-        return UISwipeActionsConfiguration(actions: [deleteAction,editAction,viewAction])
+        return UISwipeActionsConfiguration(actions: [editAction,viewAction])
     }
 }
 

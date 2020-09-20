@@ -31,6 +31,8 @@ class DocumentVC: UIViewController {
     }
     func InitlizationView() {
         sampleTreeView.register(UINib(nibName: treeViewCellNibName, bundle: nil), forCellReuseIdentifier: treeViewCellIdentifier)
+        sampleTreeView.expandAllRows()
+        sampleTreeView.reloadDataWithoutChangingRowStates()
         MasterServiceCall.shareInstance.Get_Document(Api_Str: Api_Urls.GET_API_Document, Viewcontroller: self)
         self.Load_Dashboard()
     }

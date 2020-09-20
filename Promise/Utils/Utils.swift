@@ -148,7 +148,7 @@ class Utils: NSObject,SWRevealViewControllerDelegate
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height))
         let image = UIImage(named: imagename)
         imageView.image = image
-        imageView.contentMode = .center
+        imageView.contentMode = .scaleAspectFit
         textfield.rightView = imageView
     }
     class func set_Image_on_LeftView_of_Textfield_Dropdown(textfield : UITextField ,imagename : String, width : CGFloat, height : CGFloat)

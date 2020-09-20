@@ -79,12 +79,12 @@ class PLinputDetails: UIViewController {
     func Initialization() {
         ServiceCall.shareInstance.Get_PLreportsDetail(ViewController: self, Api_Str: Api_Urls.GET_API_plReports + Str_id + "/", tag: 0)
         self.btn_PackagesList.addTarget(self, action: #selector(Get_PackingListClick(_:)), for: .touchUpInside)
-        lbl_PackageDetails.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
-        lbl_Quantities.backgroundColor = .white
-        lbl_Rejection.backgroundColor = .white
-        view_Details.isHidden = false
-        view_Quantities.isHidden = true
-        view_Rejectionview.isHidden = true
+        self.lbl_PackageDetails.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+        self.lbl_Quantities.backgroundColor = .white
+        self.lbl_Rejection.backgroundColor = .white
+        self.view_Details.isHidden = false
+        self.view_Quantities.isHidden = true
+        self.view_Rejectionview.isHidden = true
         self.tbl_Package_Detail.rowHeight = UITableView.automaticDimension
         self.tbl_Package_Detail.tableFooterView = UIView()
         self.tbl_Package_Detail.separatorStyle = .singleLine
@@ -96,10 +96,10 @@ class PLinputDetails: UIViewController {
         Utils.add_shadow_around_view(view: view_topBG, color: .gray, radius: 5, opacity: 5)
         Utils.add_shadow_around_view(view: view_SecondBG, color: .gray, radius: 5, opacity: 5)
         Utils.add_shadow_around_view(view: view_ThardBG, color: .gray, radius: 5, opacity: 5)
-//        Utils.add_shadow_around_view(view: btn_PackagesList, color: .gray, radius: 2, opacity: 5)
         Utils.setborder(view: btn_Save, bordercolor: Config.boderColor, borderwidth: 1)
         Utils.setborder(view: btn_Discard, bordercolor: Config.boderColor1, borderwidth: 1)
         Utils.Set_Same_Corner_Radius(views: [btn_Save,btn_Discard,btn_CreateNew], cornerRadius: 5)
+        Utils.EnableTextField(textFields: [txt_Name,txt_InputNumber,txt_Revisionnumber,txt_PONumber,txt_Project,txt_Vendor,txt_PickupLocation,txt_ContactDetails,txt_NameOfGoods,txt_InspectionTime,txt_CountryOfOrigin,txt_Address,txt_Structure,txt_GrossWeight,txt_NetWeight,txt_TotalVolume])
     }
     func Set_PackageDetail() {
         print(Arr_PLDetail)
@@ -114,6 +114,8 @@ class PLinputDetails: UIViewController {
         self.txt_ContactDetails.text = Arr_PLDetail[0].contactDetails!
         self.txt_NameOfGoods.text = Arr_PLDetail[0].nameOfGoods!
         self.txt_InspectionTime.text = (Arr_PLDetail[0].inspectionDate == nil) ? "" : Arr_PLDetail[0].inspectionDate!
+        self.btn_Active.isUserInteractionEnabled = false
+        self.btn_Active.setImage(UIImage(named: (Arr_PLDetail[0].isActive == true) ? "ic_correct":"ic_not_released"), for: .normal)
         self.Arr_Address = DEFAULTS.Get_AddressStruct().filter{$0.id! == Arr_PLDetail[0].addressID!}
         self.Arr_Country = DEFAULTS.Get_MasterCoutry().filter{$0.id! == Arr_PLDetail[0].countryOfOrigin!}
         self.Arr_Purchase = DEFAULTS.Get_MasterPurchase().filter {$0.number! == Arr_PLDetail[0].purchaseID!}

@@ -309,20 +309,6 @@ class MasterServiceCall: NSObject
             Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     func Get_masterProjectSingle(Api_Str: String,ViewController : UIViewController) {
         if AppDelegate.NetworkRechability(){
             let ProjectDetails_VC = ViewController as! ProjectDetailsFormViewVC
@@ -407,6 +393,51 @@ class MasterServiceCall: NSObject
             Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
         }
     }
+    func Get_FilterApi(Api_Str: String,tag : Int) {
+        if AppDelegate.NetworkRechability(){
+            SVProgressHUD.show(withStatus: "Loading...")
+            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers:["Authorization": DEFAULTS.Get_TOKEN()], params: [:], success: { (responseObject,statusCode,jsonObject) in
+                    if statusCode == 200 {
+                        if tag == 1 {
+                            let results = try? JSONDecoder().decode([FilterProjectModel].self, from: responseObject)
+                            DEFAULTS.Set_FilterProject(FilterData: results ?? [])
+                            print(DEFAULTS.Get_FilterProject())
+                        }else if tag == 2 {
+                            let results = try? JSONDecoder().decode([FilterPurchaseOrderModel].self, from: responseObject)
+                            DEFAULTS.Set_FilterPurchaseOrder(FilterData: results ?? [])
+                            print(DEFAULTS.Get_FilterPurchaseOrder())
+                        }else if tag == 3 {
+                            let results = try? JSONDecoder().decode([FilterStructureModel].self, from: responseObject)
+                            DEFAULTS.Set_FilterStrucher(FilterData: results ?? [])
+                            print(DEFAULTS.Get_FilterStrucher())
+                        }else if tag == 4 {
+                            let results = try? JSONDecoder().decode([FilterPackingListModel].self, from: responseObject)
+                            DEFAULTS.Set_FilterPackingList(FilterData: results ?? [])
+                            print(DEFAULTS.Get_FilterPackingList())
+                        }else if tag == 5 {
+                            let results = try? JSONDecoder().decode([FilterMarkModel].self, from: responseObject)
+                            DEFAULTS.Set_FilterMark(FilterData: results ?? [])
+                            print(DEFAULTS.Get_FilterMark())
+                        }
+                        SVProgressHUD.dismiss()
+                    }
+                else {
+                    print("json error")
+                }
+            })
+            { (error) in
+                SVProgressHUD.dismiss()
+                print(error.localizedDescription)
+            }
+        }else {
+            Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
+        }
+    }
+    
+    
+    
+    
+    
 }
 
 

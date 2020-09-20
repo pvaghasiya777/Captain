@@ -22,7 +22,7 @@ class TableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        Utils.set_Image_on_RightView_of_Textfield(textfield: txt_ReleasedDate, imagename: "ic_calendar", width: 15, height: 15)
+        Utils.set_Image_on_RightView_of_Textfield(textfield: txt_ReleasedDate, imagename: "ic_calendar", width: 25, height: 25)
     }
     func Display_Cell(arr_data: NSMutableArray,indexPath:IndexPath) {
         //reverse Solution
@@ -36,7 +36,6 @@ class TableViewCell: UITableViewCell {
 //        arr_data.map{($0 as! PackingListModel).number!}
         self.txt_ReleasedDate.text = Arr_PackData.releasedDate!
         self.lbl_ApprovalStatus.text = Arr_PackData.approveStatus
-        print(Arr_PackData.releasedDate!)
         self.lbl_ActiveStatus.text = String(Arr_PackData.isActive)
     }
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -63,15 +63,13 @@ struct Api_Urls
     static let BASE_URL = "http://demo.prime4promise.com:8000/"
     static let POST_API_LOGIN = BASE_URL + "accounts/login/"
     static let POST_API_LOGOUT = BASE_URL + "accounts/logout/"
-    
-    //GET API
+    //GET Home Page API
     static let GET_API_getPermission = BASE_URL + "get_permissions/"
     static let GET_API_onSiteStatus = BASE_URL + "packing/packages/"
     static let GET_API_userDetail = BASE_URL + "accounts/user_preferences/"
     static let GET_API_plReports = BASE_URL + "packing/input/"
     static let GET_API_packingList = BASE_URL + "packing/packing_list/"
     static let GET_API_drawing = BASE_URL + "drawing/"
-    static let GET_API_reportingProjects = BASE_URL + "reporting/projects/"
     static let GET_API_Document = BASE_URL + "masters/folders/"
     // Master API
     static let GET_API_masterCountry = BASE_URL + "masters/country/"
@@ -85,6 +83,12 @@ struct Api_Urls
     static let GET_API_masterPOType = BASE_URL + "masters/potype/"
     static let GET_API_masterCurrency = BASE_URL + "masters/currency/"
     static let GET_API_masterUOM = BASE_URL + "masters/uom"
+    //Report Filter API
+    static let GET_API_filterProject = BASE_URL + "reporting/projects/"
+    static let GET_API_filterPurchaseOrder = BASE_URL + "reporting/purchase_orders/"
+    static let GET_API_filterStrucher = BASE_URL + "reporting/structures/"
+    static let GET_API_filterPackingList = BASE_URL + "reporting/packing_lists/"
+    static let GET_API_filterMark = BASE_URL + "reporting/marks/"
     //Report Section
     static let GET_API_DetailFigureReport = BASE_URL + "reporting/detail_figure_report/"
     static let GET_API_MarkWiseReport = BASE_URL + "reporting/markwise_report/"
@@ -98,7 +102,8 @@ struct Api_Urls
     static let GET_API_SummaryReport = BASE_URL + "reporting/summary_report/"
     //Filter API
     static let GET_API_onsiteFilter = BASE_URL + "packing/packages_filters/"
-    
+    //Account Update
+    static let GET_API_Disciplines = BASE_URL + "accounts/disciplines/"
 }
 //-------------------------Filter Param Section--------------//
 struct Filter_packingList {

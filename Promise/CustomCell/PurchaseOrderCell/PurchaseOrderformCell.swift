@@ -19,6 +19,7 @@ class PurchaseOrderformCell: UITableViewCell {
     @IBOutlet var txt_Project: DropDown!
     @IBOutlet var txt_POType: UITextField!
     @IBOutlet var txt_Address: UITextField!
+    @IBOutlet var txt_ShipperDetails : UITextField!
     //ViewPurchase Detail Second
     @IBOutlet var txt_Date: UITextField!
     @IBOutlet var txt_DeliveryDate: DropDown!

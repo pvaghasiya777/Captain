@@ -240,6 +240,38 @@
             endingLineNumber = "62"
             landmarkName = "DisplayCell(Arr_Data:indexpath:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "42795F72-653B-48D5-A444-0AFDF8790C96 - bad7c673714100f0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Promise.PurchaseOrderformCell.DisplayCell(Arr_Data: Swift.Array&lt;Promise.SingleMasterPurchaseModel&gt;, indexpath: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "Promise"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/captain/Documents/Promise/Promise/CustomCell/PurchaseOrderCell/PurchaseOrderformCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "62"
+                  endingLineNumber = "62"
+                  offsetFromSymbolStart = "8782">
+               </Location>
+               <Location
+                  uuid = "42795F72-653B-48D5-A444-0AFDF8790C96 - 64d94f07d36eb78d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #5 (Promise.MasterProjectModel) -&gt; Swift.Bool in Promise.PurchaseOrderformCell.DisplayCell(Arr_Data: Swift.Array&lt;Promise.SingleMasterPurchaseModel&gt;, indexpath: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "Promise"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/captain/Documents/Promise/Promise/CustomCell/PurchaseOrderCell/PurchaseOrderformCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "62"
+                  endingLineNumber = "62"
+                  offsetFromSymbolStart = "118">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -343,6 +375,86 @@
             startingLineNumber = "25"
             endingLineNumber = "25"
             landmarkName = "awakeFromNib()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "92F48C16-9CD8-4B84-80FD-0FB39D62F748"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Promise/ViewController/Dashboard/DFiltersVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "248"
+            endingLineNumber = "248"
+            landmarkName = "searchBar(_:textDidChange:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "92F48C16-9CD8-4B84-80FD-0FB39D62F748 - c6711278668219a4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Promise.DFiltersVC.searchBar(_: __C.UISearchBar, textDidChange: Swift.String) -&gt; ()"
+                  moduleName = "Promise"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/captain/Documents/Promise/Promise/ViewController/Dashboard/DFiltersVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "248"
+                  endingLineNumber = "248"
+                  offsetFromSymbolStart = "4723">
+               </Location>
+               <Location
+                  uuid = "92F48C16-9CD8-4B84-80FD-0FB39D62F748 - 91765ec50f630814"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Promise.FilterPurchaseOrderModel) -&gt; Swift.Bool in Promise.DFiltersVC.searchBar(_: __C.UISearchBar, textDidChange: Swift.String) -&gt; ()"
+                  moduleName = "Promise"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/captain/Documents/Promise/Promise/ViewController/Dashboard/DFiltersVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "248"
+                  endingLineNumber = "248"
+                  offsetFromSymbolStart = "210">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "11FAD367-6BEC-40E8-80E0-F0447D0B9D64"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Promise/ViewController/Dashboard/DFiltersVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
+            landmarkName = "searchBar(_:textDidChange:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E525CAF5-B18C-4306-A831-E0BC44844370"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Promise/CustomCell/CollectionView Cell/Project_CollectionCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "DisplayCell(arr:indexPath:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -2,7 +2,6 @@
 
 import UIKit
 import Alamofire
-
 class AFWrapper: NSObject
 {
     //MARK:- Get Method

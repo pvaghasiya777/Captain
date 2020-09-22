@@ -393,10 +393,10 @@ class MasterServiceCall: NSObject
             Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
         }
     }
-    func Get_FilterApi(Api_Str: String,tag : Int) {
+    func Get_FilterApi(Api_Str: String,tag : Int,param : Parameters) {
         if AppDelegate.NetworkRechability(){
             SVProgressHUD.show(withStatus: "Loading...")
-            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers:["Authorization": DEFAULTS.Get_TOKEN()], params: [:], success: { (responseObject,statusCode,jsonObject) in
+            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers:["Authorization": DEFAULTS.Get_TOKEN()], params: param as! [String : String], success: { (responseObject,statusCode,jsonObject) in
                     if statusCode == 200 {
                         if tag == 1 {
                             let results = try? JSONDecoder().decode([FilterProjectModel].self, from: responseObject)
@@ -415,8 +415,8 @@ class MasterServiceCall: NSObject
                             DEFAULTS.Set_FilterPackingList(FilterData: results ?? [])
                             print(DEFAULTS.Get_FilterPackingList())
                         }else if tag == 5 {
-                            let results = try? JSONDecoder().decode([FilterMarkModel].self, from: responseObject)
-                            DEFAULTS.Set_FilterMark(FilterData: results ?? [])
+                            let results = try? JSONDecoder().decode(FilterMarkModel.self, from: responseObject)
+                            DEFAULTS.Set_FilterMark(FilterData: results?.results! ?? [])
                             print(DEFAULTS.Get_FilterMark())
                         }
                         SVProgressHUD.dismiss()

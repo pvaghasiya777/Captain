@@ -149,8 +149,7 @@ extension ProjectVC : UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: Project_CollectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "Project_CollectionCell", for: indexPath) as! Project_CollectionCell
-        cell.DisplayCell(arr: arrProject, indexPath: indexPath.row)
-        //       cell.backgroundView?.applyGradient(colours: [UIColor(hexString: "7bdac2"), UIColor(hexString: "349f8d")])
+        cell.DisplayCell(arr: arrProject, indexPath: indexPath)
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

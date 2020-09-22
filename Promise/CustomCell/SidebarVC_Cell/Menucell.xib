@@ -25,11 +25,13 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YwL-am-aeY">
-                        <rect key="frame" x="48" y="8" width="319" height="35"/>
+                        <rect key="frame" x="48" y="8" width="177" height="35"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="35" id="BRP-9A-z5p"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="177" id="VPl-Dd-mJ8"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -43,16 +45,27 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.right" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="41E-Rw-BbG">
+                        <rect key="frame" x="225" y="10" width="35" height="31.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.4549019608" green="0.53333333329999999" blue="0.57254901960000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="9j5-eu-pyb"/>
+                            <constraint firstAttribute="height" constant="35" id="FNb-GV-5b6"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="7K3-NI-KUr" secondAttribute="trailing" constant="100" id="0Bf-iV-2nf"/>
+                    <constraint firstItem="41E-Rw-BbG" firstAttribute="leading" secondItem="YwL-am-aeY" secondAttribute="trailing" id="9JB-Ei-PE1"/>
+                    <constraint firstAttribute="trailing" secondItem="41E-Rw-BbG" secondAttribute="trailing" constant="115" id="HUC-tk-RB3"/>
                     <constraint firstItem="YwL-am-aeY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="N2z-oN-de1"/>
                     <constraint firstItem="7aw-IQ-pOz" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="X7U-Dt-qfT"/>
                     <constraint firstItem="7K3-NI-KUr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="b08-c0-95E"/>
                     <constraint firstItem="7aw-IQ-pOz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="g4b-Kg-XXS"/>
                     <constraint firstItem="YwL-am-aeY" firstAttribute="leading" secondItem="7aw-IQ-pOz" secondAttribute="trailing" constant="5" id="hCS-Fk-ZpQ"/>
                     <constraint firstAttribute="bottom" secondItem="7K3-NI-KUr" secondAttribute="bottom" id="knl-0s-zZR"/>
-                    <constraint firstAttribute="trailing" secondItem="YwL-am-aeY" secondAttribute="trailing" constant="8" id="yTo-d3-HA4"/>
+                    <constraint firstItem="41E-Rw-BbG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="tbe-LY-lvU"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -65,6 +78,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="chevron.right" catalog="system" width="96" height="128"/>
         <image name="ic_Project" width="14.5" height="13.5"/>
     </resources>
 </document>

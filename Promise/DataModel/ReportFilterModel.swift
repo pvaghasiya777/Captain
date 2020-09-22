@@ -11,15 +11,15 @@ import Foundation
 // MARK: - FilterProjectModel
 //   let filterProjectModel = try? newJSONDecoder().decode([FilterProjectModel].self, from: jsonData)
 struct FilterProjectModel: Codable {
-    let id: Int
-    let project: String
+    let id: Int?
+    let project: String?
 }
 
 // MARK: - FilterPurchaseOrderModel
 //   let filterPurchaseOrderModel = try? newJSONDecoder().decode([FilterPurchaseOrderModel].self, from: jsonData)
 struct FilterPurchaseOrderModel: Codable {
-    let id: Int
-    let poNo: String
+    let id: Int?
+    let poNo: String?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -30,15 +30,15 @@ struct FilterPurchaseOrderModel: Codable {
 // MARK: - FilterPurchaseOrderModelElement
 //   let filterPurchaseOrderModel = try? newJSONDecoder().decode([FilterStructureModel].self, from: jsonData)
 struct FilterStructureModel: Codable {
-    let id: Int
-    let structure: String
+    let id: Int?
+    let structure: String?
 }
 
 // MARK: - FilterPackingListModelElement
 //   let filterPackingListModel = try? newJSONDecoder().decode(FilterPackingListModel.self, from: jsonData)
 struct FilterPackingListModel: Codable {
-    let id: Int
-    let packingList: String
+    let id: Int?
+    let packingList: String?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -48,12 +48,12 @@ struct FilterPackingListModel: Codable {
 // MARK: - FilterMarkModel
 //   let filterMarkModel = try? newJSONDecoder().decode(FilterMarkModel.self, from: jsonData)
 struct FilterMarkModel: Codable {
-    let count: Int
-    let next, previous: String
-    let results: [MarkResult]
+    let count: Int?
+    let next, previous: String?
+    let results: [MarkResult]?
 }
 
 // MARK: - Result
 struct MarkResult: Codable {
-    let mark: String
+    let mark: String?
 }

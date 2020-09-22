@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -170,6 +170,24 @@
                                         <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="15"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shipper Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cbJ-nH-h6w">
+                                        <rect key="frame" x="16" y="372" width="130" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="130" id="wwB-I1-ybo"/>
+                                            <constraint firstAttribute="height" constant="50" id="xPK-gd-xLi"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="15"/>
+                                        <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bRb-XI-kNy">
+                                        <rect key="frame" x="160" y="372" width="381.5" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="vSt-Vy-NfJ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="15"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -185,19 +203,24 @@
                                     <constraint firstItem="xys-hq-GQN" firstAttribute="leading" secondItem="9Yo-Rf-ww1" secondAttribute="trailing" constant="14" id="L9N-lL-2Qb"/>
                                     <constraint firstItem="SUj-Zy-bp8" firstAttribute="top" secondItem="mvI-Ym-JTL" secondAttribute="bottom" constant="12" id="Mot-Di-pJf"/>
                                     <constraint firstAttribute="trailing" secondItem="7hh-fB-V6l" secondAttribute="trailing" constant="14" id="NaJ-EA-63U"/>
+                                    <constraint firstAttribute="trailing" secondItem="bRb-XI-kNy" secondAttribute="trailing" constant="14" id="Noz-Sh-88F"/>
                                     <constraint firstItem="cpC-cJ-W9C" firstAttribute="leading" secondItem="UgP-QD-V9u" secondAttribute="leading" constant="16" id="QJt-eB-6pm"/>
                                     <constraint firstItem="mvI-Ym-JTL" firstAttribute="top" secondItem="xys-hq-GQN" secondAttribute="bottom" constant="12" id="RtT-c0-t9r"/>
+                                    <constraint firstItem="cbJ-nH-h6w" firstAttribute="leading" secondItem="UgP-QD-V9u" secondAttribute="leading" constant="16" id="TTZ-VT-9w6"/>
                                     <constraint firstItem="HO5-rh-Muq" firstAttribute="leading" secondItem="UgP-QD-V9u" secondAttribute="leading" constant="16" id="VkJ-8c-Hyt"/>
                                     <constraint firstAttribute="trailing" secondItem="mvI-Ym-JTL" secondAttribute="trailing" constant="14" id="Yb4-e4-85Q"/>
                                     <constraint firstItem="HO5-rh-Muq" firstAttribute="top" secondItem="w3x-cy-sHE" secondAttribute="bottom" constant="22" id="ZNN-dc-5IS"/>
                                     <constraint firstAttribute="trailing" secondItem="SUj-Zy-bp8" secondAttribute="trailing" constant="14" id="ajU-GZ-IKr"/>
+                                    <constraint firstItem="cbJ-nH-h6w" firstAttribute="top" secondItem="wJz-Zs-Ghj" secondAttribute="bottom" constant="12" id="bhd-7S-IhO"/>
                                     <constraint firstItem="wJz-Zs-Ghj" firstAttribute="top" secondItem="cpC-cJ-W9C" secondAttribute="bottom" constant="12" id="fQl-Cn-4jA"/>
                                     <constraint firstItem="mb0-Bc-5Ag" firstAttribute="leading" secondItem="HO5-rh-Muq" secondAttribute="trailing" constant="14" id="gUx-nW-vYe"/>
                                     <constraint firstItem="0G0-OS-6Vd" firstAttribute="top" secondItem="9Yo-Rf-ww1" secondAttribute="bottom" constant="12" id="hBY-nw-ONP"/>
                                     <constraint firstItem="SUj-Zy-bp8" firstAttribute="leading" secondItem="cpC-cJ-W9C" secondAttribute="trailing" constant="14" id="k0l-jl-UBe"/>
                                     <constraint firstItem="9Yo-Rf-ww1" firstAttribute="leading" secondItem="UgP-QD-V9u" secondAttribute="leading" constant="16" id="kBL-bQ-BKQ"/>
+                                    <constraint firstItem="bRb-XI-kNy" firstAttribute="leading" secondItem="cbJ-nH-h6w" secondAttribute="trailing" constant="14" id="kdL-mD-56Z"/>
                                     <constraint firstItem="w3x-cy-sHE" firstAttribute="leading" secondItem="UgP-QD-V9u" secondAttribute="leading" constant="3" id="o2Z-VO-da4"/>
                                     <constraint firstItem="7hh-fB-V6l" firstAttribute="leading" secondItem="wJz-Zs-Ghj" secondAttribute="trailing" constant="14" id="rKe-Gf-BbX"/>
+                                    <constraint firstItem="bRb-XI-kNy" firstAttribute="top" secondItem="7hh-fB-V6l" secondAttribute="bottom" constant="12" id="sWA-YH-eMC"/>
                                     <constraint firstItem="w3x-cy-sHE" firstAttribute="top" secondItem="UgP-QD-V9u" secondAttribute="top" constant="8" id="tAs-59-50f"/>
                                     <constraint firstAttribute="trailing" secondItem="xys-hq-GQN" secondAttribute="trailing" constant="14" id="vea-jx-YHP"/>
                                     <constraint firstItem="wJz-Zs-Ghj" firstAttribute="leading" secondItem="UgP-QD-V9u" secondAttribute="leading" constant="16" id="yQl-81-uqn"/>
@@ -500,6 +523,7 @@
                 <outlet property="txt_PDFFIle" destination="RZM-qF-8VJ" id="fS7-BP-2Nh"/>
                 <outlet property="txt_POType" destination="SUj-Zy-bp8" id="9bn-f3-xMs"/>
                 <outlet property="txt_Project" destination="mvI-Ym-JTL" id="tob-aU-XS7"/>
+                <outlet property="txt_ShipperDetails" destination="bRb-XI-kNy" id="3sG-Qg-bIF"/>
                 <outlet property="txt_Vendor" destination="xys-hq-GQN" id="Dj5-jy-ru4"/>
                 <outlet property="txt_Volume" destination="Bn3-Lb-Nq9" id="leM-ez-eJ9"/>
                 <outlet property="txt_WeightUOM" destination="D1C-nZ-ydJ" id="Yqs-kK-utH"/>

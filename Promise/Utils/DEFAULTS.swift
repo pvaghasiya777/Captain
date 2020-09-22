@@ -289,18 +289,18 @@ class DEFAULTS: NSObject {
         }
         return FilterData!
     }
-    class func Set_FilterMark(FilterData : [FilterMarkModel]) {
+    class func Set_FilterMark(FilterData : [MarkResult]) {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(FilterData) {
             UserDefaults.standard.set(encoded, forKey: "Filter_Mark")
             UserDefaults.standard.synchronize()
         }
     }
-    class func Get_FilterMark() -> [FilterMarkModel] {
-        var FilterData : [FilterMarkModel]?
+    class func Get_FilterMark() -> [MarkResult] {
+        var FilterData : [MarkResult]?
         if let savedPerson = UserDefaults.standard.object(forKey: "Filter_Mark") as? Data {
             let decoder = JSONDecoder()
-            if let loadedPerson = try? decoder.decode([FilterMarkModel].self, from: savedPerson) {
+            if let loadedPerson = try? decoder.decode([MarkResult].self, from: savedPerson) {
                 FilterData = loadedPerson
             }
         }

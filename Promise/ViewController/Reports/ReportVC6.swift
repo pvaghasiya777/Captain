@@ -40,7 +40,7 @@ class ReportVC6: UIViewController {
     var Str_markWiseReportNext = ""
     var Str_markWiseReportPrevious = ""
     var Arr_MarkWiseCumulativeReport = [MarkWiseCumulativeReportModel]()
-    var param :NSDictionary = NSDictionary()
+    var param : NSDictionary = NSDictionary()
     //MARK:- Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -14,10 +14,12 @@ class UserProfilePopUP: UIViewController {
     @IBOutlet weak var btn_Cancel: UIButton!
     //MARK:- Variable
     var Arr_Data : NSMutableArray = NSMutableArray()
+    var Arr_Disciple = [DDResult]()
+    var Arr_ProjectID : NSMutableArray = NSMutableArray()
     var str_Navigate = ""
     var Is_CancelButtonClick : Bool = false
     var str_Selected = ""
-
+    var Str_id = ""
     //MARK:- Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +28,10 @@ class UserProfilePopUP: UIViewController {
     //MARK:- initlization
     func Initlization() {
         self.Arr_Data = (str_Navigate == "TimeZone") ? NSMutableArray(array: DEFAULTS.Get_UserPermission().data?.timezone! as! NSArray) : NSMutableArray(array: DEFAULTS.Get_UserPermission().data!.projects!.map{($0.name!)} as NSArray)
+        self.Arr_ProjectID = NSMutableArray(array: DEFAULTS.Get_UserPermission().data!.projects!.map{($0.id!)} as NSArray)
+        if str_Navigate == "Disciple"{
+            self.Arr_Disciple = DEFAULTS.Get_Discipline()[0].results!
+        }
         self.tbl_Data.rowHeight = UITableView.automaticDimension
         self.tbl_Data.tableFooterView = UIView()
         self.tbl_Data.separatorStyle = .singleLine
@@ -46,17 +52,25 @@ extension UserProfilePopUP : UITableViewDataSource,UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : UITableViewCell = UITableViewCell()
-        cell.textLabel?.text = self.Arr_Data[indexPath.section] as! String
+        cell.textLabel?.text = (str_Navigate == "Disciple") ? self.Arr_Disciple[indexPath.section].name! : self.Arr_Data[indexPath.section] as! String
         cell.textLabel?.textColor = .black
         cell.textLabel?.textAlignment = .center
         cell.textLabel?.sizeToFit()
-//        cell.textLabel!.setborder(bordercolor: .lightGray, borderwidth: 1)
         cell.selectionStyle = .none
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Select Value :- \(Arr_Data[indexPath.section])")
-        self.str_Selected = (Arr_Data[indexPath.section]) as! String
+        if str_Navigate == "Project" {
+            self.Str_id = String(describing:Arr_ProjectID[indexPath.section])
+            self.str_Selected = (Arr_Data[indexPath.section]) as! String
+        }else if str_Navigate == "TimeZone" {
+            self.Str_id = (Arr_Data[indexPath.section]) as! String
+            self.str_Selected = (Arr_Data[indexPath.section]) as! String
+        }else {
+            self.Str_id = String(describing: self.Arr_Disciple[indexPath.section].id!)
+            self.str_Selected = Arr_Disciple[indexPath.section].name!
+        }
         self.view.dismissPresentingPopup()
     }
 }

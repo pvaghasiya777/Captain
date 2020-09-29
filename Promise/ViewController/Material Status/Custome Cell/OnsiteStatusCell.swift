@@ -17,11 +17,12 @@ class OnsiteStatusCell: UITableViewCell {
     @IBOutlet weak var img_released: UIImageView!
     @IBOutlet weak var img_Onsite: UIImageView!
     @IBOutlet weak var img_Shipped: UIImageView!
-    @IBOutlet weak var btn_OnsiteDate: UIButton!
+    @IBOutlet weak var txt_OnsiteDate: UITextField!
     @IBOutlet weak var btn_Action: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+         Utils.set_Image_on_RightView_of_Textfield(textfield: txt_OnsiteDate, imagename: "ic_calendar", width: 30, height: 30)
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -37,7 +38,8 @@ class OnsiteStatusCell: UITableViewCell {
         self.img_released.image = UIImage(named: (Arr_data.isReleased == true) ? "ic_correct" : "ic_not_released")
         self.img_Shipped.image = UIImage(named: (Arr_data.shipped == true) ? "ic_correct" : "ic_not_released")
          self.img_Onsite.image = UIImage(named: (Arr_data.onSite == true) ? "ic_correct" : "ic_not_released")
-        btn_OnsiteDate.setTitle((Arr_data.onsiteDate != nil) ? Arr_data.onsiteDate! : "", for: .normal)
+
+        txt_OnsiteDate.text = (Arr_data.onsiteDate != nil) ? Arr_data.onsiteDate! : ""
     }
 }
 class OnsiteStatusHeaderCell: UITableViewCell {

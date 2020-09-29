@@ -217,45 +217,34 @@ extension PackingListVC : UITableViewDataSource , UITableViewDelegate{
         //                }
         //            })
         //        }
-        let Packing_Edit = Config.StoryBoard.instantiateViewController(identifier: "PackingListsEdit") as! PackingListsEdit
-        Packing_Edit.str_ID =  String((Arr_Packing_Data[indexPath.row] as! PackingListModel).id)
-        Packing_Edit.str_title = String((Arr_Packing_Data[indexPath.row] as! PackingListModel).number)
-        Packing_Edit.Str_ProjectName = String((Arr_Packing_Data[indexPath.row] as! PackingListModel).projectName)
-        Packing_Edit.Str_VendorName = String((Arr_Packing_Data[indexPath.row] as! PackingListModel).vendorName)
-        self.navigationController?.pushViewController(Packing_Edit, animated: true)
+        if indexPath.section == 1 {
+            let Packing_Edit = Config.StoryBoard.instantiateViewController(identifier: "PackingListsEdit") as! PackingListsEdit
+            Packing_Edit.str_ID =  String((Arr_Packing_Data[indexPath.row] as! PackingListModel).id)
+            Packing_Edit.str_title = String((Arr_Packing_Data[indexPath.row] as! PackingListModel).number)
+            Packing_Edit.Str_ProjectName = String((Arr_Packing_Data[indexPath.row] as! PackingListModel).projectName)
+            Packing_Edit.Str_VendorName = String((Arr_Packing_Data[indexPath.row] as! PackingListModel).vendorName)
+            self.navigationController?.pushViewController(Packing_Edit, animated: true)
+        }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let viewAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-            let PackingLists_View = Config.StoryBoard.instantiateViewController(identifier: "PackingListsViewVC") as! PackingListsViewVC
-            PackingLists_View.str_ID =  String((self.Arr_Packing_Data[indexPath.section] as! PackingListModel).id)
-            self.navigationController?.pushViewController(PackingLists_View, animated: true)
-            completion(true)
-            print("View Click")
+        if indexPath.section == 1 {
+            let viewAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
+                let PackingLists_View = Config.StoryBoard.instantiateViewController(identifier: "PackingListsViewVC") as! PackingListsViewVC
+                PackingLists_View.str_ID =  String((self.Arr_Packing_Data[indexPath.section] as! PackingListModel).id)
+                self.navigationController?.pushViewController(PackingLists_View, animated: true)
+                completion(true)
+                print("View Click")
+            }
+            viewAction.image = UIImage(named: "ic_eye")
+            viewAction.backgroundColor = Config.bgColor
+            return UISwipeActionsConfiguration(actions: [viewAction])
         }
-        let editAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-            // Perform your action here
-            completion(true)
-            print("Edit Click")
-        }
-        let deleteAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-            // Perform your action here
-            completion(true)
-            print("Delete Click")
-        }
-        viewAction.image = UIImage(named: "ic_eye")
-        editAction.image = UIImage(named: "ic_edit")
-        deleteAction.image = UIImage(named: "ic_bin")
-        viewAction.backgroundColor = Config.bgColor
-        editAction.backgroundColor = Config.bgColor
-        deleteAction.backgroundColor = Config.bgColor
-        return UISwipeActionsConfiguration(actions: [editAction,viewAction])
+        return UISwipeActionsConfiguration(actions: [])
     }
 }
-
-
 //MARK:- SWRevealViewController Methods
 extension PackingListVC : SWRevealViewControllerDelegate {
     // MARK: - Reveal View Controller Delagate Methods

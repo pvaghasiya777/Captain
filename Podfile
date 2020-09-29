@@ -13,5 +13,6 @@ target 'Promise' do
   pod 'iOSDropDown'
   pod 'SKActivityIndicatorView'
   # Pods for Promise
-  
+  pod 'PatrickMultipleSelectionTableview'
+
 end

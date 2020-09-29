@@ -87,3 +87,15 @@ struct UOMModel: Codable {
         case code, symbol
     }
 }
+// MARK: - DefaultDisciplineModel
+struct DefaultDisciplineModel: Codable {
+    let count: Int?
+    let next, previous: String?
+    let results: [DDResult]?
+}
+
+// MARK: - Result
+struct DDResult: Codable {
+    let id: Int?
+    let name: String?
+}

@@ -129,20 +129,24 @@ extension PlinputsVc : UITableViewDelegate,UITableViewDataSource {
         self.navigationController?.pushViewController(Next, animated: true)
     }
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let viewAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-            let Packages_View = Config.StoryBoard.instantiateViewController(identifier: "PackagesViewVC") as! PackagesViewVC
-            Packages_View.str_ID =  String((self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).id)
-            Packages_View.Str_VendorName = (self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).vendorName!
-            Packages_View.Str_Strucher = (self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).shopDrawingName!
-            Packages_View.Str_ProjectName = (self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).projectName!
-            self.navigationController?.pushViewController(Packages_View, animated: true)
-            completion(true)
-            print("View Click")
+        if indexPath.section == 1 {
+            let viewAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
+                let Packages_View = Config.StoryBoard.instantiateViewController(identifier: "PackagesViewVC") as! PackagesViewVC
+                Packages_View.str_ID =  String((self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).id)
+                Packages_View.Str_VendorName = (self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).vendorName!
+                Packages_View.Str_Strucher = (self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).shopDrawingName!
+                Packages_View.Str_ProjectName = (self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).projectName!
+                self.navigationController?.pushViewController(Packages_View, animated: true)
+                completion(true)
+                print("View Click")
+            }
+            viewAction.image = UIImage(named: "ic_eye")
+            viewAction.backgroundColor = Config.bgColor
+            return UISwipeActionsConfiguration(actions: [viewAction])
         }
-        viewAction.image = UIImage(named: "ic_eye")
-        viewAction.backgroundColor = Config.bgColor
-        return UISwipeActionsConfiguration(actions: [viewAction])
+        return UISwipeActionsConfiguration(actions: [])
     }
+        
 }
 //MARK:- SWRevealViewController Methods
 extension PlinputsVc : SWRevealViewControllerDelegate {

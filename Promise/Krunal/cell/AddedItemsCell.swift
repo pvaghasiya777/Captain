@@ -26,7 +26,7 @@ class AddedItemsCell: UITableViewCell {
     }
     func DisplayCell(Arr_Data : [PlreportDetailModel],indexpath : IndexPath){
         let Arr_SingleData = Arr_Data[0].inputMasterIDS![0].inputSingleIDS![indexpath.row]
-        self.lbl_Mark.text = Arr_SingleData.mark! ?? ""
+        self.lbl_Mark.text = Arr_SingleData.mark! 
         self.lbl_NetWeightkg.text = Arr_SingleData.netWeight!
         self.lbl_PLQuantity.text = String(describing: Arr_SingleData.marksQty!)
         self.txt_Heat_CastNumber.text = Arr_SingleData.heatNo!

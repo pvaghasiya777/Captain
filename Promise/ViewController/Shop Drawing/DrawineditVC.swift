@@ -67,6 +67,8 @@ class DrawineditVC: UIViewController {
     //Rejection view
     @IBOutlet weak var view_Rejectionview: UIView!
     @IBOutlet weak var tbl_RejectionHistory: UITableView!
+    @IBOutlet weak var btn_ExcelFile: UIButton!
+    @IBOutlet weak var btn_PDFFile: UIButton!
     //MARK:- variable
     var arrStructureInfo = [StructureInformationModel]()
     var arrrejectreasons = [Reject_reasons]()
@@ -110,7 +112,6 @@ class DrawineditVC: UIViewController {
         Utils.add_shadow_around_view(view: btn_Active, color: .gray, radius: 2, opacity: 5)
 //        Utils.add_shadow_around_view(view: btn_IsPackageCreated, color: .gray, radius: 2, opacity: 5)
         Utils.Set_Same_Corner_Radius(views: [btn_Save,btn_Discard,btn_CreateNew,btn_IsGroupStructure,btn_Active,btn_IsGroupStructure], cornerRadius: 5)
-        
     }
     //MARK:- Button Click Action
     @IBAction func btn_Click(_ sender: UIButton) {
@@ -158,6 +159,7 @@ class DrawineditVC: UIViewController {
             view_Rejectionview.isHidden = false
         }
     }
+    
     func dataset(){
         let rowdata = arrStructureInfo[0]
         self.btn_Packages.addSubview(Utils.set_Badge(Count: rowdata.package_count!))
@@ -177,9 +179,9 @@ class DrawineditVC: UIViewController {
         //
         txt_ContractorDocument.text = rowdata.contract_doc_no
         txt_SubContractor.text = rowdata.sub_contractor_doc_no
-        drop_PreparedBy.text = String(describing: rowdata.prepared_by)
-        drop_CheckedBy.text = String(describing:rowdata.checked_by)
-        drop_ApprovedBy.text = String(describing:rowdata.approved_by)
+        drop_PreparedBy.text = String(describing: rowdata.prepared_by!)
+        drop_CheckedBy.text = String(describing:rowdata.checked_by!)
+        drop_ApprovedBy.text = String(describing:rowdata.approved_by!)
         drop_Status.text = rowdata.status
         btn_Active.setBackgroundImage(UIImage(named: ((rowdata.is_active == true) ? "ic_correct": "")), for: .normal)
         btn_IsPackageCreated.setBackgroundImage(UIImage(named: ((rowdata.is_active == true) ? "ic_correct": "")), for: .normal)
@@ -205,7 +207,11 @@ class DrawineditVC: UIViewController {
             btn_Approved.setTitleColor(.white, for: .normal)
         }
     }
-    
+     @objc func Get_Filter_popUp(_ Button : UIButton) {
+        let pdf_vc = Config.StoryBoard.instantiateViewController(identifier: "PDFVC") as! PDFVC
+        pdf_vc.strurl = arrStructureInfo[0].shop_drawing_pdf!
+        self.navigationController?.pushViewController(pdf_vc, animated: true)
+    }
     @IBAction func btn_ActiveClick(_ sender: UIButton) {
         //         let rodata = arrStructureInfo[0]
         //        if sender.tag == 5 {

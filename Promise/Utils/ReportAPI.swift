@@ -6,13 +6,14 @@
 import UIKit
 import Alamofire
 import SKActivityIndicatorView
+import SVProgressHUD
 class ReportAPI: NSObject
 {
     static let shareInstance = ReportAPI()
     func Get_ReportList(ViewController: UIViewController,Api_Str : String,params : Parameters,tag : Int) {
         if AppDelegate.NetworkRechability(){
             Utils.ShowActivityIndicator(message: "Loading...")
-            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers: ["Authorization": "Token a1b20fc4653a6107b95f329657a5c397bdeca7d9"], params: (params as! [String : String]), success: { (responseObject, statusCode, JSONObject) in
+            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: params, success: { (responseObject, statusCode, JSONObject) in
                 print(JSONObject)
                 if statusCode == 200 {
                     if tag == 1 || tag == 2 || tag == 3 {
@@ -104,8 +105,46 @@ class ReportAPI: NSObject
                 print(error.localizedDescription)
             }
         }else {
-            //                Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
+            Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
         }
     }
-    
+    func Get_DashBoardHome(Api_str : String,ViewController: UIViewController,Tag : Int) {
+        if AppDelegate.NetworkRechability(){
+            SVProgressHUD.show(withStatus: "Loading...")
+            let DashBoard_VC = ViewController as! HomeVC
+            AFWrapper.requestGETURL_JSON(Api_str, headers:["Authorization": DEFAULTS.Get_TOKEN()], params : [:], success: { (responseObject,statusCode) in
+                do {
+                    print(responseObject)
+                    if statusCode == 200 {
+                        if Tag == 5 {
+                            let results = try JSONDecoder().decode(DashBoardMarkWiseModel.self, from: responseObject)
+                            print(results)
+                            DashBoard_VC.Arr_DashBoardMarkwise = [results]
+                            DashBoard_VC.Is_Mark = true
+                            DashBoard_VC.SetMarkData()
+                        }else {
+                            let results = try JSONDecoder().decode(DashBoardModel.self, from: responseObject)
+                            print(results)
+                            DashBoard_VC.Arr_DashBoardResult = results.results!
+                            DashBoard_VC.SetData()
+                        }
+                        SVProgressHUD.dismiss()
+                    }else {
+                        print("Invalid Token")
+                        SVProgressHUD.dismiss()
+                    }
+                }catch let jsonErr{
+                    print("json error : \(jsonErr.localizedDescription)")
+                     SVProgressHUD.dismiss()
+                }
+            })
+            { (error) in
+//                SKActivityIndicator.dismiss()
+                 SVProgressHUD.dismiss()
+                print(error.localizedDescription)
+            }
+        }else {
+            Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
+        }
+    }
 }

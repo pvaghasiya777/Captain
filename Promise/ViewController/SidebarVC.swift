@@ -192,7 +192,7 @@ class SidebarVC: DropDownTableViewController
       } else {
 //        "Document","Report"]
             if String(describing:Arr_Header[row]) == "Dashboard" {
-                self.performSegue(withIdentifier: "Dashboard", sender: nil)
+                self.performSegue(withIdentifier: "HomeVC", sender: nil)
             } else if String(describing:Arr_Header[row]) == "Purchase Order"  {
                 self.performSegue(withIdentifier: "Purchase", sender: nil)
             } else if String(describing:Arr_Header[row]) == "View Profile" {
@@ -206,7 +206,9 @@ class SidebarVC: DropDownTableViewController
             } else if String(describing:Arr_Header[row]) == "Project" {
                 self.performSegue(withIdentifier: "Project", sender: nil)
             }else if String(describing:Arr_Header[row]) == "Document"{
-                self.performSegue(withIdentifier: "Document", sender: nil)
+                self.performSegue(withIdentifier: "Document", sender: nil)//SReports
+            }else if String(describing:Arr_Header[row]) == "Report"{
+                self.performSegue(withIdentifier: "SReports", sender: nil)
             }
         }
     }
@@ -219,7 +221,7 @@ class SidebarVC: DropDownTableViewController
     }
 
     @objc func btn_Logout_Click(){
-        Utils.Logout_Reset_Data()
+        ServiceCall.shareInstance.GET_Logout()
     }
     override func tableView(_ tableView: UITableView, cellForSubrow subrow: Int, inRow row: Int, indexPath: IndexPath) -> UITableViewCell {
       let pair = self.data[row].parameters.object(at: subrow) as! Pair

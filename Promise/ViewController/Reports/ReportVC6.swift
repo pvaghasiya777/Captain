@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Alamofire
 class ReportVC6: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var tbl_DetailFigureReport: UITableView!
@@ -40,6 +40,7 @@ class ReportVC6: UIViewController {
     var Str_markWiseReportNext = ""
     var Str_markWiseReportPrevious = ""
     var Arr_MarkWiseCumulativeReport = [MarkWiseCumulativeReportModel]()
+    var param :NSDictionary = NSDictionary()
     //MARK:- Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +62,7 @@ class ReportVC6: UIViewController {
             view_MarkwiseCumulativeReport.isHidden = true
         } else if pageName == "Markwise Report"{
             title = "Markwise Report"
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_MarkWiseReport, params: ["project_id":"1"], tag: 2)
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_MarkWiseReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any] , tag: 2)
             tbl_DetailFigureReport.isHidden = true
             tbl_DetailFigureReport_1.isHidden = true
             tbl_MarkwiseReport.isHidden = false

@@ -1,17 +1,16 @@
 //
-//  ReportSectioncell.swift
+//  ReportTblCell.swift
 //  report
 //
-//  Created by macbook on 20/06/1942 Saka.
+//  Created by macbook on 01/07/1942 Saka.
 //  Copyright © 1942 com.mac. All rights reserved.
 //
 
 import UIKit
 
-class ReportSectioncell: UITableViewCell {
-    
-    @IBOutlet weak var lbl_SectionName: UILabel!
+class ReportTblCell: UITableViewCell {
 
+    @IBOutlet weak var lbl_Name: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -22,5 +21,5 @@ class ReportSectioncell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    
 }

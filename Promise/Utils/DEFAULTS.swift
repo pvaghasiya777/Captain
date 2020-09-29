@@ -9,6 +9,13 @@ class DEFAULTS: NSObject {
     class func Get_UerID() -> String {
         return (UserDefaults.standard.value(forKey: "userID") != nil) ? String(describing: (UserDefaults.standard.value(forKey: "userID")!)) : ""
     }
+    class func Set_ProjectID(userID : String) {
+        UserDefaults.standard.set(userID, forKey: "ProjectID")
+        UserDefaults.standard.synchronize()
+    }
+    class func Get_ProjectID() -> String {
+        return (UserDefaults.standard.value(forKey: "ProjectID") != nil) ? String(describing: (UserDefaults.standard.value(forKey: "ProjectID")!)) : "1"
+    }
     class func Set_Revision_Count(Count : Int) {
         UserDefaults.standard.set(Count, forKey: "Revision_Count")
         UserDefaults.standard.synchronize()
@@ -32,7 +39,7 @@ class DEFAULTS: NSObject {
         UserDefaults.standard.synchronize()
     }
     
-    /// SET Master Data
+  //***********************SET Master Data*********************
     class func Set_UserPermission(UserData : GetPermissionModel) {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(UserData) {
@@ -236,7 +243,7 @@ class DEFAULTS: NSObject {
                 FilterData = loadedPerson
             }
         }
-        return FilterData!
+        return FilterData! 
     }
     class func Set_FilterPurchaseOrder(FilterData : [FilterPurchaseOrderModel]) {
         let encoder = JSONEncoder()
@@ -306,6 +313,22 @@ class DEFAULTS: NSObject {
         }
         return FilterData!
     }
-    
+    class func Set_Discipline(Data : [DefaultDisciplineModel]) {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(Data) {
+            UserDefaults.standard.set(encoded, forKey: "Discipline")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    class func Get_Discipline() -> [DefaultDisciplineModel] {
+        var Data : [DefaultDisciplineModel]?
+        if let savedPerson = UserDefaults.standard.object(forKey: "Discipline") as? Data {
+            let decoder = JSONDecoder()
+            if let loadedPerson = try? decoder.decode([DefaultDisciplineModel].self, from: savedPerson) {
+                Data = loadedPerson
+            }
+        }
+        return Data!
+    }
 }
 

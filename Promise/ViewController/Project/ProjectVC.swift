@@ -24,7 +24,12 @@ class ProjectVC: UIViewController
     @IBOutlet var btn_Menu: UIButton!
     @IBOutlet var CollectionView_Project: UICollectionView!
     @IBOutlet var tbl_Project: UITableView!
-    
+    @IBOutlet weak var btn_First: UIButton!
+    @IBOutlet weak var btn_Previous: UIButton!
+    @IBOutlet weak var btn_Next: UIButton!
+    @IBOutlet weak var btn_Last: UIButton!
+    @IBOutlet weak var lbl_ShowPageNum: UILabel!
+    @IBOutlet weak var lbl_PageNum: UILabel!
     //MARK:- Variable
     let sectionInsets = UIEdgeInsets(top: 8.0, left:  8.0, bottom: 8.0, right: 8.0)
     let itemsperrow : CGFloat = 3
@@ -127,16 +132,13 @@ class ProjectVC: UIViewController
             self.Is_ListView = !self.Is_ListView
             self.btn_TableView.setImage(UIImage(named: Is_ListView ? "ic_list_view_Active" : "ic_list_view"), for: .normal)
             self.btn_CollectionView.setImage(UIImage(named: Is_ListView ? "ic_tilesview" : "ic_tiles_view_Active"), for: .normal)
-            
             self.Is_GridView = false
-            
             self.View_Tbl_Header_Height.constant = 30
             self.View_Tbl_Header.isHidden = false
             self.CollectionView_Project.isHidden = true
             self.tbl_Project.isHidden = false
             self.tbl_Project.reloadData()
         }
-        
     }
 }
 // MARK: - Collection View Datasource Methods

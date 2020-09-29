@@ -172,31 +172,18 @@ extension DrawingVC : UITableViewDataSource,UITableViewDelegate {
         return 60
     }
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let viewAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-            // Perform your action here
-            completion(true)
-            
-            let DrwaingViewVC1 = Config.StoryBoard.instantiateViewController(withIdentifier: "DrwaingViewVC_1") as! DrwaingViewVC_1
-            DrwaingViewVC1.id = String(self.arrDrawing[indexPath.row].id)
-            self.navigationController?.pushViewController(DrwaingViewVC1, animated: true)
+        if indexPath.section == 1 {
+            let viewAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
+                completion(true)
+                let DrwaingViewVC1 = Config.StoryBoard.instantiateViewController(withIdentifier: "DrwaingViewVC_1") as! DrwaingViewVC_1
+                DrwaingViewVC1.id = String(self.arrDrawing[indexPath.row].id)
+                self.navigationController?.pushViewController(DrwaingViewVC1, animated: true)
+            }
+            viewAction.image = UIImage(named: "ic_eye")
+            viewAction.backgroundColor = Config.bgColor
+            return UISwipeActionsConfiguration(actions: [viewAction])
         }
-        let editAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-            //                let DrwaingView_VC = Config.StoryBoard.instantiateViewController(withIdentifier: "DrwaingViewVC_1") as! DrwaingViewVC_1
-            //                DrwaingView_VC.id = String(self.arrDrawing[indexPath.row].id)
-            //                self.navigationController?.pushViewController(DrwaingView_VC, animated: true)
-            completion(true)
-        }
-        let deleteAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-            // Perform your action here
-            completion(true)
-        }
-        viewAction.image = UIImage(named: "ic_eye")
-        editAction.image = UIImage(named: "ic_edit")
-        deleteAction.image = UIImage(named: "ic_bin")
-        viewAction.backgroundColor = Config.bgColor
-        editAction.backgroundColor = Config.bgColor
-        deleteAction.backgroundColor = Config.bgColor
-        return UISwipeActionsConfiguration(actions: [deleteAction,editAction,viewAction])
+        return UISwipeActionsConfiguration(actions: [])
     }
 }
 //MARK:- SWRevealViewController Methods

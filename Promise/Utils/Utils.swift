@@ -31,6 +31,15 @@ class Utils: NSObject,SWRevealViewControllerDelegate
         badgeCount.text = String(describing: Count)
         return badgeCount
     }
+    class func Get_Percantage(Uses : Double,Total : Double)  -> String {
+        let x = Uses/Total * 100
+        let Percantage = Double(round(100*x)/100)
+        return String(describing: "\(Percantage)%")
+    }
+    class func Get_NeedleValue(Value : String)  -> Double {
+        let NeedleValue = Value.replacingOccurrences(of: "%", with: "", options: NSString.CompareOptions.literal, range: nil)
+        return Double(NeedleValue)!
+    }
     class func removeNSNull(from dict: [String: Any]) -> [String: Any] {
         var mutableDict = dict
         let keysWithEmptString = dict.filter { $0.1 is NSNull }.map { $0.0 }
@@ -65,6 +74,12 @@ class Utils: NSObject,SWRevealViewControllerDelegate
         DEFAULTS.Set_MasterPOType(ProjectData: [])
         DEFAULTS.Set_MasterVendor(ProjectData: [])
         DEFAULTS.Set_MasterEmployee(ProjectData: [])
+        DEFAULTS.Set_FilterMark(FilterData: [])
+        DEFAULTS.Set_FilterProject(FilterData: [])
+        DEFAULTS.Set_FilterStrucher(FilterData: [])
+        DEFAULTS.Set_FilterPackingList(FilterData: [])
+        DEFAULTS.Set_FilterPurchaseOrder(FilterData: [])
+        DEFAULTS.Set_Discipline(Data: [])
         DEFAULTS.Set_Login(login_status: false)
         Utils.Set_Root_ViewController()
     }
@@ -73,7 +88,7 @@ class Utils: NSObject,SWRevealViewControllerDelegate
         if DEFAULTS.Is_User_LoggedIn() == true {
             let revealController = SWRevealViewController()
             let sidebar_vc = Config.StoryBoard.instantiateViewController(withIdentifier:  "SidebarVC")as! SidebarVC
-            let Homevc = Config.StoryBoard.instantiateViewController(withIdentifier:  "DashBoardVC")as! DashBoardVC
+            let Homevc = Config.StoryBoard.instantiateViewController(withIdentifier:  "HomeVC")as! HomeVC
             revealController.frontViewController = UINavigationController(rootViewController: Homevc)
             revealController.rearViewController = UINavigationController(rootViewController: sidebar_vc)
             revealController.delegate = (self as! SWRevealViewControllerDelegate)

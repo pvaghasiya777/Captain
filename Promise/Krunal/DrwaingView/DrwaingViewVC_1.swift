@@ -24,19 +24,28 @@ class DrwaingViewVC_1: UIViewController {
     var arrviewData = [DrwaingViewModel]()
     override func viewDidLoad() {
         super.viewDidLoad()
-
-         ServiceCall.shareInstance.Get_getDrwaingView(ViewController: self, Api_Str: Api_Urls.GET_API_drawing + id + "/" + "lines/")
-        tbl_DrwaingView.isHidden = false
-        tbl_DrwaingView_2.isHidden = true
-        tbl_DrwaingView_3.isHidden = true
-        tbl_DrwaingView_4.isHidden = true
-        tbl_DrwaingView_5.isHidden = true
-        
-        lbl_1.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
-        lbl_2.backgroundColor = .white
-        lbl_3.backgroundColor = .white
-        lbl_4.backgroundColor = .white
-        lbl_5.backgroundColor = .white
+        self.Initialization()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "Shop Drawing View"
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationItem.title = ""
+    }
+    func Initialization() {
+        ServiceCall.shareInstance.Get_getDrwaingView(ViewController: self, Api_Str: Api_Urls.GET_API_drawing + id + "/" + "lines/")
+        self.tbl_DrwaingView.isHidden = false
+        self.tbl_DrwaingView_2.isHidden = true
+        self.tbl_DrwaingView_3.isHidden = true
+        self.tbl_DrwaingView_4.isHidden = true
+        self.tbl_DrwaingView_5.isHidden = true
+        self.lbl_1.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+        self.lbl_2.backgroundColor = .white
+        self.lbl_3.backgroundColor = .white
+        self.lbl_4.backgroundColor = .white
+        self.lbl_5.backgroundColor = .white
     }
     @IBAction func btn_PageNum(_ sender: UIButton) {
         if sender.tag == 1 {

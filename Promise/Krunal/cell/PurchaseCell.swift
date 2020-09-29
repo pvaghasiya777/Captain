@@ -21,13 +21,10 @@ class PurchaseCell: UITableViewCell {
     }
     func DisplayCell(Arr_PurchaseData : [MasterPurchseListModel],indexpath: IndexPath) {
         let Arr_Data = Arr_PurchaseData[indexpath.row]
-       
         self.lbl_ProjectName.text = Arr_Data.projectName!
         self.lbl_VendorName.text = Arr_Data.vendorName!
         self.lbl_PurchaseOrderNumber.text = Arr_Data.number!
         self.lbl_PurchaseOrderType.text = Arr_Data.poTypeName!
-        
-        
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

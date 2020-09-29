@@ -43,47 +43,47 @@ class ViewSelectFilter: UIViewController {
     
     @IBAction func btnMaterialTypeClick(_ sender: UIButton) {
           if sender.tag == 1 {
-              btnSteel.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+              btnSteel.setBackgroundImage(UIImage(named: "ic_correct"), for: .normal)
               btnBolt.setBackgroundImage(UIImage(named: ""), for: .normal)
           } else if sender.tag == 2 {
               btnSteel.setBackgroundImage(UIImage(named: ""), for: .normal)
-              btnBolt.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+              btnBolt.setBackgroundImage(UIImage(named: "ic_correct"), for: .normal)
           }
       }
       
       @IBAction func btnMaterialStatusClick(_ sender: UIButton) {
           //Released & Not Released
           if sender.tag == 3 {
-              btnReleased.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+              btnReleased.setBackgroundImage(UIImage(named: "ic_correct"), for: .normal)
               btnNotReleased.setBackgroundImage(UIImage(named: ""), for: .normal)
           } else if sender.tag == 6 {
              btnReleased.setBackgroundImage(UIImage(named: ""), for: .normal)
-             btnNotReleased.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+             btnNotReleased.setBackgroundImage(UIImage(named: "ic_correct"), for: .normal)
           }
           //Shipped & Not Shipped
           if sender.tag == 4 {
-              btnShipped.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+              btnShipped.setBackgroundImage(UIImage(named: "ic_correct"), for: .normal)
               btnNotShipped.setBackgroundImage(UIImage(named: ""), for: .normal)
           } else if sender.tag == 7 {
              btnShipped.setBackgroundImage(UIImage(named: ""), for: .normal)
-             btnNotShipped.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+             btnNotShipped.setBackgroundImage(UIImage(named: "ic_correct"), for: .normal)
           }
           //Onsite & Not Onsite
           if sender.tag == 5 {
-             btnOnsite.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+             btnOnsite.setBackgroundImage(UIImage(named: "ic_correct"), for: .normal)
              btnNotOnsite.setBackgroundImage(UIImage(named: ""), for: .normal)
           } else if sender.tag == 8 {
              btnOnsite.setBackgroundImage(UIImage(named: ""), for: .normal)
-             btnNotOnsite.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+             btnNotOnsite.setBackgroundImage(UIImage(named: "ic_correct"), for: .normal)
           }
       }
     @IBAction func btnExcessQuantityClick(_ sender: UIButton) {
         if sender.tag == 9 {
-            btnWithExtraPieces.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+            btnWithExtraPieces.setBackgroundImage(UIImage(named: "ic_correct"), for: .normal)
             btnWithoutExtraPieces.setBackgroundImage(UIImage(named: ""), for: .normal)
         } else if sender.tag == 10 {
            btnWithExtraPieces.setBackgroundImage(UIImage(named: ""), for: .normal)
-           btnWithoutExtraPieces.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+           btnWithoutExtraPieces.setBackgroundImage(UIImage(named: "ic_correct"), for: .normal)
         }
     }
     @IBAction func btnOKClick(_ sender: UIButton) {

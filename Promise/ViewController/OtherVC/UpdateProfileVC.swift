@@ -18,6 +18,7 @@ class UpdateProfileVC: UIViewController
     @IBOutlet var btn_Discard: UIButton!
     @IBOutlet var btn_Timezone: UIButton!
     @IBOutlet var btn_SelectProject: UIButton!
+     @IBOutlet var btn_Default_Discipline : UIButton!
     @IBOutlet var btn_Save: UIButton!
     
     @IBOutlet var img_Profile: UIImageView!
@@ -28,7 +29,8 @@ class UpdateProfileVC: UIViewController
     @IBOutlet var txt_Username: UITextField!
     var KLC_obj: KLCPopup?
     var obj_popUpVC : UserProfilePopUP!
-    
+    var Str_ProjectId = ""
+    var Str_DisciplineId = ""
     //MARK:- Variable
     var Dic_userDetail : NSDictionary = NSDictionary()
     //MARK:-
@@ -37,10 +39,8 @@ class UpdateProfileVC: UIViewController
         super.viewDidLoad()
         self.Initialization()
     }
-    override func viewWillAppear(_ animated: Bool)
-    {
+    override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
-        
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -57,8 +57,8 @@ class UpdateProfileVC: UIViewController
             self.revealViewController()?.rearViewRevealWidth = 280
         }
         self.Design()
-        ServiceCall.shareInstance.Get_userDetail(ViewController: self)
-        
+        ServiceCall.shareInstance.Get_userDetail(APi_Str: Api_Urls.GET_API_userDetail + DEFAULTS.Get_UerID() + "/", ViewController: self, tag: 1)
+        ServiceCall.shareInstance.Get_userDetail(APi_Str: Api_Urls.GET_API_DDisciplines, ViewController: self, tag: 2)
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
     }
@@ -69,7 +69,7 @@ class UpdateProfileVC: UIViewController
         return .portrait
     }
     func Design() {
-        Utils.Set_Same_View_Border(views: [txt_Username,txt_Firstname,txt_Lastname,txt_Email,View_updateprofile,btn_Timezone,btn_SelectProject], borderColor: .lightGray, border_Width: 0.5)
+        Utils.Set_Same_View_Border(views: [txt_Username,txt_Firstname,txt_Lastname,txt_Email,View_updateprofile,btn_Timezone,btn_SelectProject,btn_Default_Discipline], borderColor: .lightGray, border_Width: 0.5)
         Utils.Set_Corner_Radius(views: [txt_Username,txt_Firstname,txt_Lastname,txt_Email,View_updateprofile,btn_Timezone,btn_SelectProject,btn_Save,btn_Discard], radius: 5)
         self.txt_Username.addPadding(.left(8))
         self.txt_Firstname.addPadding(.left(8))
@@ -90,7 +90,7 @@ class UpdateProfileVC: UIViewController
         }
     }
     //MARK:- Show Filter Popup Onsite
-    func Get_Filter_popUp(str_Navigate : String) {
+    func Get_Selection_Popup(str_Navigate : String) {
         self.navigationController?.navigationBar.isTranslucent = true
         self.obj_popUpVC = UserProfilePopUP(nibName: "UserProfilePopUP", bundle: nil)
         self.obj_popUpVC.str_Navigate = str_Navigate
@@ -104,8 +104,12 @@ class UpdateProfileVC: UIViewController
                    print("Filter Did select")
                     if self.obj_popUpVC.str_Navigate == "TimeZone" {
                         self.btn_Timezone.setTitle(self.obj_popUpVC.str_Selected, for: .normal)
-                    }else {
+                    }else if self.obj_popUpVC.str_Navigate == "Disciple" {
+                        self.btn_Default_Discipline.setTitle(self.obj_popUpVC.str_Selected, for: .normal)
+                        self.Str_DisciplineId = self.obj_popUpVC.Str_id
+                    }else{
                         self.btn_SelectProject.setTitle(self.obj_popUpVC.str_Selected, for: .normal)
+                        self.Str_ProjectId = self.obj_popUpVC.Str_id
                     }
                 } else {
                     print("Filter PopUp Dismiss")
@@ -125,17 +129,28 @@ class UpdateProfileVC: UIViewController
     @IBAction func btn_Click_TD(_ sender: UIButton) {
         if sender.tag == 1 {
             print("TimeZone Button Selected")
-            self.Get_Filter_popUp(str_Navigate: "TimeZone")
-//            Utils.showToastWithMessageAtCenter(message: "TimeZone Button Selected")
+            self.Get_Selection_Popup(str_Navigate: "TimeZone")
         }else if sender.tag == 2 {
             print("Default Project Button Selected")
-            self.Get_Filter_popUp(str_Navigate: "Project")
+            self.Get_Selection_Popup(str_Navigate: "Project")
+        }else if sender.tag == 3 {
+            self.Get_Selection_Popup(str_Navigate: "Disciple")
         }
-    }
+    } 
     @IBAction func btn_Click_Save(_ sender: UIButton) {
         print("Save Button Click")
+        ServiceCall.shareInstance.Set_UpdateProfile(ViewController: self, param: ["default_discipline" : Str_DisciplineId,
+        "default_project" : Str_ProjectId,
+        "email": self.txt_Email.text!,
+        "first_name":self.txt_Firstname.text!,
+        "last_name":self.txt_Lastname.text!,
+        "timezone":self.btn_Timezone.currentTitle!,
+        "username":self.txt_Username.text!])
     }
     @IBAction func btn_Click_Discard(_ sender: UIButton) {
+        self.set_DashBoard()
+    }
+    func set_DashBoard() {
         let revealController = SWRevealViewController()
         let sidebar_vc = Config.StoryBoard.instantiateViewController(withIdentifier:  "SidebarVC")as! SidebarVC
         let Homevc = Config.StoryBoard.instantiateViewController(withIdentifier:  "HomeVC")as! HomeVC

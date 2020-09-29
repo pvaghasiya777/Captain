@@ -5,10 +5,11 @@ import Alamofire
 class AFWrapper: NSObject
 {
     //MARK:- Get Method
-    class func requestGETURL_WithParameter_ReturnStatuscode(_ strURL: String, headers : [String : String]?,params : [String : String]?, success:@escaping (Data,Int,JSON) -> Void, failure:@escaping (Error) -> Void)
+    class func requestGETURL_WithParameter_ReturnStatuscode(_ strURL: String, headers : [String : String]?,params : Parameters?, success:@escaping (Data,Int,JSON) -> Void, failure:@escaping (Error) -> Void)
     {
         let final_strURL : String = strURL
         print(final_strURL)
+        print(params)
         Alamofire.request(final_strURL, method: .get, parameters: params, encoding: URLEncoding.default, headers: headers).responseJSON { (responseObject) -> Void in
             print(responseObject)
             if responseObject.result.isSuccess {
@@ -71,17 +72,23 @@ class AFWrapper: NSObject
             }
         }
     }
-    
-    class func RequestWith_Methode_Param(_ strURL : String,method: HTTPMethod, params : Parameters, headers : [String : String],responsedata:@escaping (Data) -> Void) {
-        Alamofire.request(strURL, method: method, parameters: params, encoding: URLEncoding.default, headers:headers).responseData { (responsedata) -> Void in
-            if responsedata.data != nil {
-                responsedata.data
-                print(responsedata.data!)
-            } else {
-                print(responsedata.error.debugDescription)
+    class func requestmethode_WithParameter_ReturnStatuscode(_ strURL: String,method: HTTPMethod, headers : [String : String]?,params : [String : String]?, success:@escaping (Data,Int,JSON) -> Void, failure:@escaping (Error) -> Void)
+    {
+        let final_strURL : String = strURL
+        print(final_strURL)
+        Alamofire.request(final_strURL, method: method, parameters: params, encoding: URLEncoding.default, headers: headers).responseJSON { (responseObject) -> Void in
+            print(responseObject)
+            if responseObject.result.isSuccess {
+                print(responseObject.response!.statusCode)
+                var StatusCode : Int = 1;
+                StatusCode = responseObject.response!.statusCode
+                success(responseObject.data!,StatusCode,JSON(responseObject.result.value!))
+            }
+            if responseObject.result.isFailure {
+                let error : Error = responseObject.result.error!
+                failure(error)
             }
         }
-        
     }
 }
 

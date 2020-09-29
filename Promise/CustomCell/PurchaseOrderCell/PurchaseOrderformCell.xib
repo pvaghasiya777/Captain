@@ -51,14 +51,13 @@
                                     <constraint firstAttribute="height" constant="40" id="ps3-1t-nwR"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Thonburi" family="Thonburi" pointSize="15"/>
-                                <state key="normal" title="Document Attachment"/>
-                                <connections>
-                                    <action selector="btn_formAndDocument:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="i98-3P-PlI"/>
-                                </connections>
+                                <state key="normal" title="Document Attachment">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mSK-eI-3xL">
                                 <rect key="frame" x="187" y="43" width="181" height="2"/>
-                                <color key="backgroundColor" red="0.20784313730000001" green="0.1960784314" blue="0.51372549020000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="181" id="0MP-7h-icr"/>
                                     <constraint firstAttribute="height" constant="2" id="avj-7k-A5i"/>
@@ -506,7 +505,6 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="btn_DocumentAttachment" destination="fBM-RS-esv" id="F08-Wu-65D"/>
                 <outlet property="btn_ExcelFile" destination="q2C-uM-H0j" id="KcC-lH-z1S"/>
                 <outlet property="btn_FormDetails" destination="w2z-wO-4ac" id="c3w-cs-3Fd"/>
                 <outlet property="btn_PDFFIle" destination="UK4-Dx-C2X" id="VO2-VY-4Ee"/>

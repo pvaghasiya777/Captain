@@ -12,6 +12,12 @@ class PurchaseVC: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var tbl_Purchase: UITableView!
     @IBOutlet var menu_Barbutton: UIBarButtonItem!
+    @IBOutlet weak var btn_First: UIButton!
+    @IBOutlet weak var btn_Previous: UIButton!
+    @IBOutlet weak var btn_Next: UIButton!
+    @IBOutlet weak var btn_Last: UIButton!
+    @IBOutlet weak var lbl_ShowPageNum: UILabel!
+    @IBOutlet weak var lbl_PageNum: UILabel!
     //MARK:- variable
     var Arr_PurchaseDetail = [MasterPurchseListModel]()
     //MARK:- Life Cycle

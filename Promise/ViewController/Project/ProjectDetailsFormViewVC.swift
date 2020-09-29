@@ -72,6 +72,8 @@ class ProjectDetailsFormViewVC: UIViewController {
         self.txt_Description.text = Arr_Project[0].Description!
         self.txt_StartDate.text = Arr_Project[0].startDate!
         self.txt_EndDate.text = Arr_Project[0].endDate!
+        self.btn_Active.setBackgroundImage(UIImage(named: (Arr_Project[0].isActive!) ? "ic_check" : "ic_Uncheck"), for: .normal)
+        self.btn_Shipper.setBackgroundImage(UIImage(named: (Arr_Project[0].isShipper!) ? "ic_check" : "ic_Uncheck"), for: .normal)
         self.txt_Manager.text = (Arr_Project[0].managerID == nil) ? "" : Arr_Project[0].managerID!
         self.btn_Structure.addSubview(Utils.set_Badge(Count: Arr_Project[0].structureCount!))
         self.btn_Packages.addSubview(Utils.set_Badge(Count: Arr_Project[0].packageCount!))

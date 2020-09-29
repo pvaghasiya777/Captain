@@ -51,80 +51,125 @@ class DFiltersVC: UIViewController {
     var Search_PackingList = [FilterPackingListModel]()
     var Search_Mark = [MarkResult]()
     var searchActive : Bool = false
-    
+    //MaterialType
+    var Is_Select_AllMaterialType : Bool = false
+    var Is_Select_SteelMaterialType : Bool = false
+    var Is_Select_BoltMaterialType : Bool = false
+    //Excess Quantity
+    var Is_Select_With_Extra_Pieces : Bool = false
+    var Is_Select_Without_Extra_Pieces : Bool = false
+    //TableView Selection
+    var Selected_tag = 0
+    var Str_Selected_Filter : String = String()
+    //Filter Selected Data  
+    var arrSearch_Project = NSMutableArray()
+    var arrProject = NSMutableArray()
+    var arrSearch_PurchaseOrder = NSMutableArray()
+    var arrPurchaseOrder = NSMutableArray()
+    var arrSearch_Strucher = NSMutableArray()
+    var arrStrucher = NSMutableArray()
+    var arrSearch_PackingList = NSMutableArray()
+    var arrPackingList = NSMutableArray()
+    var arrSearch_Mark = NSMutableArray()
+    var arrMark = NSMutableArray()
     //MARK:- ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         Initialisation()
-        // Do any additional setup after loading the view.
     }
     //MARK:- Initialisation
     func Initialisation(){
         Utils.Set_Corner_Radius(views: [btnAll,btnSteel,btnBolt,btnReleased,btnNotReleased,btnShipped,btnNotShipped,btnOnsite,btnNotOnsite,btnWithExtraPieces,btnWithoutExtraPieces], radius: 5)
         Utils.Set_Same_View_Border(views:[btnAll,btnSteel,btnBolt,btnReleased,btnNotReleased,btnShipped,btnNotShipped,btnOnsite,btnNotOnsite,btnWithExtraPieces,btnWithoutExtraPieces] , borderColor: .gray, border_Width: 1)
-        self.Arr_Project = DEFAULTS.Get_FilterProject()
-        self.Arr_PurchaseOrder = DEFAULTS.Get_FilterPurchaseOrder()
-        self.Arr_Strucher = DEFAULTS.Get_FilterStrucher()
-        self.Arr_PackingList = DEFAULTS.Get_FilterPackingList()
-        self.Arr_Mark = DEFAULTS.Get_FilterMark()
+//        self.Arr_Project = DEFAULTS.Get_FilterProject()
+//        self.Arr_PurchaseOrder = DEFAULTS.Get_FilterPurchaseOrder()
+//        self.Arr_Strucher = DEFAULTS.Get_FilterStrucher()
+//        self.Arr_PackingList = DEFAULTS.Get_FilterPackingList()
+//        self.Arr_Mark = DEFAULTS.Get_FilterMark()
+        MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterProject, tag: 1,param: [:],ViewController: self,VC_Tag: 1)
+        MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPurchaseOrder, tag: 2,param: ["project_id": DEFAULTS.Get_ProjectID()],ViewController: self,VC_Tag: 1)
+        MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["project_id": DEFAULTS.Get_ProjectID()],ViewController: self,VC_Tag: 1)
+        MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["project_id": DEFAULTS.Get_ProjectID()],ViewController: self,VC_Tag: 1)
+        MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["project_id": DEFAULTS.Get_ProjectID()],ViewController: self,VC_Tag: 1)
     }
     
     //MARK:- Button Click Action
     @IBAction func btnMaterialTypeClick(_ sender: UIButton) {
         if sender.tag == 1 {
-            btnAll.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+            btnAll.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
             btnSteel.setBackgroundImage(UIImage(named: ""), for: .normal)
             btnBolt.setBackgroundImage(UIImage(named: ""), for: .normal)
+            self.Is_Select_AllMaterialType = true
+            self.Is_Select_SteelMaterialType = false
+            self.Is_Select_BoltMaterialType = false
         } else if sender.tag == 2 {
             btnAll.setBackgroundImage(UIImage(named: ""), for: .normal)
-            btnSteel.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+            btnSteel.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
             btnBolt.setBackgroundImage(UIImage(named: ""), for: .normal)
+            self.Is_Select_AllMaterialType = false
+            self.Is_Select_SteelMaterialType = true
+            self.Is_Select_BoltMaterialType = false
         } else if sender.tag == 3{
             btnAll.setBackgroundImage(UIImage(named: ""), for: .normal)
             btnSteel.setBackgroundImage(UIImage(named: ""), for: .normal)
-            btnBolt.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+            btnBolt.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
+            self.Is_Select_AllMaterialType = false
+            self.Is_Select_SteelMaterialType = false
+            self.Is_Select_BoltMaterialType = true
         }
-        
     }
     @IBAction func btnExcessQuantityClick(_ sender: UIButton) {
         if sender.tag == 4 {
-            btnWithExtraPieces.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+            btnWithExtraPieces.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
             btnWithoutExtraPieces.setBackgroundImage(UIImage(named: ""), for: .normal)
+            self.Is_Select_With_Extra_Pieces = true
+            self.Is_Select_Without_Extra_Pieces = false
         } else if sender.tag == 5 {
             btnWithExtraPieces.setBackgroundImage(UIImage(named: ""), for: .normal)
-            btnWithoutExtraPieces.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+            btnWithoutExtraPieces.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
+            self.Is_Select_With_Extra_Pieces = false
+            self.Is_Select_Without_Extra_Pieces = true
         }
     }
     @IBAction func btnMaterialStatusClick(_ sender: UIButton) {
         //Released & Not Released
         if sender.tag == 6 {
-            btnReleased.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+            btnReleased.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
             btnNotReleased.setBackgroundImage(UIImage(named: ""), for: .normal)
         } else if sender.tag == 7 {
             btnReleased.setBackgroundImage(UIImage(named: ""), for: .normal)
-            btnNotReleased.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+            btnNotReleased.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
         }
         //Shipped & Not Shipped
         if sender.tag == 8 {
-            btnShipped.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+            btnShipped.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
             btnNotShipped.setBackgroundImage(UIImage(named: ""), for: .normal)
         } else if sender.tag == 9 {
             btnShipped.setBackgroundImage(UIImage(named: ""), for: .normal)
-            btnNotShipped.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+            btnNotShipped.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
         }
         //Onsite & Not Onsite
         if sender.tag == 10 {
-            btnOnsite.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+            btnOnsite.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
             btnNotOnsite.setBackgroundImage(UIImage(named: ""), for: .normal)
         } else if sender.tag == 11 {
             btnOnsite.setBackgroundImage(UIImage(named: ""), for: .normal)
-            btnNotOnsite.setBackgroundImage(UIImage(named: "correct"), for: .normal)
+            btnNotOnsite.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
+        }
+    }
+    @IBAction func btn_Click_CancellAndApply(_ sender: UIButton) {
+        if sender.tag == 12 {
+            print("Reset Button Click")
+        }else if sender.tag == 13 {
+            print("Apply Button Click")
+            let filterData : NSDictionary = ["Str_SelectedFilter": Str_Selected_Filter,"SelectedTag" : Selected_tag]
+            NotificationCenter.default.post(name: NSNotification.Name.selected_Filter, object: nil, userInfo: filterData as? [AnyHashable : Any])
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
 }
 extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == tblproject {
             if searchActive && self.searchProject.text!.trimmed != "" {
@@ -151,18 +196,21 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
                return self.Arr_PackingList.count
            }
         }else { // tblmark
-           if searchActive && self.searchMark.text!.trimmed != "" {
-               return self.Search_Mark.count
-           }else {
-               return self.Arr_Mark.count
-           }
+             return self.Arr_Mark.count
+//           if searchActive && self.searchMark.text!.trimmed != "" {
+//               return self.Search_Mark.count
+//           }else {
+//
+//           }
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : UITableViewCell = UITableViewCell()
         cell.textLabel?.textColor = .black
         cell.textLabel?.textAlignment = .center
+        cell.selectionStyle = .none
         if tableView == tblproject {
+//            cell.sele
             if searchActive && self.searchProject.text!.trimmed != "" {
                 cell.textLabel?.text = Search_Project[indexPath.row].project!
             }else {
@@ -187,23 +235,160 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
                 cell.textLabel?.text = Arr_PackingList[indexPath.row].packingList!
             }
         }else { // tblmark
-            if searchActive && self.searchMark.text!.trimmed != "" {
-                cell.textLabel?.text = Search_Mark[indexPath.row].mark!
-            }else {
-                cell.textLabel?.text = Arr_Mark[indexPath.row].mark!
-            }
+            cell.textLabel?.text = Arr_Mark[indexPath.row].mark!
         }
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let Arr = Arr_PackingList[indexPath.row].isSelected = true
+       if tableView == tblproject {
+        self.Selected_tag = 1
+        self.Str_Selected_Filter = String(describing: Arr_Project[indexPath.row].id!)
+           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPurchaseOrder, tag: 2,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
+           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
+           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
+           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
+            if let cell = tableView.cellForRow(at: indexPath) {
+                resetChecks()
+                cell.accessoryType = .checkmark
+            }
+       }else if tableView == tblPurchaseOrder {
+        self.Selected_tag = 2
+         self.Str_Selected_Filter = String(describing: Arr_PurchaseOrder[indexPath.row].id!)
+          MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
+          MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
+          MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
+        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+            if cell.accessoryType == .checkmark{
+                cell.accessoryType = .none
+            }
+            else{
+                cell.accessoryType = .checkmark
+            }
+        }
+       }else if tableView == tblStructure {
+        self.Selected_tag = 3
+         self.Str_Selected_Filter = String(describing: Arr_Strucher[indexPath.row].id!)
+           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["structure_id": Arr_Strucher[indexPath.row].structure!],ViewController: self,VC_Tag: 1)
+           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["structure_id": Arr_Strucher[indexPath.row].structure!],ViewController: self,VC_Tag: 1)
+        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+            if cell.accessoryType == .checkmark{
+                cell.accessoryType = .none
+            }
+            else{
+                cell.accessoryType = .checkmark
+            }
+        }
+       }else if tableView == tblPackingList {
+        self.Selected_tag = 4
+         self.Str_Selected_Filter = String(describing: Arr_PackingList[indexPath.row].id!)
+           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["pl_number": Arr_PackingList[indexPath.row].packingList!],ViewController: self,VC_Tag: 1)
+        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+            if cell.accessoryType == .checkmark{
+                cell.accessoryType = .none
+            }
+            else{
+                cell.accessoryType = .checkmark
+            }
+        }
+       }else { // tblmark
+           self.Selected_tag = 5
+         self.Str_Selected_Filter = Arr_Mark[indexPath.row].mark!
+        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+            if cell.accessoryType == .checkmark{
+                cell.accessoryType = .none
+            }
+            else{
+                cell.accessoryType = .checkmark
+            }
+        }
+       }
+   }
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if tableView == tblproject {
+            self.tblproject.cellForRow(at: indexPath)?.accessoryType = .none
+        } else if tableView == tblPurchaseOrder {
+            self.selectcellrow(tableview: tblPurchaseOrder, indexPath: indexPath)
+        } else if tableView == tblStructure {
+            self.selectcellrow(tableview: tblStructure, indexPath: indexPath)
+        } else if tableView == tblPackingList {
+            self.selectcellrow(tableview: tblPackingList, indexPath: indexPath)
+        } else if tableView == tblMark {
+            self.selectcellrow(tableview: tblMark, indexPath: indexPath)
+        }
     }
 }
+
+extension DFiltersVC {
+    func selectcellrow(tableview : UITableView , indexPath : IndexPath) {
+        if tableview == tblproject {
+            if Search_Project.isEmpty {
+                let array_Project = NSMutableArray()
+                arrSearch_Project.removeAllObjects()
+                array_Project.add(Arr_Project[indexPath.row].project!)
+                arrProject = array_Project
+                print(array_Project,arrProject)
+            } else {
+                arrProject.removeAllObjects()
+                let array_Search_Project = NSMutableArray()
+                array_Search_Project.add(Search_Project[indexPath.row].project!)
+                arrSearch_Project = array_Search_Project
+                print(array_Search_Project,arrSearch_Project)
+            }
+        } else if tableview == tblPurchaseOrder {
+            if Search_PurchaseOrder.isEmpty  {
+                arrSearch_PurchaseOrder.removeAllObjects()
+                arrPurchaseOrder.add(Arr_PurchaseOrder[indexPath.row].poNo!)
+                print(arrPurchaseOrder)
+            } else {
+                arrPurchaseOrder.removeAllObjects()
+                arrSearch_PurchaseOrder.add(Search_PurchaseOrder[indexPath.row].poNo!)
+                print(arrSearch_PurchaseOrder)
+            }
+        } else if tableview == tblStructure {
+            if Search_Strucher.isEmpty {
+                arrSearch_Strucher.removeAllObjects()
+                arrStrucher.add(Arr_Strucher[indexPath.row].structure!)
+                print(arrStrucher)
+            } else {
+                arrStrucher.removeAllObjects()
+                arrSearch_Strucher.add(Search_Strucher[indexPath.row].structure!)
+                print(arrSearch_Strucher)
+            }
+        } else if tableview == tblPackingList {
+            if Search_PackingList.isEmpty {
+                arrSearch_PackingList.removeAllObjects()
+                arrPackingList.add(Arr_PackingList[indexPath.row].packingList!)
+                print(arrPackingList)
+            } else {
+                arrSearch_PackingList.add(Search_PackingList[indexPath.row].packingList!)
+                print(arrSearch_PackingList)
+                arrPackingList.removeAllObjects()
+            }
+        } else if tableview == tblMark {
+            if Search_Mark.isEmpty  {
+                arrSearch_Mark.removeAllObjects()
+                arrMark.add(Arr_Mark[indexPath.row].mark!)
+                print(arrMark)
+            } else {
+                arrMark.removeAllObjects()
+                arrSearch_Mark.add(Search_Mark[indexPath.row].mark!)
+                print(arrSearch_Mark)
+            }
+        }
+    }
+    func resetChecks() {
+        for i in 0..<tblproject.numberOfSections {
+            for j in 0..<tblproject.numberOfRows(inSection: i) {
+                if let cell = tblproject.cellForRow(at: IndexPath(row: j, section: i)) {
+                    cell.accessoryType = .none
+                }
+            }
+        }
+    }
+}
+
 extension DFiltersVC : UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if searchBar == searchProject {
-            
-        }
         searchActive = true;
     }
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -214,10 +399,8 @@ extension DFiltersVC : UISearchBarDelegate {
        self.view.endEditing(true)
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchActive
-        {
-            if(searchText == "")
-            {
+        if searchActive {
+            if(searchText == "") {
                 if searchBar == searchProject {
                     self.Search_Project = Arr_Project
                     self.tblproject?.reloadData()
@@ -234,9 +417,7 @@ extension DFiltersVC : UISearchBarDelegate {
                     self.Search_Mark = Arr_Mark
                     self.tblMark?.reloadData()
                 }
-            }
-            else
-            {
+            } else {
                 if searchBar == searchProject {
                     self.Search_Project = (NSMutableArray().mutableCopy() as! NSMutableArray) as! [FilterProjectModel]
                     let filtered = Arr_Project.filter{(($0.project!).lowercased()).contains(searchText.trimmed.lowercased())}
@@ -262,13 +443,16 @@ extension DFiltersVC : UISearchBarDelegate {
                     print(filtered)
                     self.tblPackingList?.reloadData()
                 }else if searchBar == searchMark {
-                    self.Search_Mark = (NSMutableArray().mutableCopy() as! NSMutableArray) as! [MarkResult]
-                    let filtered = Arr_Mark.filter{(($0.mark!).lowercased()).contains(searchText.trimmed.lowercased())}
-                    self.Search_Mark = filtered
-                    print(filtered)
-                    self.tblMark?.reloadData()
+                     MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["search": searchText.trimmed.lowercased()],ViewController: self,VC_Tag: 1)
+//                    self.Search_Mark = (NSMutableArray().mutableCopy() as! NSMutableArray) as! [MarkResult]
+//                    let filtered = Arr_Mark.filter{(($0.mark!).lowercased()).contains(searchText.trimmed.lowercased())}
+//                    self.Search_Mark = filtered
+//                    print(filtered)
+//                    self.tblMark?.reloadData()
                 }
             }
         }
     }
 }
+
+

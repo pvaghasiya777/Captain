@@ -30,8 +30,7 @@ struct App_Colors {
 }
 extension Notification.Name
 {
-    static let selected_Product = Notification.Name(rawValue: "selected_Product")
-    static let setVacationMode = Notification.Name(rawValue: "setVacationMode")
+    static let selected_Filter = Notification.Name(rawValue: "selected_Filter")
 }
 struct DeviceInfo
 {
@@ -61,17 +60,18 @@ struct DeviceInfo
 struct Api_Urls
 {
     static let BASE_URL = "http://demo.prime4promise.com:8000/"
-    static let POST_API_LOGIN = BASE_URL + "accounts/login/"
-    static let POST_API_LOGOUT = BASE_URL + "accounts/logout/"
+    static let GET_API_LOGIN = BASE_URL + "accounts/login/"
+    static let GET_API_LOGOUT = BASE_URL + "accounts/logout/"
     //GET Home Page API
     static let GET_API_getPermission = BASE_URL + "get_permissions/"
     static let GET_API_onSiteStatus = BASE_URL + "packing/packages/"
     static let GET_API_userDetail = BASE_URL + "accounts/user_preferences/"
+    static let GET_API_DDisciplines = BASE_URL + "accounts/disciplines/"
     static let GET_API_plReports = BASE_URL + "packing/input/"
     static let GET_API_packingList = BASE_URL + "packing/packing_list/"
     static let GET_API_drawing = BASE_URL + "drawing/"
     static let GET_API_Document = BASE_URL + "masters/folders/"
-    // Master API
+    //Master API
     static let GET_API_masterCountry = BASE_URL + "masters/country/"
     static let GET_API_masterAddress = BASE_URL + "masters/address/"
     static let GET_API_masterPurchaselist = BASE_URL + "masters/purchase_list/"
@@ -82,7 +82,7 @@ struct Api_Urls
     static let GET_API_masterVendor = BASE_URL + "masters/vendor/"
     static let GET_API_masterPOType = BASE_URL + "masters/potype/"
     static let GET_API_masterCurrency = BASE_URL + "masters/currency/"
-    static let GET_API_masterUOM = BASE_URL + "masters/uom"
+    static let GET_API_masterUOM = BASE_URL + "masters/uom/"
     //Report Filter API
     static let GET_API_filterProject = BASE_URL + "reporting/projects/"
     static let GET_API_filterPurchaseOrder = BASE_URL + "reporting/purchase_orders/"
@@ -104,6 +104,12 @@ struct Api_Urls
     static let GET_API_onsiteFilter = BASE_URL + "packing/packages_filters/"
     //Account Update
     static let GET_API_Disciplines = BASE_URL + "accounts/disciplines/"
+    //DashBoard Gauge API
+    static let GET_API_DashBoardProjectWise = BASE_URL + "reporting/project_wise/"
+    static let GET_API_DashBoardPurchaseWise = BASE_URL + "reporting/purchase_order_wise/"
+    static let GET_API_DashBoardStrucherWise = BASE_URL + "reporting/structure_wise/"
+    static let GET_API_DashBoardPackinglistWise = BASE_URL + "reporting/packing_list_wise/"
+    static let GET_API_DashBoardMarkWise = BASE_URL + "reporting/mark_wise/"
 }
 //-------------------------Filter Param Section--------------//
 struct Filter_packingList {
@@ -167,4 +173,9 @@ struct Second_Filter_Value {
     static let GET_Filter_istartswith = "__istartswith"
     static let GET_Filter_Equal = "__iexact"
 }
-
+struct Multiple_Filter_Value {
+    static let GET_PurchaseOrder = "po_no__in"
+    static let GET_Strucher = "structure__in"
+    static let GET_PackingList = "pl_number__in"
+    static let GET_Mark = ""
+}

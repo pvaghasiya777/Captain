@@ -22,7 +22,7 @@ class ShippedStatusCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        Utils.set_Image_on_RightView_of_Textfield(textfield: txt_OnsiteDate, imagename: "", width: 30, height: 30)
+        Utils.set_Image_on_RightView_of_Textfield(textfield: txt_OnsiteDate, imagename: "ic_calendar", width: 30, height: 30)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

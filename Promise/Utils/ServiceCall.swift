@@ -6,6 +6,7 @@
 import UIKit
 import Alamofire
 import SVProgressHUD
+import SKActivityIndicatorView
 class ServiceCall: NSObject
 {
     static let shareInstance = ServiceCall()
@@ -106,6 +107,7 @@ class ServiceCall: NSObject
                         let results = try JSONDecoder().decode(GetPermissionModel.self, from: responseObject)
                         DEFAULTS.Set_UserPermission(UserData: results)
                         DEFAULTS.Set_UserID(userID: DEFAULTS.Get_UserPermission().data!.userDetails!.id!)
+                        DEFAULTS.Set_ProjectID(userID: (DEFAULTS.Get_UserPermission().data!.general!.defaultProject != nil) ? String(describing: DEFAULTS.Get_UserPermission().data!.general!.defaultProject!) : "1")
                     }else {
                         print("Error")
                     }
@@ -121,16 +123,22 @@ class ServiceCall: NSObject
             Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
         }
     }
-    func Get_userDetail(ViewController : UIViewController) {
+    func Get_userDetail(APi_Str:String,ViewController:UIViewController,tag:Int) {
         if AppDelegate.NetworkRechability(){
             SVProgressHUD.show(withStatus: "Loading...")
             let Update_VC = ViewController as! UpdateProfileVC
-            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Urls.GET_API_userDetail + DEFAULTS.Get_UerID() + "/", headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: [:], success: { (responseObject, statusCode, JSONObject) in
+            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(APi_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: [:], success: { (responseObject, statusCode, JSONObject) in
                 print(JSONObject)
                 SVProgressHUD.dismiss()
                 if statusCode == 200 {
-                    Update_VC.Dic_userDetail = JSONObject.object as! NSDictionary
-                    Update_VC.Set_userData()
+                    if tag == 1 {
+                        Update_VC.Dic_userDetail = JSONObject.object as! NSDictionary
+                        Update_VC.Set_userData()
+                    }else {
+                        let results = try? JSONDecoder().decode(DefaultDisciplineModel.self, from: responseObject)
+                        DEFAULTS.Set_Discipline(Data: [results!])
+                        print(DEFAULTS.Get_Discipline())
+                    }
                 }else {
                     Utils.showToastWithMessageAtCenter(message: (JSONObject.object as! NSDictionary).value(forKey: "detail") as! String)
                 }
@@ -143,19 +151,16 @@ class ServiceCall: NSObject
             Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
         }
     }
-    
-    
-    
     func Get_onSiteStatus(ViewController: UIViewController,API_Str : String,Param : Parameters,tag : Int) {
         if AppDelegate.NetworkRechability(){
             SVProgressHUD.show(withStatus: "Loading...")
-            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(API_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: Param as! [String : String], success: { (responseObject, statusCode, JSONObject) in
+            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(API_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: (Param as! [String : String]), success: { (responseObject, statusCode, JSONObject) in
                 print(JSONObject)
                 SVProgressHUD.dismiss()
                 if statusCode == 200 {
                      let Arr_Data : NSMutableArray = NSMutableArray(array: (JSONObject.object as! NSDictionary).value(forKey: "results") as! NSArray)
                     if tag == 0 {
-                         var  OnsiteStatus_VC = ViewController as! OnsiteStatusVC
+                        let  OnsiteStatus_VC = ViewController as! OnsiteStatusVC
                           let obj_onSiteStatus = onSiteStatusModel()
                           OnsiteStatus_VC.Arr_onSiteStatusData = obj_onSiteStatus.Load_Data_To_Array(arr_Data: Arr_Data)
                           OnsiteStatus_VC.Str_NextLink = ((JSONObject.object as! NSDictionary).value(forKey: "next")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "next") as! String
@@ -163,7 +168,7 @@ class ServiceCall: NSObject
                           OnsiteStatus_VC.tbl_data.reloadData()
                           print(OnsiteStatus_VC.Arr_onSiteStatusData)
                     } else {
-                        var  ShippedStatus_VC =  ViewController as! ShippedStatusVC
+                        let  ShippedStatus_VC =  ViewController as! ShippedStatusVC
                           let obj_onSiteStatus = onSiteStatusModel()
                           ShippedStatus_VC.Arr_onSiteStatusData = obj_onSiteStatus.Load_Data_To_Array(arr_Data: Arr_Data)
                           ShippedStatus_VC.Str_NextLink = ((JSONObject.object as! NSDictionary).value(forKey: "next")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "next") as! String
@@ -379,7 +384,7 @@ class ServiceCall: NSObject
         if AppDelegate.NetworkRechability() {
             SVProgressHUD.show(withStatus: "Loading..")
             let Login_VC = viewConroller as! LoginVC
-            AFWrapper.requestPOSTURL_WithStatusCode(Api_Urls.POST_API_LOGIN, params: parameters, headers: [:], success:
+            AFWrapper.requestPOSTURL_WithStatusCode(Api_Urls.GET_API_LOGIN, params: parameters, headers: [:], success:
                 {   (responseObject,StatusCode,JSONObject) in
                     print(responseObject)
                     if StatusCode == 200 {
@@ -410,26 +415,20 @@ class ServiceCall: NSObject
             Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
         }
     }
-    func post_Logout(viewConroller : UIViewController,parameters:Parameters){
-        print(parameters)
+    func GET_Logout(){
         if AppDelegate.NetworkRechability() {
-            SVProgressHUD.show(withStatus: "Loading..")
-            let Logout_VC = viewConroller as! SidebarVC
-            AFWrapper.requestPOSTURL_WithStatusCode(Api_Urls.POST_API_LOGOUT
-                , params: parameters, headers: [:], success:
+//            SVProgressHUD.show(withStatus: "Loading..")
+            Utils.ShowActivityIndicator(message: "Please Wait...")
+            AFWrapper.requestPOSTURL_WithStatusCode(Api_Urls.GET_API_LOGOUT,params: [:], headers: [:], success:
                 {   (responseObject,StatusCode,JSONObject) in
                     print(responseObject)
-                    SVProgressHUD.dismiss()
                     if StatusCode == 200 {
-                        let Key = (JSONObject.object as! NSDictionary).value(forKey: "detail")!
-                        Logout_VC.btn_Logout_Click()
-                        Utils.showToastWithMessageAtCenter(message: String(describing: Key))
-                    }else {
-                        Utils.showToastWithMessageAtCenter(message: NSMutableArray(array: (JSONObject.object as! NSDictionary).value(forKey: "non_field_errors") as! NSArray)[0] as! String)
+                        Utils.Logout_Reset_Data()
+                     SKActivityIndicator.dismiss()
                     }
             })
             { (error) in
-                SVProgressHUD.dismiss()
+                SKActivityIndicator.dismiss()
                 print(error.localizedDescription)
             }
         } else {
@@ -467,5 +466,28 @@ class ServiceCall: NSObject
             Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
         }
     }
+    func Set_UpdateProfile(ViewController : UIViewController,param : Parameters) {
+        if AppDelegate.NetworkRechability(){
+            SVProgressHUD.show(withStatus: "Loading...")
+            let Update_VC = ViewController as! UpdateProfileVC
+            AFWrapper.requestmethode_WithParameter_ReturnStatuscode(Api_Urls.GET_API_userDetail + DEFAULTS.Get_UerID() + "/", method: .put, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: param as! [String : String], success: { (responseObject, statusCode, JSONObject) in
+                print(JSONObject)
+                SVProgressHUD.dismiss()
+                if statusCode == 200 {
+                    Utils.showToastWithMessageAtCenter(message: "Save Successfully")
+                    Update_VC.set_DashBoard()
+                }else {
+                    Utils.showToastWithMessageAtCenter(message: (JSONObject.object as! NSDictionary).value(forKey: "detail") as! String)
+                }
+            })
+            { (error) in
+                SVProgressHUD.dismiss()
+                print(error.localizedDescription)
+            }
+        }else {
+            Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
+        }
+    }
+
 }
 

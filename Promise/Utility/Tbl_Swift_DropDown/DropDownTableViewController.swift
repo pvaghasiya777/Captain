@@ -429,15 +429,13 @@ open class DropDownTableViewController: UITableViewController {
     }*/
     
     override public final func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
         return self.valueForIndexPath(indexPath,
                                       valueForRow: { (row) -> [UITableViewRowAction]? in
-                                            
                                         return self.tableView(tableView, editActionsForRow: row)
-                                            
-            },
+                                        
+        },
                                       valueForSubrow: { (subrow, row) -> [UITableViewRowAction]? in
-                
+                                        
                                         return self.tableView(tableView, editActionsForSubrow: subrow, inRow: row)
         })
     }

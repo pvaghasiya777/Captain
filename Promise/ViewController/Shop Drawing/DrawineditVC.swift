@@ -8,13 +8,14 @@
 
 import UIKit
 import iOSDropDown
+import QuickLook
 class DrawineditVC: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var view_topBG: UIView!
     @IBOutlet weak var btn_Save: UIButton!
     @IBOutlet weak var btn_Discard: UIButton!
     @IBOutlet weak var view_SecondBG: UIView!
-    @IBOutlet weak var btn_CreateNew: UIButton!
+    //@IBOutlet weak var btn_CreateNew: UIButton!
     @IBOutlet weak var btn_Draft: UIButton!
     @IBOutlet weak var btn_Submitted: UIButton!
     @IBOutlet weak var btn_Approved: UIButton!
@@ -66,10 +67,18 @@ class DrawineditVC: UIViewController {
     @IBOutlet weak var btn_BrowsePDF: UIButton!
     //Rejection view
     @IBOutlet weak var view_Rejectionview: UIView!
+    @IBOutlet weak var view_RejectionviewPagination: UIView!
     @IBOutlet weak var tbl_RejectionHistory: UITableView!
     @IBOutlet weak var btn_ExcelFile: UIButton!
     @IBOutlet weak var btn_PDFFile: UIButton!
+    
+    @IBOutlet weak var btn_Previous: UIButton!
+    @IBOutlet weak var btn_Next: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count: UILabel!
+    @IBOutlet weak var lbl_PageNum: UILabel!
     //MARK:- variable
+    public var docViewController = QLPreviewController()
+    public var arrDocuments = [NSURL]()
     var arrStructureInfo = [StructureInformationModel]()
     var arrrejectreasons = [Reject_reasons]()
     var arrDrawing = [Result]()
@@ -92,9 +101,13 @@ class DrawineditVC: UIViewController {
     }
     //MARK:- Initialisation
     func initializeview() {
+        self.arrDocuments = []
+        self.docViewController = QLPreviewController()
+        self.docViewController.dataSource = self
+        self.docViewController.reloadData()
         ServiceCall.shareInstance.Get_getDrawingEdit(ViewController: self)
-        UIdesign()
-        //lbl_Structure.backgroundColor = .white
+        self.UIdesign()
+        view_RejectionviewPagination.isHidden = (arrrejectreasons != nil) ? true : false
         lbl_Quantities.backgroundColor = .white
         lbl_Documents.backgroundColor = .white
         lbl_Rejection.backgroundColor = .white
@@ -111,7 +124,7 @@ class DrawineditVC: UIViewController {
         Utils.add_shadow_around_view_Multiple(views: [view_topBG,view_SecondBG,view_ThardBG], color: .gray, radius: 5, opacity: 5)
         Utils.add_shadow_around_view(view: btn_Active, color: .gray, radius: 2, opacity: 5)
 //        Utils.add_shadow_around_view(view: btn_IsPackageCreated, color: .gray, radius: 2, opacity: 5)
-        Utils.Set_Same_Corner_Radius(views: [btn_Save,btn_Discard,btn_CreateNew,btn_IsGroupStructure,btn_Active,btn_IsGroupStructure], cornerRadius: 5)
+        Utils.Set_Same_Corner_Radius(views: [btn_Save,btn_Discard,btn_IsGroupStructure,btn_Active,btn_IsGroupStructure], cornerRadius: 5)
     }
     //MARK:- Button Click Action
     @IBAction func btn_Click(_ sender: UIButton) {
@@ -172,52 +185,76 @@ class DrawineditVC: UIViewController {
         txt_GroupName.text = rowdata.group_name
         ////        btn_IsPackageCreated
         txt_Revision.text = rowdata.rev_no
-        btn_IsGroupStructure.setBackgroundImage(UIImage(named: ((rowdata.is_active == true) ? "ic_correct": "")), for: .normal)
+        btn_IsGroupStructure.setBackgroundImage(UIImage(named: ((rowdata.is_active == true) ? "ic_check": "")), for: .normal)
         txt_Lot.text  = rowdata.lot
         txt_LotSub.text = rowdata.sub_lot
-        //        //Document Details
-        //
+        //Document Details
         txt_ContractorDocument.text = rowdata.contract_doc_no
         txt_SubContractor.text = rowdata.sub_contractor_doc_no
-        drop_PreparedBy.text = String(describing: rowdata.prepared_by!)
-        drop_CheckedBy.text = String(describing:rowdata.checked_by!)
-        drop_ApprovedBy.text = String(describing:rowdata.approved_by!)
-        drop_Status.text = rowdata.status
-        btn_Active.setBackgroundImage(UIImage(named: ((rowdata.is_active == true) ? "ic_correct": "")), for: .normal)
-        btn_IsPackageCreated.setBackgroundImage(UIImage(named: ((rowdata.is_active == true) ? "ic_correct": "")), for: .normal)
+        self.txt_PDFFile.text = (rowdata.shop_drawing_pdf != nil) ? (rowdata.shop_drawing_pdf! as NSString).lastPathComponent : "File Not Availabel"
+        self.txt_ExcelFile.text = (rowdata.shop_drawing_excel != nil) ? (rowdata.shop_drawing_excel! as NSString).lastPathComponent : "File Not Availabel"
+        let Arr_Employee = DEFAULTS.Get_MasterEmployee()
+        drop_PreparedBy.text = Arr_Employee.filter{$0.id! == rowdata.prepared_by!}[0].name!
+        drop_CheckedBy.text = Arr_Employee.filter{$0.id! == rowdata.checked_by!}[0].name!
+        drop_ApprovedBy.text = Arr_Employee.filter{$0.id! == rowdata.approved_by!}[0].name!
+        btn_Active.setBackgroundImage(UIImage(named: ((rowdata.is_active == true) ? "ic_check": "")), for: .normal)
+        btn_IsPackageCreated.setBackgroundImage(UIImage(named: ((rowdata.is_active == true) ? "ic_check": "")), for: .normal)
         //////        Quantities view
         txt_TotalQuantity.text = String(describing: rowdata.total_quantity!)
         txt_TotalNetWeight.text = String(describing: rowdata.total_net_weight!)
         txt_TotalPaintingWeight.text = String(describing: rowdata.total_painting_weight!)
         txt_TotalFireproofingWeight.text = String(describing: rowdata.total_fireproofing_weight!)
         if rowdata.doc_status == "draft" {
-            btn_Draft.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+            btn_Draft.setBackgroundImage(UIImage(named: "ic_StutsPathColor"), for: .normal)
             btn_Draft.setTitleColor(.white, for: .normal)
             btn_Submitted.backgroundColor = .white
             btn_Approved.backgroundColor = .white
         } else if rowdata.doc_status == "submit" {
             btn_Draft.backgroundColor = .white
-            btn_Submitted.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+            btn_Submitted.setBackgroundImage(UIImage(named: "ic_StutsPathColor"), for: .normal)
             btn_Submitted.setTitleColor(.white, for: .normal)
             btn_Approved.backgroundColor = .white
         } else {
             btn_Draft.backgroundColor = .white
             btn_Submitted.backgroundColor = .white
-            btn_Approved.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+            btn_Approved.setBackgroundImage(UIImage(named: "ic_StutsPathColor"), for: .normal)
             btn_Approved.setTitleColor(.white, for: .normal)
         }
+        btn_PDFFile.isHidden = (rowdata.shop_drawing_pdf == nil) ? true : false
+        btn_ExcelFile.isHidden = (rowdata.shop_drawing_excel == nil) ? true : false
+        btn_ExcelFile.addTarget(self, action: #selector(barbtn_excel(_:)), for: .touchUpInside)
+        btn_PDFFile.addTarget(self, action: #selector(barbtn_PDF(_:)), for: .touchUpInside)
     }
-     @objc func Get_Filter_popUp(_ Button : UIButton) {
-        let pdf_vc = Config.StoryBoard.instantiateViewController(identifier: "PDFVC") as! PDFVC
-        pdf_vc.strurl = arrStructureInfo[0].shop_drawing_pdf!
-        self.navigationController?.pushViewController(pdf_vc, animated: true)
+    @objc func barbtn_PDF(_ sender: UIButton) {
+        self.storeAndShare(withURLString: Api_Urls.DocumentBASE_URL + arrStructureInfo[0].shop_drawing_pdf!)
+     }
+     @objc func barbtn_excel(_ sender: UIButton) {
+       self.storeAndShare(withURLString: Api_Urls.DocumentBASE_URL + arrStructureInfo[0].shop_drawing_excel!)
+     }
+    func storeAndShare(withURLString: String) {
+        guard let url = URL(string: withURLString) else { return }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            let tmpURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
+            do {
+                try data.write(to: tmpURL)
+            } catch {
+                print(error)
+            }
+            DispatchQueue.main.async {
+                self.arrDocuments = [tmpURL as! NSURL]
+                self.docViewController.reloadData()
+                self.present(self.docViewController, animated: true, completion: nil)
+            }
+        }.resume()
     }
     @IBAction func btn_ActiveClick(_ sender: UIButton) {
         //         let rodata = arrStructureInfo[0]
         //        if sender.tag == 5 {
-        //            btn_Active.setImage(UIImage(named: ((rodata.is_active == true) ? "": "ic_correct")), for: .normal)
+        //            btn_Active.setImage(UIImage(named: ((rodata.is_active == true) ? "": "ic_check")), for: .normal)
         //        } else if sender.tag == 6 {
-        //            btn_IsPackageCreated.setImage(UIImage(named: ((rodata.is_active == true) ? "": "ic_correct")), for: .normal)
+        //            btn_IsPackageCreated.setImage(UIImage(named: ((rodata.is_active == true) ? "": "ic_check")), for: .normal)
         //        }
     }
     //MARK:- Button Click Action
@@ -247,6 +284,10 @@ class DrawineditVC: UIViewController {
             }
         }
     }
+    @IBAction func btn_SaveClick_Action(_ sender: UIButton) {
+       }
+    @IBAction func btn_DiscardClick_Action(_ sender: UIButton) {
+    }
 }
 
 extension DrawineditVC : UITableViewDataSource,UITableViewDelegate {
@@ -273,5 +314,20 @@ extension DrawineditVC : UITableViewDataSource,UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
+    }
+}
+extension DrawineditVC : QLPreviewControllerDataSource {
+ func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("view was cancelled")
+        dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: Document Viewer Delegate methods
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return self.arrDocuments.count
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.arrDocuments[index] as QLPreviewItem
     }
 }

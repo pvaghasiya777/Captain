@@ -18,21 +18,40 @@ class ReportVC6: UIViewController {
     @IBOutlet weak var tbl_MarkwiseCumulativeReport: UITableView!
     @IBOutlet weak var tbl_MarkwiseCumulativeReport_1: UITableView!
     @IBOutlet weak var tbl_MarkwiseCumulativeReport_2: UITableView!
-      
     @IBOutlet weak var view_DetailFigureReport: UIView!
     @IBOutlet weak var view_MarkwiseReport: UIView!
     @IBOutlet weak var view_MarkwiseCumulativeReport: UIView!
-//  Detail Figure Report
+    //  Detail Figure Report
     @IBOutlet weak var btn_DetailFigureReport_1: UIButton!
     @IBOutlet weak var btn_DetailFigureReport_2: UIButton!
-//  Markwise Report
+    //  Markwise Report
     @IBOutlet weak var btn_MarkwiseReport_1: UIButton!
     @IBOutlet weak var btn_MarkwiseReport_2: UIButton!
     @IBOutlet weak var btn_MarkwiseReport_3: UIButton!
-//  Mark wise Cumulative Report
+    //  Mark wise Cumulative Report
     @IBOutlet weak var btn_MarkwiseCumulativeReport_1: UIButton!
     @IBOutlet weak var btn_MarkwiseCumulativeReport_2: UIButton!
     @IBOutlet weak var btn_MarkwiseCumulativeReport_3: UIButton!
+    //Show Page Number
+    @IBOutlet weak var lbl_MarkwisePageNum: UILabel!
+    @IBOutlet weak var lbl_MarkwiseCumulativePageNum: UILabel!
+    @IBOutlet weak var lbl_DetailFPageNum : UILabel!
+    
+    
+    @IBOutlet weak var btn_Previous_FigureReport: UIButton!
+    @IBOutlet weak var btn_Next_FigureReport: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count_FigureReport: UILabel!
+    @IBOutlet weak var lbl_PageNum_FigureReport: UILabel!
+    
+    @IBOutlet weak var btn_Previous_MarkwiseReport: UIButton!
+    @IBOutlet weak var btn_Next_MarkwiseReport: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count_MarkwiseReport: UILabel!
+    @IBOutlet weak var lbl_PageNum_MarkwiseReport: UILabel!
+    
+    @IBOutlet weak var btn_Previous_MarkwiseCumulativeReport: UIButton!
+    @IBOutlet weak var btn_Next_MarkwiseCumulativeReport: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count_MarkwiseCumulativeReport: UILabel!
+    @IBOutlet weak var lbl_PageNum_MarkwiseCumulativeReport: UILabel!
     //MARK:- Variable
     var pageName = String()
     var Arr_DetailFigureReport = [DetailFigureReportModel]()
@@ -41,15 +60,17 @@ class ReportVC6: UIViewController {
     var Str_markWiseReportPrevious = ""
     var Arr_MarkWiseCumulativeReport = [MarkWiseCumulativeReportModel]()
     var param : NSDictionary = NSDictionary()
+    var PageCount = 1
     //MARK:- Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.Initialization()
     }
     func Initialization() {
+        barbuttonheader()
         if pageName == "Detail Figure Report" {
             title = "Detail Figure Report"
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_DetailFigureReport, params: ["project_id":"1"],tag: 1)
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_DetailFigureReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any] ,tag: 1)
             tbl_DetailFigureReport.isHidden = false
             tbl_DetailFigureReport_1.isHidden = true
             tbl_MarkwiseReport.isHidden = true
@@ -60,6 +81,8 @@ class ReportVC6: UIViewController {
             tbl_MarkwiseCumulativeReport_2.isHidden = true
             view_MarkwiseReport.isHidden = true
             view_MarkwiseCumulativeReport.isHidden = true
+            btn_Next_FigureReport.addTarget(self, action: #selector(btn_NextFigureReport(_:)), for: .touchUpInside)
+            btn_Previous_FigureReport.addTarget(self, action: #selector(btn_PreviousFigureReport(_:)), for: .touchUpInside)
         } else if pageName == "Markwise Report"{
             title = "Markwise Report"
             ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_MarkWiseReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any] , tag: 2)
@@ -73,9 +96,12 @@ class ReportVC6: UIViewController {
             tbl_MarkwiseCumulativeReport_2.isHidden = true
             view_DetailFigureReport.isHidden = true
             view_MarkwiseCumulativeReport.isHidden = true
+            btn_Next_MarkwiseReport.addTarget(self, action: #selector(btn_NextMarkwiseReport), for: .touchUpInside)
+            btn_Previous_MarkwiseReport.addTarget(self, action: #selector(btn_PreviousFigureReport(_:)), for: .touchUpInside)
+            
         } else {
             title = "Markwise Cumulative Report"
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_MarkCummReport, params: ["project_id":"1"], tag: 3)
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_MarkCummReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any] , tag: 3)
             tbl_DetailFigureReport.isHidden = true
             tbl_DetailFigureReport_1.isHidden = true
             tbl_MarkwiseReport.isHidden = true
@@ -86,6 +112,8 @@ class ReportVC6: UIViewController {
             tbl_MarkwiseCumulativeReport_2.isHidden = true
             view_MarkwiseReport.isHidden = true
             view_DetailFigureReport.isHidden = true
+            btn_Next_MarkwiseCumulativeReport.addTarget(self, action: #selector(btn_NextMarkwiseCumulativeReport), for: .touchUpInside)
+            btn_Previous_MarkwiseCumulativeReport.addTarget(self, action: #selector(btn_PreviousMarkwiseCumulativeReport), for: .touchUpInside)
         }
     }
     //MARK:- Button Action Event
@@ -122,22 +150,117 @@ class ReportVC6: UIViewController {
     //MarkWise Cumulative Report
     @IBAction func btn_MarkwiseCumulativeReportNum(_ sender: UIButton) {
         if sender.tag == 6 {
-               tbl_MarkwiseCumulativeReport.isHidden = false
-               tbl_MarkwiseCumulativeReport_1.isHidden = true
-               tbl_MarkwiseCumulativeReport_2.isHidden = true
+            tbl_MarkwiseCumulativeReport.isHidden = false
+            tbl_MarkwiseCumulativeReport_1.isHidden = true
+            tbl_MarkwiseCumulativeReport_2.isHidden = true
             self.tbl_MarkwiseCumulativeReport.reloadData()
-           } else if sender.tag == 7 {
-               tbl_MarkwiseCumulativeReport.isHidden = true
-               tbl_MarkwiseCumulativeReport_1.isHidden = false
-               tbl_MarkwiseCumulativeReport_2.isHidden = true
+        } else if sender.tag == 7 {
+            tbl_MarkwiseCumulativeReport.isHidden = true
+            tbl_MarkwiseCumulativeReport_1.isHidden = false
+            tbl_MarkwiseCumulativeReport_2.isHidden = true
             self.tbl_MarkwiseCumulativeReport_1.reloadData()
-           } else {
-               tbl_MarkwiseCumulativeReport.isHidden = true
-               tbl_MarkwiseCumulativeReport_1.isHidden = true
-               tbl_MarkwiseCumulativeReport_2.isHidden = false
+        } else {
+            tbl_MarkwiseCumulativeReport.isHidden = true
+            tbl_MarkwiseCumulativeReport_1.isHidden = true
+            tbl_MarkwiseCumulativeReport_2.isHidden = false
             self.tbl_MarkwiseCumulativeReport_2.reloadData()
-           }
-      }
+        }
+    }
+    func barbuttonheader() {
+        let rightButtonPDF: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_pdf"),  style: .plain, target: self, action: #selector(barbtn_PDF(_:)))
+        let rightButtonExcel: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_excel"),  style: .plain, target: self, action: #selector(barbtn_excel(_:)))
+        let rightButtonMail: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_message"),  style: .plain, target: self, action: #selector(barbtn_Mail(_:)))
+        rightButtonMail.tintColor = App_Colors.ThemBlue
+        rightButtonPDF.tintColor = App_Colors.ThemBlue
+        rightButtonExcel.tintColor = App_Colors.ThemBlue
+        self.navigationItem.rightBarButtonItems  = [rightButtonMail,rightButtonPDF,rightButtonExcel]
+    }
+    @objc func barbtn_Mail(_ sender: UIBarButtonItem) {
+        self.SentMail(report_type: "mail")
+    }
+    @objc func barbtn_PDF(_ sender: UIBarButtonItem) {
+        self.SentMail(report_type: "pdf")
+    }
+    @objc func barbtn_excel(_ sender: UIBarButtonItem) {
+        self.SentMail(report_type: "excel")
+    }
+    func SentMail(report_type : String) {
+        if param.count == 0 {
+             param = ["project_id":"1","report_type" : report_type]
+        }else {
+            let tempDic : NSMutableDictionary = NSMutableDictionary(dictionary: param)
+            tempDic.setValue(report_type, forKey: "report_type")
+            param = tempDic
+        }
+        switch pageName {
+        case "Detail Figure Report":
+           ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_DetailFigureReport, params: param as! Parameters,tag: 1)
+        case "Markwise Report" :
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_MarkWiseReport, params: param as! Parameters , tag: 2)
+        case "Markwise Cumulative Report" :
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_MarkCummReport, params: param as! Parameters, tag: 3)
+        default:
+            print(pageName)
+        }
+    }
+    //Figure Report
+    @objc func btn_NextFigureReport(_ sender: UIButton) {
+        if Arr_DetailFigureReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_DetailFigureReport[0].next!, params: [:],tag: 1)
+            self.PageCount = PageCount + 1
+            self.lbl_ShowPage_Count_FigureReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
+    @objc func btn_PreviousFigureReport(_ sender: UIButton) {
+        if Arr_DetailFigureReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_DetailFigureReport[0].next!, params: [:],tag: 1)
+            self.PageCount = PageCount - 1
+            self.lbl_ShowPage_Count_FigureReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
+    //Markwise Report
+    @objc func btn_NextMarkwiseReport(_ sender: UIButton) {
+        
+        if Str_markWiseReportNext != "" {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Str_markWiseReportNext, params: [:],tag: 2)
+            self.PageCount = PageCount + 1
+            self.lbl_ShowPage_Count_MarkwiseReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
+    @objc func btn_PreviousMarkwiseReport(_ sender: UIButton) {
+        if Str_markWiseReportPrevious != "" {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Str_markWiseReportPrevious, params: [:],tag: 2)
+            self.PageCount = PageCount - 1
+            self.lbl_ShowPage_Count_MarkwiseReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Previous Data not Available")
+        }
+    }
+    //Mark wise Cumulative Report
+    @objc func btn_NextMarkwiseCumulativeReport(_ sender: UIButton) {
+        if Arr_MarkWiseCumulativeReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_MarkWiseCumulativeReport[0].next!, params: [:],tag: 3)
+            self.PageCount = PageCount + 1
+            self.lbl_ShowPage_Count_MarkwiseCumulativeReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
+    @objc func btn_PreviousMarkwiseCumulativeReport(_ sender: UIButton) {
+        if Arr_DetailFigureReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_MarkWiseCumulativeReport[0].next!, params: [:],tag: 3)
+            self.PageCount = PageCount - 1
+            self.lbl_ShowPage_Count_MarkwiseCumulativeReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
 }
 //MARK:- TableView Methode
 extension ReportVC6 : UITableViewDataSource {
@@ -155,7 +278,7 @@ extension ReportVC6 : UITableViewDataSource {
             if section == 0 {
                 return 1
             } else {
-                 return (Arr_DetailFigureReport.count == 0) ? Arr_DetailFigureReport.count :Arr_DetailFigureReport[0].results!.count
+                return (Arr_DetailFigureReport.count == 0) ? Arr_DetailFigureReport.count :Arr_DetailFigureReport[0].results!.count
             }
         } else if tableView == tbl_MarkwiseReport {
             if section == 0 {
@@ -167,7 +290,7 @@ extension ReportVC6 : UITableViewDataSource {
             if section == 0 {
                 return 1
             } else {
-                 return Arr_MarkWiseReport.count
+                return Arr_MarkWiseReport.count
             }
         } else if tableView == tbl_MarkwiseReport_2 {
             if section == 0 {

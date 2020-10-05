@@ -84,6 +84,10 @@ class PurchaseOrderVC: UIViewController {
             self.navigationController?.pushViewController(PackingList_VC, animated: true)
         }
     }
+    @IBAction func btn_SaveClick_Action(_ sender: UIButton) {
+    }
+    @IBAction func btn_DiscardClick_Action(_ sender: UIButton) {
+    }
     
 }
 extension PurchaseOrderVC : UITableViewDataSource , UITableViewDelegate{

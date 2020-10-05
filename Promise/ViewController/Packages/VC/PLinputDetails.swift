@@ -2,7 +2,6 @@
 //  PLinputDetails.swift
 //  Packages
 //
-//  Created by macbook on 23/05/1942 Saka.
 //  Copyright © 1942 com.mac. All rights reserved.
 //
 
@@ -15,7 +14,7 @@ class PLinputDetails: UIViewController {
     @IBOutlet weak var btn_Save: UIButton!
     @IBOutlet weak var btn_Discard: UIButton!
     @IBOutlet weak var view_SecondBG: UIView!
-    @IBOutlet weak var btn_CreateNew: UIButton!
+//    @IBOutlet weak var btn_CreateNew: UIButton!
     @IBOutlet weak var btn_Draft: UIButton!
     @IBOutlet weak var btn_Submitted: UIButton!
     @IBOutlet weak var btn_Approved: UIButton!
@@ -53,6 +52,10 @@ class PLinputDetails: UIViewController {
     //Rejection view
     @IBOutlet weak var view_Rejectionview: UIView!
     @IBOutlet weak var tbl_RejectionHistory: UITableView!
+    @IBOutlet weak var btn_Previous: UIButton!
+    @IBOutlet weak var btn_Next: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count: UILabel!
+    @IBOutlet weak var lbl_PageNum: UILabel!
     //MARK:- Variable
     var Arr_PLDetail = [PlreportDetailModel]()
     var Arr_Country = [MasterCountryModel]()
@@ -80,6 +83,7 @@ class PLinputDetails: UIViewController {
         ServiceCall.shareInstance.Get_PLreportsDetail(ViewController: self, Api_Str: Api_Urls.GET_API_plReports + Str_id + "/", tag: 0)
         self.btn_PackagesList.addTarget(self, action: #selector(Get_PackingListClick(_:)), for: .touchUpInside)
         self.lbl_PackageDetails.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+        
         self.lbl_Quantities.backgroundColor = .white
         self.lbl_Rejection.backgroundColor = .white
         self.view_Details.isHidden = false
@@ -91,6 +95,8 @@ class PLinputDetails: UIViewController {
         self.tbl_RejectionHistory.rowHeight = UITableView.automaticDimension
         self.tbl_RejectionHistory.tableFooterView = UIView()
         self.tbl_RejectionHistory.separatorStyle = .singleLine
+        btn_Next.addTarget(self, action: #selector(btn_NextClick(_:)), for: .touchUpInside)
+               btn_Previous.addTarget(self, action: #selector(btn_PreviousClick(_:)), for: .touchUpInside)
     }
     func UIdesign() {
         Utils.add_shadow_around_view(view: view_topBG, color: .gray, radius: 5, opacity: 5)
@@ -98,7 +104,7 @@ class PLinputDetails: UIViewController {
         Utils.add_shadow_around_view(view: view_ThardBG, color: .gray, radius: 5, opacity: 5)
         Utils.setborder(view: btn_Save, bordercolor: Config.boderColor, borderwidth: 1)
         Utils.setborder(view: btn_Discard, bordercolor: Config.boderColor1, borderwidth: 1)
-        Utils.Set_Same_Corner_Radius(views: [btn_Save,btn_Discard,btn_CreateNew], cornerRadius: 5)
+        Utils.Set_Same_Corner_Radius(views: [btn_Save,btn_Discard], cornerRadius: 5)
         Utils.EnableTextField(textFields: [txt_Name,txt_InputNumber,txt_Revisionnumber,txt_PONumber,txt_Project,txt_Vendor,txt_PickupLocation,txt_ContactDetails,txt_NameOfGoods,txt_InspectionTime,txt_CountryOfOrigin,txt_Address,txt_Structure,txt_GrossWeight,txt_NetWeight,txt_TotalVolume])
     }
     func Set_PackageDetail() {
@@ -115,7 +121,7 @@ class PLinputDetails: UIViewController {
         self.txt_NameOfGoods.text = Arr_PLDetail[0].nameOfGoods!
         self.txt_InspectionTime.text = (Arr_PLDetail[0].inspectionDate == nil) ? "" : Arr_PLDetail[0].inspectionDate!
         self.btn_Active.isUserInteractionEnabled = false
-        self.btn_Active.setImage(UIImage(named: (Arr_PLDetail[0].isActive == true) ? "ic_correct":"ic_not_released"), for: .normal)
+        self.btn_Active.setImage(UIImage(named: (Arr_PLDetail[0].isActive == true) ? "ic_check":"ic_not_released"), for: .normal)
         self.Arr_Address = DEFAULTS.Get_AddressStruct().filter{$0.id! == Arr_PLDetail[0].addressID!}
         self.Arr_Country = DEFAULTS.Get_MasterCoutry().filter{$0.id! == Arr_PLDetail[0].countryOfOrigin!}
         self.Arr_Purchase = DEFAULTS.Get_MasterPurchase().filter {$0.number! == Arr_PLDetail[0].purchaseID!}
@@ -123,6 +129,22 @@ class PLinputDetails: UIViewController {
         self.txt_CountryOfOrigin.text = Arr_Country[0].name!
         self.txt_Address.text = Arr_Address[0].name!
         self.txt_Structure.text = Arr_Strucher[0].structureID! + " (\(Arr_Strucher[0].revNo!))"
+        if Arr_PLDetail[0].approveStatus == "draft" {
+            btn_Draft.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+            btn_Draft.setTitleColor(.white, for: .normal)
+            btn_Submitted.backgroundColor = .white
+            btn_Approved.backgroundColor = .white
+        } else if Arr_PLDetail[0].approveStatus == "submitted" {
+            btn_Draft.backgroundColor = .white
+            btn_Submitted.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+            btn_Submitted.setTitleColor(.white, for: .normal)
+            btn_Approved.backgroundColor = .white
+        } else {
+            btn_Draft.backgroundColor = .white
+            btn_Submitted.backgroundColor = .white
+            btn_Approved.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+            btn_Approved.setTitleColor(.white, for: .normal)
+        }
     }
     func Set_Quantites() {
         self.txt_GrossWeight.text = Arr_PLDetail[0].totalGrossWeight!
@@ -170,6 +192,17 @@ class PLinputDetails: UIViewController {
             }
             
         }
+    }
+    @IBAction func btn_SaveClick_Action(_ sender: UIButton) {
+       }
+    @IBAction func btn_DiscardClick_Action(_ sender: UIButton) {
+    }
+    
+    @objc func btn_NextClick(_ sender: UIButton) {
+     
+    }
+    @objc func btn_PreviousClick(_ sender: UIButton) {
+      
     }
 }
 extension PLinputDetails: UITableViewDelegate,UITableViewDataSource {

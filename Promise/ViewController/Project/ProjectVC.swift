@@ -13,6 +13,7 @@ class ProjectVC: UIViewController
     //MARK:- IBOutlet
     @IBOutlet var btn_Profile: UIBarButtonItem!
     @IBOutlet var View_Tbl_Header: UIView!
+    @IBOutlet var View_Tbl_pagination: UIView!
     @IBOutlet var View_Tbl_Header_Height: NSLayoutConstraint!
     @IBOutlet var btn_menubar: UIBarButtonItem!
     @IBOutlet var btn_Notification: UIBarButtonItem!
@@ -24,10 +25,8 @@ class ProjectVC: UIViewController
     @IBOutlet var btn_Menu: UIButton!
     @IBOutlet var CollectionView_Project: UICollectionView!
     @IBOutlet var tbl_Project: UITableView!
-    @IBOutlet weak var btn_First: UIButton!
     @IBOutlet weak var btn_Previous: UIButton!
     @IBOutlet weak var btn_Next: UIButton!
-    @IBOutlet weak var btn_Last: UIButton!
     @IBOutlet weak var lbl_ShowPageNum: UILabel!
     @IBOutlet weak var lbl_PageNum: UILabel!
     //MARK:- Variable
@@ -58,6 +57,7 @@ class ProjectVC: UIViewController
         ServiceCall.shareInstance.Get_getProject(ViewController: self, Api_Str: Api_Urls.GET_API_masterProject, Param: [:])
         self.CollectionView_Project.register(UINib(nibName: "Project_CollectionCell", bundle: nil), forCellWithReuseIdentifier: "Project_CollectionCell")
         self.tbl_Project.register(UINib(nibName: "Project_tbl_Cell", bundle: nil), forCellReuseIdentifier: "Project_tbl_Cell")
+        self.View_Tbl_pagination.isHidden = true
         self.navigationController?.navigationBar.isTranslucent = false
         self.CollectionView_Project.backgroundColor = .clear
         self.tbl_Project.tableFooterView = UIView()
@@ -125,6 +125,7 @@ class ProjectVC: UIViewController
             
             self.View_Tbl_Header_Height.constant = 0
             self.View_Tbl_Header.isHidden = true
+            self.View_Tbl_pagination.isHidden = true
             self.tbl_Project.isHidden = true
             self.CollectionView_Project.isHidden = false
             self.CollectionView_Project.reloadData()
@@ -135,10 +136,20 @@ class ProjectVC: UIViewController
             self.Is_GridView = false
             self.View_Tbl_Header_Height.constant = 30
             self.View_Tbl_Header.isHidden = false
+            self.View_Tbl_pagination.isHidden = false
             self.CollectionView_Project.isHidden = true
             self.tbl_Project.isHidden = false
             self.tbl_Project.reloadData()
         }
+    }
+    //MARK:- Button next previous Click
+    @IBAction func btn_Click_Next(_ sender: UIButton) {
+        print("Next Button Click")
+       
+    }
+    @IBAction func btn_Click_Previous(_ sender: UIButton) {
+        print("Next Button Click")
+        
     }
 }
 // MARK: - Collection View Datasource Methods

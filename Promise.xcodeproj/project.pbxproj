@@ -160,6 +160,8 @@
 		E4FD20EA24CB08B7008A491D /* AFWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FD20E824CB08B7008A491D /* AFWrapper.swift */; };
 		E4FD20EB24CB08B7008A491D /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FD20E924CB08B7008A491D /* SwiftyJSON.swift */; };
 		EECFE22F93893B6E2DEEAB82 /* Pods_Promise.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B7C4257612074F49C9027E4 /* Pods_Promise.framework */; };
+		FA23EE842525DBD5007B67ED /* IdentCodewiseReportVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA23EE832525DBD5007B67ED /* IdentCodewiseReportVC.swift */; };
+		FA23EE862525DBE2007B67ED /* IdentCodewiseReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA23EE852525DBE2007B67ED /* IdentCodewiseReportCell.swift */; };
 		FA252D56251B368600B01735 /* ReportTblCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA252D54251B368600B01735 /* ReportTblCell.swift */; };
 		FA252D57251B368600B01735 /* ReportTblCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA252D55251B368600B01735 /* ReportTblCell.xib */; };
 		FA3273DD2518E36000E89AC6 /* Project_CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3273DB2518E35E00E89AC6 /* Project_CollectionCell.swift */; };
@@ -382,6 +384,8 @@
 		E4FC4BEF25164A840067AEF2 /* ReportFilterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportFilterModel.swift; sourceTree = "<group>"; };
 		E4FD20E824CB08B7008A491D /* AFWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFWrapper.swift; sourceTree = "<group>"; };
 		E4FD20E924CB08B7008A491D /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		FA23EE832525DBD5007B67ED /* IdentCodewiseReportVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentCodewiseReportVC.swift; sourceTree = "<group>"; };
+		FA23EE852525DBE2007B67ED /* IdentCodewiseReportCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentCodewiseReportCell.swift; sourceTree = "<group>"; };
 		FA252D54251B368600B01735 /* ReportTblCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportTblCell.swift; sourceTree = "<group>"; };
 		FA252D55251B368600B01735 /* ReportTblCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportTblCell.xib; sourceTree = "<group>"; };
 		FA3273DB2518E35E00E89AC6 /* Project_CollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project_CollectionCell.swift; sourceTree = "<group>"; };
@@ -556,6 +560,7 @@
 				E44CD7962514DA23005325ED /* PackagewiseReportCell.swift */,
 				E44CD7972514DA23005325ED /* GroupStructurewiseReportcell.swift */,
 				E44CD7982514DA23005325ED /* DetailFigureReportcell.swift */,
+				FA23EE852525DBE2007B67ED /* IdentCodewiseReportCell.swift */,
 			);
 			path = "Custome Cell";
 			sourceTree = "<group>";
@@ -1002,6 +1007,7 @@
 				E44CD78D2514DA22005325ED /* ReportVC3.swift */,
 				E44CD7992514DA23005325ED /* ReportVC4.swift */,
 				E44CD79C2514DA24005325ED /* ReportVC6.swift */,
+				FA23EE832525DBD5007B67ED /* IdentCodewiseReportVC.swift */,
 			);
 			path = Reports;
 			sourceTree = "<group>";
@@ -1328,6 +1334,7 @@
 				E44CD7782514D3E3005325ED /* DropDownTableViewDataSource.swift in Sources */,
 				E4D6C9EC24D5428A000A9D55 /* PurchaseOrderHeaderCell.swift in Sources */,
 				E46CC9D624F67672006CAA16 /* singleMasterPurchaseModel.swift in Sources */,
+				FA23EE842525DBD5007B67ED /* IdentCodewiseReportVC.swift in Sources */,
 				E44CD7772514D3E3005325ED /* UITableView+DropDown.swift in Sources */,
 				E4CB30E424E27973002ADF49 /* UIView+WebCacheOperation.m in Sources */,
 				E4AC233E24E90BB300FAEA3E /* PlinputsHeaderCell.swift in Sources */,
@@ -1335,6 +1342,7 @@
 				E4CB30D624E27973002ADF49 /* SDWebImageManager.m in Sources */,
 				E4172FF424D922BA00FC579B /* OnsiteStatusVC.swift in Sources */,
 				E4D6C9ED24D5428A000A9D55 /* PurchaseOrderCell.swift in Sources */,
+				FA23EE862525DBE2007B67ED /* IdentCodewiseReportCell.swift in Sources */,
 				E44CD7892514D9AE005325ED /* ViewSelectFilter.swift in Sources */,
 				E4CB30DD24E27973002ADF49 /* SDWebImagePrefetcher.m in Sources */,
 				FA621E5024F0E80400971586 /* ShippedStatusCell.swift in Sources */,
@@ -1540,7 +1548,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pragma.Promise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/captain/Desktop/Dekstop/Parag Project/Promise/Promise/Promise-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/captain/Downloads/Promise/Promise/Promise-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1563,7 +1571,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.pragma.Promise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/captain/Desktop/Dekstop/Parag Project/Promise/Promise/Promise-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/captain/Downloads/Promise/Promise/Promise-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

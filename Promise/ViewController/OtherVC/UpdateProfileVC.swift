@@ -14,12 +14,9 @@ class UpdateProfileVC: UIViewController
     @IBOutlet var View_updateprofile: UIView!
     @IBOutlet var btn_menubar: UIBarButtonItem!
     @IBOutlet var btn_menunotification: UIBarButtonItem!
-    @IBOutlet var btn_ChangePassword: UIButton!
-    @IBOutlet var btn_Discard: UIButton!
     @IBOutlet var btn_Timezone: UIButton!
     @IBOutlet var btn_SelectProject: UIButton!
-     @IBOutlet var btn_Default_Discipline : UIButton!
-    @IBOutlet var btn_Save: UIButton!
+    @IBOutlet var btn_Default_Discipline : UIButton!
     
     @IBOutlet var img_Profile: UIImageView!
     @IBOutlet var lbl_name: UILabel!
@@ -70,7 +67,7 @@ class UpdateProfileVC: UIViewController
     }
     func Design() {
         Utils.Set_Same_View_Border(views: [txt_Username,txt_Firstname,txt_Lastname,txt_Email,View_updateprofile,btn_Timezone,btn_SelectProject,btn_Default_Discipline], borderColor: .lightGray, border_Width: 0.5)
-        Utils.Set_Corner_Radius(views: [txt_Username,txt_Firstname,txt_Lastname,txt_Email,View_updateprofile,btn_Timezone,btn_SelectProject,btn_Save,btn_Discard], radius: 5)
+        Utils.Set_Corner_Radius(views: [txt_Username,txt_Firstname,txt_Lastname,txt_Email,View_updateprofile,btn_Timezone,btn_SelectProject], radius: 5)
         self.txt_Username.addPadding(.left(8))
         self.txt_Firstname.addPadding(.left(8))
         self.txt_Lastname.addPadding(.left(8))
@@ -121,11 +118,7 @@ class UpdateProfileVC: UIViewController
     @IBAction func btn_Click_Notification(_ sender: UIBarButtonItem) {
         print("Notification Click")
     }
-    @IBAction func btn_Click_ChangePassword(_ sender: UIButton) {
-        let ChangeVC = Config.StoryBoard.instantiateViewController(withIdentifier: "ChagePasswordVC") as! ChagePasswordVC
-        ChangeVC.navigationController?.isNavigationBarHidden = true
-        self.navigationController?.pushViewController(ChangeVC, animated: true)
-    }
+    
     @IBAction func btn_Click_TD(_ sender: UIButton) {
         if sender.tag == 1 {
             print("TimeZone Button Selected")

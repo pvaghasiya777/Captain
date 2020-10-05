@@ -41,7 +41,7 @@ class ReportsFiltersVC: UIViewController {
     var arrfiltervalue = String()
     var text_tag = Int()
     //Filter Param
-    var str_Filter_ProjectID = ""
+    var str_Filter_ProjectID = "1"
     var str_Filter_PurchaseOrder = ""
     var str_Filter_Strucher = ""
     var str_Filter_PackingList = ""
@@ -92,10 +92,14 @@ class ReportsFiltersVC: UIViewController {
     func showMultipleSelectionTableview(arrContent : NSMutableArray) -> String
     {
         let podBundle = Bundle(for: PKMulipleSelectionVC.self)
-        let bundleURL = podBundle.url(forResource: "PatrickMultipleSelectionTableview", withExtension: "bundle")
-        let bundle = Bundle(url: bundleURL!)!
-        let storyboard = UIStoryboard(name: "Main", bundle: bundle)
+        
+        var bundleURL = podBundle.url(forResource: "PatrickMultipleSelectionTableview", withExtension: "bundle")
+        
+        var bundle = Bundle(url: bundleURL!)!
+        
+        var storyboard = UIStoryboard(name: "Main", bundle: bundle)
         let vc:PKMulipleSelectionVC = storyboard.instantiateViewController(withIdentifier: "PKMulipleSelectionVC") as! PKMulipleSelectionVC
+      //  vc.view.frame = CGRect(x: self.view.center.x - 100, y: self.view.center.y - 100, width: 300, height: 400)
         if self.text_tag == 1 {
             let arrdata : NSMutableArray = []
              arrdata.addObjects(from: arrContent as! [String])
@@ -115,14 +119,12 @@ class ReportsFiltersVC: UIViewController {
         }
         vc.backgroundColorDoneButton = UIColor(hexString: "353283")
         (displayP3Red:87.0/255.0, green: 188.0/255.0, blue: 100.0/255.0, alpha: 1.0)
-        vc.backgroundColorHeaderView = UIColor(hexString: "F3FAFF")
-//UIColor(displayP3Red: 76.0/255.0, green: 82.0/255.0, blue: 83.0/255.0, alpha: 1.0)
+        vc.backgroundColorHeaderView = UIColor(hexString: "353283")
+        
         vc.backgroundColorTableView = UIColor(hexString: "F3FAFF")
-//            UIColor(displayP3Red: 59.0/255.0, green: 65.0/255.0, blue: 66.0/255.0, alpha: 1.0)
         vc.backgroundColorCellTitle = UIColor.black
-//            UIColor(displayP3Red: 87.0/255.0, green: 188.0/255.0, blue: 100.0/255.0, alpha: 1.0)
         vc.backgroundColorDoneTitle = UIColor.white
-        vc.backgroundColorSelectALlTitle = UIColor.black
+        vc.backgroundColorSelectALlTitle = UIColor.white
         // Get Selected Index from PKMultipleSelectionVC
         UserDefaults.standard.set([], forKey: "indexPath")
         if let returnIndex = UserDefaults.standard.object(forKey: "indexPath") as? [Int] {
@@ -241,19 +243,330 @@ class ReportsFiltersVC: UIViewController {
             Report_VC.pageName = str_FilterName
             self.SetFilterValue(Report_VC: Report_VC,tag:1)
             self.navigationController?.pushViewController(Report_VC, animated: true)
-        }else {
-            
+        }else if str_FilterName == "Packagewise Report" || str_FilterName == "Packing List Report"{
+            let Report_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportVC1") as! ReportVC1
+             Report_VC.pageName = str_FilterName
+            self.SetFilterValue(Report_VC: Report_VC,tag:2)
+            self.navigationController?.pushViewController(Report_VC, animated: true)
+        }else if str_FilterName == "PO Positionwise Report" || str_FilterName == "Ident Codewise Report" || str_FilterName == "Structurewise Report"{
+            let Report_VC = Config.StoryBoard.instantiateViewController(identifier: "Report2") as! Report2
+            Report_VC.pageName = str_FilterName
+            self.SetFilterValue(Report_VC: Report_VC,tag:3)
+            self.navigationController?.pushViewController(Report_VC, animated: true)
+        }else if str_FilterName == "Group Structurewise Report" {
+            let Report_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportVC3") as! ReportVC3
+            Report_VC.pageName = str_FilterName
+            self.SetFilterValue(Report_VC: Report_VC,tag:4)
+            self.navigationController?.pushViewController(Report_VC, animated: true)
+        }else if str_FilterName == "Summary Report" {
+            let Report_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportVC4") as! ReportVC4
+            Report_VC.pageName = str_FilterName
+            self.SetFilterValue(Report_VC: Report_VC,tag:5)
+            self.navigationController?.pushViewController(Report_VC, animated: true)
         }
+        
     }
     func SetFilterValue(Report_VC:UIViewController,tag:Int) {
         if tag == 1 {
             let ReportVC = Report_VC as! ReportVC6
             if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == true {
+                if dropProject.text == "" && dropStructure.text == "" && dropPurchaseOrder.text == "" && dropPackingList.text == "" {
+                    ReportVC.param = ["is_extra" : !Is_Select_Without_Extra_Pieces,str_FilterParam_Project : str_Filter_ProjectID]
+                }else {
+                    ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                    str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                    str_FilterParam_Strucher : str_Filter_Strucher,
+                    str_FilterParam_PackingList : str_Filter_PackingList,
+                    "is_extra" : !Is_Select_Without_Extra_Pieces]
+                }
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == true || Is_Select_Without_Extra_Pieces == false {
                 ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
                                    str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
                                    str_FilterParam_Strucher : str_Filter_Strucher,
                                    str_FilterParam_PackingList : str_Filter_PackingList,
                                    "is_extra" : !Is_Select_Without_Extra_Pieces]
+            }else if Is_Select_Steel == true || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_bolt" : Is_Select_Bolt]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == true || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_bolt" : !Is_Select_Bolt]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == true || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_released" : Is_Select_Released]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == true || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_released" : !Is_Select_Released]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == true || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_shipped" : Is_Select_Shipped]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == true || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_shipped" : !Is_Select_Shipped]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == true || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_on_site" : Is_Select_Onsite]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == true || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_on_site" : !Is_Select_Onsite]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList]
+            }
+        }else if tag == 2 {
+            let ReportVC = Report_VC as! ReportVC1
+            if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == true {
+               if dropProject.text == "" && dropStructure.text == "" && dropPurchaseOrder.text == "" && dropPackingList.text == "" {
+                    ReportVC.param = ["is_extra" : !Is_Select_Without_Extra_Pieces,str_FilterParam_Project : str_Filter_ProjectID]
+                }else {
+                    ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                    str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                    str_FilterParam_Strucher : str_Filter_Strucher,
+                    str_FilterParam_PackingList : str_Filter_PackingList,
+                    "is_extra" : !Is_Select_Without_Extra_Pieces]
+                }
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == true || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_extra" : !Is_Select_Without_Extra_Pieces]
+            }else if Is_Select_Steel == true || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_bolt" : Is_Select_Bolt]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == true || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_bolt" : !Is_Select_Bolt]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == true || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_released" : Is_Select_Released]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == true || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_released" : !Is_Select_Released]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == true || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_shipped" : Is_Select_Shipped]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == true || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_shipped" : !Is_Select_Shipped]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == true || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_on_site" : Is_Select_Onsite]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == true || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_on_site" : !Is_Select_Onsite]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList]
+            }
+        }else if tag == 3 {
+            let ReportVC = Report_VC as! Report2
+            if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == true {
+                if dropProject.text == "" && dropStructure.text == "" && dropPurchaseOrder.text == "" && dropPackingList.text == "" {
+                    ReportVC.param = ["is_extra" : !Is_Select_Without_Extra_Pieces,str_FilterParam_Project : str_Filter_ProjectID]
+                }else {
+                    ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                    str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                    str_FilterParam_Strucher : str_Filter_Strucher,
+                    str_FilterParam_PackingList : str_Filter_PackingList,
+                    "is_extra" : !Is_Select_Without_Extra_Pieces]
+                }
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == true || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_extra" : !Is_Select_Without_Extra_Pieces]
+            }else if Is_Select_Steel == true || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_bolt" : Is_Select_Bolt]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == true || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_bolt" : !Is_Select_Bolt]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == true || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_released" : Is_Select_Released]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == true || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_released" : !Is_Select_Released]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == true || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_shipped" : Is_Select_Shipped]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == true || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_shipped" : !Is_Select_Shipped]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == true || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_on_site" : Is_Select_Onsite]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == true || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_on_site" : !Is_Select_Onsite]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList]
+            }
+        }else if tag == 4 {
+            let ReportVC = Report_VC as! ReportVC3
+            if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == true {
+               if dropProject.text == "" && dropStructure.text == "" && dropPurchaseOrder.text == "" && dropPackingList.text == "" {
+                    ReportVC.param = ["is_extra" : !Is_Select_Without_Extra_Pieces,str_FilterParam_Project : str_Filter_ProjectID]
+                }else {
+                    ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                    str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                    str_FilterParam_Strucher : str_Filter_Strucher,
+                    str_FilterParam_PackingList : str_Filter_PackingList,
+                    "is_extra" : !Is_Select_Without_Extra_Pieces]
+                }
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == true || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_extra" : !Is_Select_Without_Extra_Pieces]
+            }else if Is_Select_Steel == true || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_bolt" : Is_Select_Bolt]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == true || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_bolt" : !Is_Select_Bolt]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == true || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_released" : Is_Select_Released]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == true || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_released" : !Is_Select_Released]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == true || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_shipped" : Is_Select_Shipped]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == true || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_shipped" : !Is_Select_Shipped]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == true || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_on_site" : Is_Select_Onsite]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == true || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList,
+                                   "is_on_site" : !Is_Select_Onsite]
+            }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == false {
+                ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                                   str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                                   str_FilterParam_Strucher : str_Filter_Strucher,
+                                   str_FilterParam_PackingList : str_Filter_PackingList]
+            }
+        }else if tag == 5 {
+            let ReportVC = Report_VC as! ReportVC4
+            if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == false || Is_Select_Without_Extra_Pieces == true {
+                if dropProject.text == "" && dropStructure.text == "" && dropPurchaseOrder.text == "" && dropPackingList.text == "" {
+                    ReportVC.param = ["is_extra" : !Is_Select_Without_Extra_Pieces,str_FilterParam_Project : str_Filter_ProjectID]
+                }else {
+                    ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
+                    str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,
+                    str_FilterParam_Strucher : str_Filter_Strucher,
+                    str_FilterParam_PackingList : str_Filter_PackingList,
+                    "is_extra" : !Is_Select_Without_Extra_Pieces]
+                }
             }else if Is_Select_Steel == false || Is_Select_Bolt == false || Is_Select_Released == false || Is_Select_NotReleased == false || Is_Select_Shipped == false || Is_Select_NotShipped == false || Is_Select_NotOnsite == false || Is_Select_Onsite == false || Is_Select_With_Extra_Pieces == true || Is_Select_Without_Extra_Pieces == false {
                 ReportVC.param = [str_FilterParam_Project : str_Filter_ProjectID,
                                    str_FilterParam_PurchaseOrder : str_Filter_PurchaseOrder,

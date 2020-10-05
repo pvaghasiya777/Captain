@@ -131,7 +131,7 @@ class MasterServiceCall: NSObject
                     if statusCode == 200 {
                         let results = try? JSONDecoder().decode([MasterPurchseListModel].self, from: responseObject)
                         Purchase_VC.Arr_PurchaseDetail = results!
-                        print(Purchase_VC.Arr_PurchaseDetail)
+                        Purchase_VC.lbl_ShowPageNum.text = "Showing 1 to \(results!.count) of \(results!.count) results"
                         Purchase_VC.tbl_Purchase.reloadData()
                     }else {
                         Utils.showToastWithMessageAtCenter(message: "Invalid token.")
@@ -301,8 +301,10 @@ class MasterServiceCall: NSObject
                     print("json error : \(jsonErr.localizedDescription)")
                 }
             })
-            { (error) in
-                SVProgressHUD.dismiss()
+            { (error, statusCode) in
+                if statusCode == 200 {
+                    Utils.showToastWithMessageAtCenter(message: "Email sent successfully")
+                }
                 print(error.localizedDescription)
             }
         }else {
@@ -385,8 +387,11 @@ class MasterServiceCall: NSObject
                     print("json error : \(jsonErr.localizedDescription)")
                 }
             })
-            { (error) in
+            { (error, statusCode) in
                 SVProgressHUD.dismiss()
+                if statusCode == 200 {
+                    Utils.showToastWithMessageAtCenter(message: "Email sent successfully")
+                }
                 print(error.localizedDescription)
             }
         }else {
@@ -397,7 +402,7 @@ class MasterServiceCall: NSObject
         if AppDelegate.NetworkRechability(){
             SVProgressHUD.show(withStatus: "Loading...")
             AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers:["Authorization": DEFAULTS.Get_TOKEN()], params: param as! [String : String], success: { (responseObject,statusCode,jsonObject) in
-                print(jsonObject)
+//                print(jsonObject)
                 if statusCode == 200 {
                     if VC_Tag == 1 {
                         let Filter_VC = ViewController as! DFiltersVC
@@ -406,31 +411,31 @@ class MasterServiceCall: NSObject
                             DEFAULTS.Set_FilterProject(FilterData: results ?? [])
                             Filter_VC.Arr_Project = results!
                             Filter_VC.tblproject.reloadData()
-                            print(DEFAULTS.Get_FilterProject())
+                   //         print(DEFAULTS.Get_FilterProject())
                         }else if tag == 2 {
                             let results = try? JSONDecoder().decode([FilterPurchaseOrderModel].self, from: responseObject)
                             DEFAULTS.Set_FilterPurchaseOrder(FilterData: results ?? [])
                             Filter_VC.Arr_PurchaseOrder = results!
                             Filter_VC.tblPurchaseOrder.reloadData()
-                            print(DEFAULTS.Get_FilterPurchaseOrder())
+//                            print(DEFAULTS.Get_FilterPurchaseOrder())
                         }else if tag == 3 {
                             let results = try? JSONDecoder().decode([FilterStructureModel].self, from: responseObject)
                             DEFAULTS.Set_FilterStrucher(FilterData: results ?? [])
                             Filter_VC.Arr_Strucher = results!
                             Filter_VC.tblStructure.reloadData()
-                            print(DEFAULTS.Get_FilterStrucher())
+                           // print(DEFAULTS.Get_FilterStrucher())
                         }else if tag == 4 {
                             let results = try? JSONDecoder().decode([FilterPackingListModel].self, from: responseObject)
                             DEFAULTS.Set_FilterPackingList(FilterData: results ?? [])
                             Filter_VC.Arr_PackingList = results!
                             Filter_VC.tblPackingList.reloadData()
-                            print(DEFAULTS.Get_FilterPackingList())
+                            //print(DEFAULTS.Get_FilterPackingList())
                         }else if tag == 5 {
                             let results = try? JSONDecoder().decode(FilterMarkModel.self, from: responseObject)
                             DEFAULTS.Set_FilterMark(FilterData: results?.results! ?? [])
                             Filter_VC.Arr_Mark = results!.results!
                             Filter_VC.tblMark.reloadData()
-                            print(DEFAULTS.Get_FilterMark())
+                           // print(DEFAULTS.Get_FilterMark())
                         }
                     }else {
                         let Filter_VC = ViewController as! ReportsFiltersVC
@@ -438,30 +443,29 @@ class MasterServiceCall: NSObject
                             let results = try? JSONDecoder().decode([FilterProjectModel].self, from: responseObject)
                             DEFAULTS.Set_FilterProject(FilterData: results ?? [])
                             Filter_VC.Arr_Project = results!
-                            print(DEFAULTS.Get_FilterProject())
+                           // print(DEFAULTS.Get_FilterProject())
                         }else if tag == 2 {
                             let results = try? JSONDecoder().decode([FilterPurchaseOrderModel].self, from: responseObject)
                             DEFAULTS.Set_FilterPurchaseOrder(FilterData: results ?? [])
                             Filter_VC.Arr_PurchaseOrder = results!
-                            print(DEFAULTS.Get_FilterPurchaseOrder())
+                           // print(DEFAULTS.Get_FilterPurchaseOrder())
                         }else if tag == 3 {
                             let results = try? JSONDecoder().decode([FilterStructureModel].self, from: responseObject)
                             DEFAULTS.Set_FilterStrucher(FilterData: results ?? [])
                             Filter_VC.Arr_Strucher = results!
-                            print(DEFAULTS.Get_FilterStrucher())
+                           // print(DEFAULTS.Get_FilterStrucher())
                         }else if tag == 4 {
                             let results = try? JSONDecoder().decode([FilterPackingListModel].self, from: responseObject)
                             DEFAULTS.Set_FilterPackingList(FilterData: results ?? [])
                             Filter_VC.Arr_PackingList = results!
-                            print(DEFAULTS.Get_FilterPackingList())
+                          //  print(DEFAULTS.Get_FilterPackingList())
                         }else if tag == 5 {
                             let results = try? JSONDecoder().decode(FilterMarkModel.self, from: responseObject)
                             DEFAULTS.Set_FilterMark(FilterData: results?.results! ?? [])
                             Filter_VC.Arr_Mark = results!.results!
-                            print(DEFAULTS.Get_FilterMark())
+                           // print(DEFAULTS.Get_FilterMark())
                         }
                     }
-                    
                     SVProgressHUD.dismiss()
                 }
                 else {
@@ -469,7 +473,7 @@ class MasterServiceCall: NSObject
                     SVProgressHUD.dismiss()
                 }
             })
-            { (error) in
+            { (error,statuscode) in
                 SVProgressHUD.dismiss()
                 print(error.localizedDescription)
             }

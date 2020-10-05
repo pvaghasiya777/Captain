@@ -7,12 +7,20 @@
 //
 
 import UIKit
-
+import QuickLook
 class PlinputsVc: UIViewController
 {
     @IBOutlet var menu_Barbutton: UIBarButtonItem?
     @IBOutlet weak var tbl_data: UITableView!
+    @IBOutlet weak var lbl_ShowPage: UILabel!
     @IBOutlet weak var btn_Filter: UIButton!
+    
+    @IBOutlet weak var btn_Previous: UIButton!
+    @IBOutlet weak var btn_Next: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count: UILabel!
+    @IBOutlet weak var lbl_PageNum: UILabel!
+    public var docViewController = QLPreviewController()
+    public var arrDocuments = [NSURL]()
     var Str_NavigateFrom = String()
     var Str_ID = String()
     var Arr_PLInputs_Data : NSMutableArray = NSMutableArray()
@@ -25,8 +33,7 @@ class PlinputsVc: UIViewController
         super.viewDidLoad()
         self.Initialization()
     }
-    override func viewWillAppear(_ animated: Bool)
-    {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Packages"
     }
@@ -35,8 +42,11 @@ class PlinputsVc: UIViewController
         self.navigationItem.title = ""
         self.revealViewController()?.delegate = nil
     }
-    
     func Initialization() {
+        self.arrDocuments = []
+        self.docViewController = QLPreviewController()
+        self.docViewController.dataSource = self
+        self.docViewController.reloadData()
         if Str_NavigateFrom == "Drawin Edit" {
             ServiceCall.shareInstance.Get_PLreports(ViewController: self, Api_Str: Api_Urls.GET_API_plReports, param: ["shop_drawing_id" : Str_ID])
         } else if Str_NavigateFrom == "Project" {
@@ -48,6 +58,9 @@ class PlinputsVc: UIViewController
             self.Load_Dashboard()
         }
         self.btn_Filter.addTarget(self, action: #selector(Get_Filter_popUp(_:)), for: .touchUpInside)
+        btn_Next.addTarget(self, action: #selector(btn_NextClick(_:)), for: .touchUpInside)
+        btn_Previous.addTarget(self, action: #selector(btn_PreviousClick(_:)), for: .touchUpInside)
+        
     }
     func Load_Dashboard() {
         self.Home_Barbutton = Utils.Get_Navigation_Bar_Button(str_Iconname: "ic_dashboard", action: #selector(SWRevealViewController.revealToggle(_:)), viewController: self.revealViewController())
@@ -88,9 +101,34 @@ class PlinputsVc: UIViewController
                 } else {
                     print("Filter PopUp Dismiss")
                 }
-                
         }
         self.KLC_obj?.show(withRoot: self.view)
+    }
+    
+    
+    @objc func btn_NextClick(_ sender: UIButton) {
+        
+    }
+    @objc func btn_PreviousClick(_ sender: UIButton) {
+        
+    }
+    func storeAndShare(withURLString: String) {
+        guard let url = URL(string: withURLString) else { return }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            let tmpURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
+            do {
+                try data.write(to: tmpURL)
+            } catch {
+                print(error)
+            }
+            DispatchQueue.main.async {
+                self.arrDocuments = [tmpURL as! NSURL]
+                self.docViewController.reloadData()
+                self.present(self.docViewController, animated: true, completion: nil)
+            }
+        }.resume()
     }
 }
 extension PlinputsVc : UITableViewDelegate,UITableViewDataSource {
@@ -117,7 +155,7 @@ extension PlinputsVc : UITableViewDelegate,UITableViewDataSource {
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 70
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let Next = Config.StoryBoard.instantiateViewController(identifier: "PLinputDetails") as! PLinputDetails
@@ -140,13 +178,18 @@ extension PlinputsVc : UITableViewDelegate,UITableViewDataSource {
                 completion(true)
                 print("View Click")
             }
+            let viewExcelSheet = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
+                completion(true)
+                self.storeAndShare(withURLString: Api_Urls.GET_API_plReports + "\(String((self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).id))/export/")
+            }
             viewAction.image = UIImage(named: "ic_eye")
             viewAction.backgroundColor = Config.bgColor
-            return UISwipeActionsConfiguration(actions: [viewAction])
+            viewExcelSheet.image = UIImage(named: "ic_excel")
+            viewExcelSheet.backgroundColor = Config.bgColor
+            return UISwipeActionsConfiguration(actions: [viewExcelSheet,viewAction])
         }
         return UISwipeActionsConfiguration(actions: [])
     }
-        
 }
 //MARK:- SWRevealViewController Methods
 extension PlinputsVc : SWRevealViewControllerDelegate {
@@ -160,5 +203,20 @@ extension PlinputsVc : SWRevealViewControllerDelegate {
         print(position)
         print("HomeVC")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
+    }
+}
+extension PlinputsVc: QLPreviewControllerDataSource {
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("view was cancelled")
+        dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: Document Viewer Delegate methods
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return self.arrDocuments.count
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.arrDocuments[index] as QLPreviewItem
     }
 }

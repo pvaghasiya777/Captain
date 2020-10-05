@@ -22,13 +22,14 @@ class ServiceCall: NSObject
                 if statusCode == 200 {
                     let result = try? JSONDecoder().decode([MasterProjectModel].self, from: responseObject)
                     Project_VC.arrProject = result!
+                    Project_VC.lbl_ShowPageNum.text = "Showing 1 to \(result!.count) of \(result!.count) results"
                     Project_VC.CollectionView_Project.reloadData()
                     Project_VC.tbl_Project.reloadData()
                 }else {
                     Utils.showToastWithMessageAtCenter(message: "")
                 }
             })
-            { (error) in
+            { (error,statuscode) in
                 SVProgressHUD.dismiss()
                 print(error.localizedDescription)
             }
@@ -48,6 +49,7 @@ class ServiceCall: NSObject
                         let results = try JSONDecoder().decode(DrawingModel.self, from: responseObject)
                         print(results)
                         vc.arrDrawing = results.results
+                        vc.lbl_ShowPageNum_Count.text = "Showing 1 to \(results.results.count) of \(results.count) results"
                         vc.tbl_Drawing.reloadData()
                     }else {
                         print("Error")
@@ -143,7 +145,7 @@ class ServiceCall: NSObject
                     Utils.showToastWithMessageAtCenter(message: (JSONObject.object as! NSDictionary).value(forKey: "detail") as! String)
                 }
             })
-            { (error) in
+            { (error,statuscode) in
                 SVProgressHUD.dismiss()
                 print(error.localizedDescription)
             }
@@ -165,6 +167,7 @@ class ServiceCall: NSObject
                           OnsiteStatus_VC.Arr_onSiteStatusData = obj_onSiteStatus.Load_Data_To_Array(arr_Data: Arr_Data)
                           OnsiteStatus_VC.Str_NextLink = ((JSONObject.object as! NSDictionary).value(forKey: "next")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "next") as! String
                           OnsiteStatus_VC.Str_PreviousLink = ((JSONObject.object as! NSDictionary).value(forKey: "previous")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "previous") as! String
+                        OnsiteStatus_VC.lbl_ShowPageNum.text = "Showing 1 to \(Arr_Data.count) of \(((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int)) results"
                           OnsiteStatus_VC.tbl_data.reloadData()
                           print(OnsiteStatus_VC.Arr_onSiteStatusData)
                     } else {
@@ -173,6 +176,7 @@ class ServiceCall: NSObject
                           ShippedStatus_VC.Arr_onSiteStatusData = obj_onSiteStatus.Load_Data_To_Array(arr_Data: Arr_Data)
                           ShippedStatus_VC.Str_NextLink = ((JSONObject.object as! NSDictionary).value(forKey: "next")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "next") as! String
                           ShippedStatus_VC.Str_PreviousLink = ((JSONObject.object as! NSDictionary).value(forKey: "previous")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "previous") as! String
+                        ShippedStatus_VC.lbl_ShowPageNum.text = "Showing 1 to \(Arr_Data.count) of \(((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int)) results"
                           ShippedStatus_VC.tbl_data.reloadData()
                           print(ShippedStatus_VC.Arr_onSiteStatusData)
                     }
@@ -181,7 +185,7 @@ class ServiceCall: NSObject
                 }
                 
             })
-            { (error) in
+            { (error,statuscode) in
                 SVProgressHUD.dismiss()
                 print(error.localizedDescription)
             }
@@ -212,7 +216,7 @@ class ServiceCall: NSObject
                 }
                 
             })
-            { (error) in
+            { (error,statuscode) in
                 SVProgressHUD.dismiss()
                 print(error.localizedDescription)
             }
@@ -241,6 +245,7 @@ class ServiceCall: NSObject
                         Plinputs_VC.Arr_PLInputs_Data = obj_Package.Load_Data_To_Array(arr_Data: Arr_Data)
                         Plinputs_VC.Str_NextLink = ((JSONObject.object as! NSDictionary).value(forKey: "next")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "next") as! String
                         Plinputs_VC.Str_PreviousLink = ((JSONObject.object as! NSDictionary).value(forKey: "previous")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "previous") as! String
+                        Plinputs_VC.lbl_ShowPage.text = "Showing 1 to \(Arr_Data.count) of \(((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int)) results"
                         Plinputs_VC.tbl_data.reloadData()
     //                    print(PackingList_VC.Arr_Package_Data)
                     } else {
@@ -251,7 +256,7 @@ class ServiceCall: NSObject
                 }
                 
             })
-            { (error) in
+            { (error,statuscode) in
                 SVProgressHUD.dismiss()
                 print(error.localizedDescription)
             }
@@ -324,6 +329,7 @@ class ServiceCall: NSObject
                         PackingList_VC.Str_NextLink = ((JSONObject.object as! NSDictionary).value(forKey: "next")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "next") as! String
                         PackingList_VC.Str_PreviousLink = ((JSONObject.object as! NSDictionary).value(forKey: "previous")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "previous") as! String
                         PackingList_VC.Arr_Packing_Data.reversed()
+                        PackingList_VC.lbl_ShowPageNum.text = "Showing 1 to \(Arr_Data.count) of \(((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int)) results"
                         PackingList_VC.tbl_data.reloadData()
                         print(PackingList_VC.Arr_Packing_Data)
                     } else {
@@ -336,7 +342,7 @@ class ServiceCall: NSObject
                 }
                 
             })
-            { (error) in
+            { (error,statuscode) in
                 SVProgressHUD.dismiss()
                 print(error.localizedDescription)
             }
@@ -370,7 +376,7 @@ class ServiceCall: NSObject
                     Utils.showToastWithMessageAtCenter(message: "")
                 }
             })
-            { (error) in
+            { (error,statuscode) in
                 SVProgressHUD.dismiss()
                 print(error.localizedDescription)
             }
@@ -458,7 +464,7 @@ class ServiceCall: NSObject
                     Utils.showToastWithMessageAtCenter(message: "")
                 }
             })
-            { (error) in
+            { (error,statuscode) in
                 SVProgressHUD.dismiss()
                 print(error.localizedDescription)
             }

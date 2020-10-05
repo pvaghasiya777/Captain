@@ -17,8 +17,7 @@ class Utils: NSObject,SWRevealViewControllerDelegate
         SKActivityIndicator.spinnerStyle(.spinningFadeCircle)
         SKActivityIndicator.spinnerColor(.darkGray)
     }
-    class func set_Badge(Count : Int)  -> UILabel
-    {
+    class func set_Badge(Count : Int)  -> UILabel {
         let badgeCount = UILabel(frame: CGRect(x: 0, y: 0, width: 20, height: 20)),()
         badgeCount.layer.borderColor = UIColor.clear.cgColor
         badgeCount.layer.borderWidth = 2
@@ -61,8 +60,7 @@ class Utils: NSObject,SWRevealViewControllerDelegate
         //        barButton.tintColor = UIColor.black
         return barButton
     }
-    class func Logout_Reset_Data()
-    {
+    class func Logout_Reset_Data() {
         DEFAULTS.set_TOKEN(token: "")
         //        DEFAULTS.Set_UserPermission(UserData: GetPermissionModel)
         DEFAULTS.Set_AddressStruct(UserData: [])

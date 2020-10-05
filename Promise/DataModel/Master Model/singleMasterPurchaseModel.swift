@@ -14,6 +14,7 @@ struct SingleMasterPurchaseModel : Codable {
     let project_id : Int?
     let po_type_id : Int?
     let date : String?
+    let shipper_details : String?
     let delivery_date : String?
     let address_id : Int?
     let weight_uom : String?
@@ -47,6 +48,7 @@ struct SingleMasterPurchaseModel : Codable {
         case packing_count = "packing_count"
         case structure_count = "structure_count"
         case is_active = "is_active"
+        case shipper_details = "shipper_details"
         case created_by = "created_by"
         case currency_id = "currency_id"
         case purchase_lines = "purchase_lines"
@@ -70,6 +72,7 @@ struct SingleMasterPurchaseModel : Codable {
         packing_count = try values.decodeIfPresent(Int.self, forKey: .packing_count)
         structure_count = try values.decodeIfPresent(Int.self, forKey: .structure_count)
         is_active = try values.decodeIfPresent(Bool.self, forKey: .is_active)
+        shipper_details =  try values.decodeIfPresent(String.self, forKey: .shipper_details)
         created_by = try values.decodeIfPresent(Int.self, forKey: .created_by)
         currency_id = try values.decodeIfPresent(Int.self, forKey: .currency_id)
         purchase_lines = try values.decodeIfPresent([Purchase_lines].self, forKey: .purchase_lines)

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Alamofire
 class Report2: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var tbl_POPositionwiseReport: UITableView!
@@ -17,6 +17,12 @@ class Report2: UIViewController {
     @IBOutlet weak var tbl_StructurewiseReport_2: UITableView!
     @IBOutlet weak var tbl_StructurewiseReport_3: UITableView!
     @IBOutlet weak var tbl_StructurewiseReport_4: UITableView!
+    
+    @IBOutlet weak var tbl_IdentCodewiseReport: UITableView!
+    @IBOutlet weak var tbl_IdentCodewiseReport_1: UITableView!
+    @IBOutlet weak var view_IdentCodewiseReport: UIView!
+    @IBOutlet weak var btn_IdentCodewiseReport_1: UIButton!
+    @IBOutlet weak var btn_IdentCodewiseReport_2: UIButton!
     // View
     @IBOutlet weak var view_POPositionwiseReport: UIView!
     @IBOutlet weak var view_StructurewiseReport: UIView!
@@ -28,6 +34,26 @@ class Report2: UIViewController {
     @IBOutlet weak var btn_StructurewiseReport_3: UIButton!
     @IBOutlet weak var btn_StructurewiseReport_4: UIButton!
     @IBOutlet weak var btn_StructurewiseReport_5: UIButton!
+    //Show Pagination Number
+    @IBOutlet weak var lbl_POPositionPageNumber: UILabel!
+    @IBOutlet weak var lbl_IdentCodewiseNumber: UILabel!
+    @IBOutlet weak var lbl_StrucherWiseReport: UILabel!
+    
+    @IBOutlet weak var btn_Previous_POPositionwiseReport: UIButton!
+    @IBOutlet weak var btn_Next_POPositionwiseReport: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count_POPositionwiseReport: UILabel!
+    @IBOutlet weak var lbl_PageNum_POPositionwiseReport: UILabel!
+    
+    @IBOutlet weak var btn_Previous_StructurewiseReport: UIButton!
+    @IBOutlet weak var btn_Next_StructurewiseReport: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count_StructurewiseReport: UILabel!
+    @IBOutlet weak var lbl_PageNum_StructurewiseReport: UILabel!
+    
+    @IBOutlet weak var btn_Previous_IdentCodewiseReport: UIButton!
+    @IBOutlet weak var btn_Next_IdentCodewiseReport: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count_IdentCodewiseReport: UILabel!
+    @IBOutlet weak var lbl_PageNum_IdentCodewiseReport: UILabel!
+    
     //MARK:- Variable
     var pageName = String()
     var Arr_PoPositionReport = [POPositionWiseReportModel]()
@@ -35,53 +61,116 @@ class Report2: UIViewController {
     var Arr_StrucherWiseReport : NSMutableArray = NSMutableArray()
     var Str_markWiseReportNext = ""
     var Str_markWiseReportPrevious = ""
-    
+    var param : NSDictionary = NSDictionary()
+    var PageCount = 1
     //MARK:-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.Initlization()
     }
     func Initlization(){
+        barbuttonheader()
         if pageName == "PO Positionwise Report" {
             title = "PO Positionwise Report"
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_POPositionReport, params: ["project_id":"1"], tag: 6)
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_POPositionReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any] , tag: 6)
             tbl_POPositionwiseReport.isHidden = false
             tbl_POPositionwiseReport_1.isHidden = true
             view_StructurewiseReport.isHidden = true
             view_POPositionwiseReport.isHidden = false
+            view_IdentCodewiseReport.isHidden = true
             tbl_StructurewiseReport.isHidden = true
             tbl_StructurewiseReport_1.isHidden = true
             tbl_StructurewiseReport_2.isHidden = true
             tbl_StructurewiseReport_3.isHidden = true
             tbl_StructurewiseReport_4.isHidden = true
+            btn_Next_POPositionwiseReport.addTarget(self, action: #selector(btn_Next_POPositionwiseReport(_:)), for: .touchUpInside)
+            btn_Previous_POPositionwiseReport.addTarget(self, action: #selector(btn_Previous_POPositionwiseReport(_:)), for: .touchUpInside)
+            
         } else if pageName == "Ident Codewise Report"{
-            //load array
             title = "Ident Codewise Report"
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_IdentCodeWiseReport, params: ["project_id":"1"], tag: 7)
-            tbl_POPositionwiseReport.isHidden = false
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_IdentCodeWiseReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any] , tag: 7)
+            self.tbl_IdentCodewiseReport.isHidden = false
+            self.tbl_IdentCodewiseReport_1.isHidden = false
+            tbl_POPositionwiseReport.isHidden = true
             tbl_POPositionwiseReport_1.isHidden = true
             view_StructurewiseReport.isHidden = true
-            view_POPositionwiseReport.isHidden = false
+            view_POPositionwiseReport.isHidden = true
+            view_IdentCodewiseReport.isHidden = false
             tbl_StructurewiseReport.isHidden = true
             tbl_StructurewiseReport_1.isHidden = true
             tbl_StructurewiseReport_2.isHidden = true
             tbl_StructurewiseReport_3.isHidden = true
             tbl_StructurewiseReport_4.isHidden = true
+
+            btn_Next_IdentCodewiseReport.addTarget(self, action: #selector(btn_Next_IdentCodewiseReport(_:)), for: .touchUpInside)
+            btn_Previous_IdentCodewiseReport.addTarget(self, action: #selector(btn_IdentCodewiseReport(_:)), for: .touchUpInside)
         } else if pageName == "Structurewise Report" {
             title = "Structurewise Report"
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_StrucherWiseReport, params: ["project_id":"1"], tag: 8)
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_StrucherWiseReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any], tag: 8)
             tbl_POPositionwiseReport.isHidden = true
             tbl_POPositionwiseReport_1.isHidden = true
             view_StructurewiseReport.isHidden = false
             view_POPositionwiseReport.isHidden = true
+            view_IdentCodewiseReport.isHidden = true
             tbl_StructurewiseReport.isHidden = false
             tbl_StructurewiseReport_1.isHidden = true
             tbl_StructurewiseReport_2.isHidden = true
             tbl_StructurewiseReport_3.isHidden = true
             tbl_StructurewiseReport_4.isHidden = true
+            btn_Next_StructurewiseReport.addTarget(self, action: #selector(btn_Next_StructurewiseReport(_:)), for: .touchUpInside)
+            btn_Previous_StructurewiseReport.addTarget(self, action: #selector(btn_Previous_StructurewiseReport(_:)), for: .touchUpInside)
         }
     }
-    //MARK:-
+    func barbuttonheader() {
+        let rightButtonPDF: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_pdf"),  style: .plain, target: self, action: #selector(barbtn_PDF(_:)))
+        let rightButtonExcel: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_excel"),  style: .plain, target: self, action: #selector(barbtn_excel(_:)))
+        let rightButtonMail: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_message"),  style: .plain, target: self, action: #selector(barbtn_Mail(_:)))
+        rightButtonMail.tintColor = App_Colors.ThemBlue
+        rightButtonPDF.tintColor = App_Colors.ThemBlue
+        rightButtonExcel.tintColor = App_Colors.ThemBlue
+        self.navigationItem.rightBarButtonItems  = [rightButtonMail,rightButtonPDF,rightButtonExcel]
+    }
+    
+    @IBAction func btn_IdentCodewiseReport(_ sender: UIButton) {
+       if sender.tag == 8 {
+           tbl_IdentCodewiseReport.isHidden = false
+           tbl_IdentCodewiseReport_1.isHidden = true
+        self.tbl_IdentCodewiseReport.reloadData()
+       } else if sender.tag == 9 {
+           tbl_IdentCodewiseReport.isHidden = true
+           tbl_IdentCodewiseReport_1.isHidden =  false
+        self.tbl_IdentCodewiseReport_1.reloadData()
+       }
+    }
+    @objc func barbtn_Mail(_ sender: UIBarButtonItem) {
+        self.SentMail(report_type: "mail", Param: param)
+    }
+    @objc func barbtn_PDF(_ sender: UIBarButtonItem) {
+       self.SentMail(report_type: "pdf", Param: param)
+    }
+    @objc func barbtn_excel(_ sender: UIBarButtonItem) {
+        self.SentMail(report_type: "excel", Param: param)
+    }
+    func SentMail(report_type : String,Param : NSDictionary) {
+        if param.count == 0 {
+             param = ["project_id":"1","report_type" : report_type]
+        }else {
+            let tempDic : NSMutableDictionary = NSMutableDictionary(dictionary: param)
+            tempDic.setValue(report_type, forKey: "report_type")
+            param = tempDic
+        }
+        switch pageName {
+        case "PO Positionwise Report":
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_POPositionReport, params: param as! Parameters, tag: 6)
+        case "Ident Codewise Report" :
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_IdentCodeWiseReport, params: param as! Parameters, tag: 7)
+        case "Structurewise Report" :
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_StrucherWiseReport, params: param as! Parameters, tag: 8)
+        default:
+            print(pageName)
+        }
+    }
+    //MARK:- Button Click Event
     @IBAction func btn_POPositionwiseReportNum(_ sender: UIButton) {
         if sender.tag == 1 {
             tbl_POPositionwiseReport.isHidden = false
@@ -131,6 +220,62 @@ class Report2: UIViewController {
             self.tbl_StructurewiseReport_4.reloadData()
         }
     }
+    //MARK:- Button next previous Click
+    @objc func btn_Next_POPositionwiseReport(_ sender: UIButton) {
+        if Arr_PoPositionReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_PoPositionReport[0].next!, params: [:],tag: 6)
+            self.PageCount = PageCount + 1
+            self.lbl_PageNum_POPositionwiseReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
+    @objc func btn_Previous_POPositionwiseReport(_ sender: UIButton) {
+     
+         if Arr_PoPositionReport[0].next != nil {
+             ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_PoPositionReport[0].next!, params: [:],tag: 6)
+             self.PageCount = PageCount - 1
+             self.lbl_PageNum_POPositionwiseReport.text = String(describing: PageCount)
+         }else {
+             Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+         }
+     }
+    @objc func btn_Next_StructurewiseReport(_ sender: UIButton) {
+        if Str_markWiseReportNext != "" {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Str_markWiseReportNext, params: [:],tag: 8)
+            self.PageCount = PageCount + 1
+            self.lbl_PageNum_StructurewiseReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
+    @objc func btn_Previous_StructurewiseReport(_ sender: UIButton) {
+        if Str_markWiseReportPrevious != "" {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Str_markWiseReportPrevious, params: [:],tag: 8)
+            self.PageCount = PageCount - 1
+            self.lbl_PageNum_StructurewiseReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Previous Data not Available")
+        }
+    }
+    @objc func btn_Next_IdentCodewiseReport(_ sender: UIButton) {
+        if Arr_IdentCodeReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_IdentCodeReport[0].next!, params: [:],tag: 7)
+            self.PageCount = PageCount + 1
+            self.lbl_PageNum_IdentCodewiseReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
+    @objc func btn_Previous_IdentCodewiseReport(_ sender: UIButton) {
+        if Arr_IdentCodeReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_IdentCodeReport[0].next!, params: [:],tag: 7)
+            self.PageCount = PageCount - 1
+            self.lbl_PageNum_IdentCodewiseReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
 }
 extension Report2 : UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -150,11 +295,14 @@ extension Report2 : UITableViewDataSource {
                 return Arr_StrucherWiseReport.count
             } else if tableView == tbl_StructurewiseReport_2 {
                 return Arr_StrucherWiseReport.count
-                
             } else if tableView == tbl_StructurewiseReport_3 {
                 return Arr_StrucherWiseReport.count
-            } else  {
+            } else  if tableView == tbl_StructurewiseReport_4{
                 return Arr_StrucherWiseReport.count
+            } else if tableView == tbl_IdentCodewiseReport {
+                return (Arr_IdentCodeReport.count == 0) ? Arr_IdentCodeReport.count : Arr_IdentCodeReport[0].results!.count
+            }else {
+                  return (Arr_IdentCodeReport.count == 0) ? Arr_IdentCodeReport.count : Arr_IdentCodeReport[0].results!.count
             }
         }
     }
@@ -213,13 +361,31 @@ extension Report2 : UITableViewDataSource {
                 cell.DisplayCell(Arr_Data: Arr_StrucherWiseReport, indexpath: indexPath)
                 return cell
             }
-        } else {
+        } else if tableView == tbl_StructurewiseReport_4{
             if indexPath.section == 0 {
                 let cell : StructurewiseReportHeadercell4 = tableView.dequeueReusableCell(withIdentifier: "StructurewiseReportHeadercell4") as! StructurewiseReportHeadercell4
                 return cell
             } else {
                 let cell : StructurewiseReportcell4 = tableView.dequeueReusableCell(withIdentifier: "StructurewiseReportcell4") as! StructurewiseReportcell4
                 cell.DisplayCell(Arr_Data: Arr_StrucherWiseReport, indexpath: indexPath)
+                return cell
+            }
+        } else if tableView == tbl_IdentCodewiseReport{
+            if indexPath.section == 0 {
+                let cell : IdentCodewiseReportHeaderCell = tableView.dequeueReusableCell(withIdentifier: "IdentCodewiseReportHeaderCell") as! IdentCodewiseReportHeaderCell
+                return cell
+            } else {
+                let cell : IdentCodewiseReportCell = tableView.dequeueReusableCell(withIdentifier: "IdentCodewiseReportCell") as! IdentCodewiseReportCell
+                cell.DisplayCell(Arr_Data: Arr_IdentCodeReport[0].results!, indexpath: indexPath)
+                return cell
+            }
+        }else {
+            if indexPath.section == 0 {
+                let cell : IdentCodewiseReportHeaderCell1 = tableView.dequeueReusableCell(withIdentifier: "IdentCodewiseReportHeaderCell1") as! IdentCodewiseReportHeaderCell1
+                return cell
+            } else {
+                let cell : IdentCodewiseReportCell1 = tableView.dequeueReusableCell(withIdentifier: "IdentCodewiseReportCell1") as! IdentCodewiseReportCell1
+               cell.DisplayCell(Arr_Data: Arr_IdentCodeReport[0].results!, indexpath: indexPath)
                 return cell
             }
         }

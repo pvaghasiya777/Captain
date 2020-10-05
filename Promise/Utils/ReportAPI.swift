@@ -22,6 +22,7 @@ class ReportAPI: NSObject
                             let results = try? JSONDecoder().decode(DetailFigureReportModel.self, from: responseObject)
                             print(results!)
                             Report_VC.Arr_DetailFigureReport = [results!]
+                            Report_VC.lbl_DetailFPageNum.text = "Showing 1 to \(results!.results!.count) of  \(String(describing: results!.count!)) results"
                             Report_VC.tbl_DetailFigureReport.reloadData()
                         }else if tag == 2 {
                             if ((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int) != 0 {
@@ -36,12 +37,14 @@ class ReportAPI: NSObject
                                 Report_VC.Arr_MarkWiseReport = obj_Report.Load_Data_To_Array(arr_Data: Arr_Data)
                                 Report_VC.Str_markWiseReportNext = ((JSONObject.object as! NSDictionary).value(forKey: "next")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "next") as! String
                                 Report_VC.Str_markWiseReportPrevious = ((JSONObject.object as! NSDictionary).value(forKey: "previous")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "previous") as! String
+                                Report_VC.lbl_MarkwisePageNum.text = "Showing 1 to \(Arr_Data.count) of \(((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int)) results"
                                 Report_VC.tbl_MarkwiseReport.reloadData()
                             }
                         }else if tag == 3 {
                             let results = try? JSONDecoder().decode(MarkWiseCumulativeReportModel.self, from: responseObject)
                             print(results!)
                             Report_VC.Arr_MarkWiseCumulativeReport = [results!]
+                            Report_VC.lbl_PageNum_MarkwiseCumulativeReport.text = "Showing 1 to \(results!.results!.count) of\(String(describing: results!.count!)) results"
                             Report_VC.tbl_MarkwiseCumulativeReport.reloadData()
                         }
                     }else if tag == 4 || tag == 5 {
@@ -50,11 +53,13 @@ class ReportAPI: NSObject
                             let results = try? JSONDecoder().decode(packageWiseReportModel.self, from: responseObject)
                             print(results!)
                             Report_VC.Arr_PackagWiseReport = [results!]
+                            Report_VC.lbl_PackWiseNumber.text = "Showing 1 to \(results!.results!.count) of  \(String(describing: results!.count!)) results"
                             Report_VC.tbl_PackagewiseReport.reloadData()
                         }else if tag == 5 {
                             let results = try? JSONDecoder().decode(PackingListReportModel.self, from: responseObject)
                             print(results!)
                             Report_VC.Arr_PackingListReport = [results!]
+                            Report_VC.lbl_PackingListNum.text = "Showing 1 to \(results!.results!.count) of  \(String(describing: results!.count!)) results"
                             Report_VC.tbl_PackingListReport.reloadData()
                         }
                     }else if tag == 6 || tag == 7 || tag == 8 {
@@ -63,12 +68,14 @@ class ReportAPI: NSObject
                             let results = try? JSONDecoder().decode(POPositionWiseReportModel.self, from: responseObject)
                             print(results!)
                             Report_VC.Arr_PoPositionReport = [results!]
+                            Report_VC.lbl_POPositionPageNumber.text = "Showing 1 to \(results!.results!.count) of  \(String(describing: results!.count!)) results"
                             Report_VC.tbl_POPositionwiseReport.reloadData()
                         }else if tag == 7 {
                             let results = try? JSONDecoder().decode(IdentCodewiseReportModel.self, from: responseObject)
                             print(results!)
                             Report_VC.Arr_IdentCodeReport = [results!]
-//                            Report_VC.tbl_POPositionwiseReport.reloadData()
+                            Report_VC.lbl_IdentCodewiseNumber.text = "Showing 1 to \(results!.results!.count) of  \(String(describing: results!.count!)) results"
+                            Report_VC.tbl_IdentCodewiseReport.reloadData()
                         }else if tag == 8 {
                            if ((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int) != 0 {
                                 let Arr_Data : NSMutableArray = NSMutableArray(array: ((JSONObject.object as! NSDictionary).value(forKey: "results") as! NSArray))
@@ -76,6 +83,7 @@ class ReportAPI: NSObject
                                 Report_VC.Arr_StrucherWiseReport = obj_Report.Load_Data_To_Array(arr_Data: Arr_Data)
                                 Report_VC.Str_markWiseReportNext = ((JSONObject.object as! NSDictionary).value(forKey: "next")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "next") as! String
                                 Report_VC.Str_markWiseReportPrevious = ((JSONObject.object as! NSDictionary).value(forKey: "previous")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "previous") as! String
+                            Report_VC.lbl_PageNum_StructurewiseReport.text = "Showing 1 to \(String(describing: Arr_Data.count)) of  \((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int) results"
                                 Report_VC.tbl_StructurewiseReport.reloadData()
                             }
                         }
@@ -84,24 +92,28 @@ class ReportAPI: NSObject
                         let results = try? JSONDecoder().decode(GroupStrucherWiseReportModel.self, from: responseObject)
                         print(results!)
                         Report_VC.Arr_GroupSReport = [results!]
+                        Report_VC.lbl_GroupStrucherPageNumber.text = "Showing 1 to \(results!.groupresults!.count) of  \(String(describing: results!.count!)) results"
                         Report_VC.tbl_GroupStructurewiseReport.reloadData()
-                        
                     }else {
                         let Report_VC = ViewController as! ReportVC4
                         let results = try? JSONDecoder().decode(SummaryReportModel.self, from: responseObject)
                         print(results!)
                         Report_VC.Arr_Summary = [results!]
+                        Report_VC.lbl_SummaryReportPageNumber.text = "Showing 1 to \(results!.results!.count) of  \(String(describing: results!.count!)) results"
                         Report_VC.tbl_SummaryReport.reloadData()
                     }
                     
                 }else {
                     print("Json Failed")
-                    //                        Utils.showToastWithMessageAtCenter(message: "")
+//                    Utils.showToastWithMessageAtCenter(message: "")
                 }
                 SKActivityIndicator.dismiss()
             })
-            { (error) in
+            { (error, statusCode) in
                 SKActivityIndicator.dismiss()
+                if statusCode == 200 {
+                    Utils.showToastWithMessageAtCenter(message: "Email sent successfully")
+                }
                 print(error.localizedDescription)
             }
         }else {

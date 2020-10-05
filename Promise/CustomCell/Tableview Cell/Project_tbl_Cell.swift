@@ -22,10 +22,8 @@ class Project_tbl_Cell: UITableViewCell
     func DisplayCell(arr: [MasterProjectModel], indexPath: Int) {
         let rowdata = arr[indexPath]
         print(rowdata)
-//        let Arr_Data = DEFAULTS.Get_MasterProject().filter{$0.id! == rowdata.id!}
-//        print(Arr_Data)
-        self.lbl_Project_Name.text = rowdata.name!
-        self.lbl_Project_Code.text = rowdata.code!
+        self.lbl_Project_Name.text = rowdata.code!
+        self.lbl_Project_Code.text = rowdata.name!
         self.lbl_Project_Status.text = (rowdata.isActive == true) ? "Yes" : "No"
     }
 

@@ -24,6 +24,7 @@ struct App_Colors {
     static let ThemeFontColor = UIColor(hexString: "6d8ab0")
     static let DarkGray = UIColor(hexString: "616161")
     static let ThemTintColor = UIColor(hexString: "45B4A1")
+    static let ThemBlue = UIColor(hexString: "353283")
     static let White = UIColor.white
     static let Black = UIColor.black
     static let boderColor = UIColor(red: 0.97, green: 0.23, blue: 0.26, alpha: 1.00)
@@ -60,6 +61,7 @@ struct DeviceInfo
 struct Api_Urls
 {
     static let BASE_URL = "http://demo.prime4promise.com:8000/"
+    static let DocumentBASE_URL = "http://demo.prime4promise.com"
     static let GET_API_LOGIN = BASE_URL + "accounts/login/"
     static let GET_API_LOGOUT = BASE_URL + "accounts/logout/"
     //GET Home Page API

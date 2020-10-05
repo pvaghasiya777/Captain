@@ -55,7 +55,7 @@ class SidebarVC: DropDownTableViewController
     @IBOutlet var tbl_sidebar: UITableView!
     //MARK:- variable
     var Arr_Header : NSMutableArray = ["0","View Profile","Dashboard","Project","Purchase Order","Marks & Bolts","Packages","Packing List","Material Status","Document","Report","Logout"]
-    var Arr_SubMainu : NSMutableArray = ["MBL","Onsite Status","Shipped Status"]
+    var Arr_SubMainu : NSMutableArray = ["MBL","Shipped Status","Onsite Status"]
 
     var Arr_Menu_Image : NSMutableArray = ["","ic_Project","ic_dashboard","ic_Project","ic_purchase","ic_shop_drwaing","ic_packages","ic_list","ic_status","ic_Google_Doc","ic_report","ic_settings","ic_logout"]
     var Arr_sideMenu : NSMutableArray = NSMutableArray()
@@ -323,9 +323,9 @@ class SidebarVC: DropDownTableViewController
               //        }
           }
       } else if row == 8 {
-            if subrow == 0 {
+            if subrow == 1 {
                 self.performSegue(withIdentifier: "Onsite_Status", sender: nil)
-            } else if subrow == 1 {
+            } else if subrow == 0 {
                 self.performSegue(withIdentifier: "Shipped_Status", sender: nil)
             }
         }

@@ -5,31 +5,32 @@ import Alamofire
 class AFWrapper: NSObject
 {
     //MARK:- Get Method
-    class func requestGETURL_WithParameter_ReturnStatuscode(_ strURL: String, headers : [String : String]?,params : Parameters?, success:@escaping (Data,Int,JSON) -> Void, failure:@escaping (Error) -> Void)
+    class func requestGETURL_WithParameter_ReturnStatuscode(_ strURL: String, headers : [String : String]?,params : Parameters?, success:@escaping (Data,Int,JSON) -> Void, failure:@escaping (Error,Int) -> Void)
     {
         let final_strURL : String = strURL
         print(final_strURL)
-        print(params)
+        print(params!)
         Alamofire.request(final_strURL, method: .get, parameters: params, encoding: URLEncoding.default, headers: headers).responseJSON { (responseObject) -> Void in
             print(responseObject)
+            var StatusCode : Int = 1;
+            StatusCode = responseObject.response!.statusCode
             if responseObject.result.isSuccess {
                 print(responseObject.response!.statusCode)
-                var StatusCode : Int = 1;
                 StatusCode = responseObject.response!.statusCode
                 success(responseObject.data!,StatusCode,JSON(responseObject.result.value!))
             }
             if responseObject.result.isFailure {
                 let error : Error = responseObject.result.error!
-                failure(error)
+                failure(error,StatusCode)
             }
         }
     }
-    class func requestGETURL_JSON(_ strURL: String,headers : [String : String]!,params : [String : String]?,success:@escaping (Data,Int) -> Void, failure:@escaping (Error) -> Void)
+    class func requestGETURL_JSON(_ strURL: String,headers : [String : String]!,params : Parameters,success:@escaping (Data,Int) -> Void, failure:@escaping (Error) -> Void)
     {
         let final_strURL : String = strURL
         print(final_strURL)
         print(headers!)
-        print(params!)
+        print(params)
         Alamofire.request(URL(string: strURL)!, method: .get, parameters: params, headers: headers).responseJSON { (responseObject) -> Void in
             if responseObject.result.isSuccess {
                 print(responseObject.response!.statusCode)

@@ -44,7 +44,9 @@ class PurchaseOrderformCell: UITableViewCell {
         super.awakeFromNib()
         view_DocumentAttachment.isHidden = true
         lbl_DocumentAttachment.isHidden = true
-        Utils.EnableTextField(textFields: [txt_Number,txt_Vendor,txt_Project,txt_WeightUOM,txt_Dimension,txt_Volume,txt_DeliveryDate,txt_Date,txt_Project,txt_POType,txt_Address,txt_Currency])
+        Utils.EnableTextField(textFields: [txt_Number,txt_Vendor,txt_Project,txt_WeightUOM,txt_Dimension,txt_Volume,txt_DeliveryDate,txt_Date,txt_Project,txt_POType,txt_Address,txt_Currency,txt_ShipperDetails])
+        Utils.set_Image_on_RightView_of_Textfield(textfield: txt_Date, imagename: "ic_calendar", width: 20, height: 20)
+        Utils.set_Image_on_RightView_of_Textfield(textfield: txt_DeliveryDate, imagename: "ic_calendar", width: 20, height: 20)
     }
     func DisplayCell(Arr_Data : [SingleMasterPurchaseModel],indexpath : IndexPath) {
         print(Arr_Data)
@@ -53,6 +55,7 @@ class PurchaseOrderformCell: UITableViewCell {
             self.txt_WeightUOM.text = Arr_Data[0].weight_uom!
             self.txt_Dimension.text = Arr_Data[0].dimension_uom!
             self.txt_Volume.text = Arr_Data[0].volume_uom!
+           self.txt_ShipperDetails.text = Arr_Data[0].shipper_details!
             self.txt_DeliveryDate.text = (Arr_Data[0].delivery_date != nil) ? Arr_Data[0].delivery_date! : "Select Date"
             self.txt_Date.text = (Arr_Data[0].date != nil) ? Arr_Data[0].delivery_date! : "Select Date"
             let Arr_Vendor = DEFAULTS.Get_MasterVendor().filter {$0.id! == Arr_Data[0].vendor_id!}

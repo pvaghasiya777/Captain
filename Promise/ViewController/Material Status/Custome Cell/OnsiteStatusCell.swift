@@ -19,6 +19,7 @@ class OnsiteStatusCell: UITableViewCell {
     @IBOutlet weak var img_Shipped: UIImageView!
     @IBOutlet weak var txt_OnsiteDate: UITextField!
     @IBOutlet weak var btn_Action: UIButton!
+    @IBOutlet weak var btn_Select: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -46,6 +47,7 @@ class OnsiteStatusHeaderCell: UITableViewCell {
     //MARK:- IBOutlet
     @IBOutlet var lbl_Onsite_Date: UILabel!
     @IBOutlet var lbl_Onsite: UILabel!
+    @IBOutlet weak var btn_Select: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

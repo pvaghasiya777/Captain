@@ -17,7 +17,7 @@ class Project_CollectionCell: UICollectionViewCell
     @IBOutlet weak var lbl_Active: UILabel!
     @IBOutlet weak var lbl_TotalNo: UILabel!
     @IBOutlet weak var lbl_Structures: UILabel!
-    
+    @IBOutlet weak var img_Project : UIImageView!
     @IBOutlet weak var lbl_TPackingLists: UILabel!
     @IBOutlet weak var lbl_Weight: UILabel!
     override func awakeFromNib() {
@@ -29,6 +29,10 @@ class Project_CollectionCell: UICollectionViewCell
         let rowdata = arr[indexPath.row]
         print(rowdata)
         self.lbl_ProjectName.text = rowdata.name!
+//        let Str_img  = (rowdata.logo == "") ? rowdata.logo! : "ic_projectview"
+//        self.img_Project.sd_setImage(with: URL(string: (rowdata.logo == "") ? rowdata.logo! : "ic_projectview")!, placeholderImage: UIImage(named: "ic_projectview"))
+        
+//        self.img_Project.sd_setImage(with: URL(string: rowdata.logo!), placeholderImage: UIImage(named: "ic_projectview"))
         self.lbl_ProjectCode.text = "Code : \(rowdata.code!)"
         self.lbl_Active.text = "Active : \((rowdata.isActive! ? "Yes" : "No"))"
         self.lbl_Structures.text = "- Structures : \(rowdata.drawingCount!)"

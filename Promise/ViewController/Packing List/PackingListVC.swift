@@ -7,8 +7,8 @@
 //
 
 import UIKit
-
-class PackingListVC: UIViewController
+import QuickLook
+class PackingListVC: UIViewController, SWRevealViewControllerDelegate
 {
     
     //MARK:- IBOutlet
@@ -18,33 +18,34 @@ class PackingListVC: UIViewController
     @IBOutlet weak var btn_Short: UIButton!
     @IBOutlet weak var btn_More: UIButton!
     @IBOutlet weak var btn_M_Released: UIButton!
-    @IBOutlet weak var btn_Unlock: UIButton!
-    @IBOutlet weak var btn_First: UIButton!
     @IBOutlet weak var btn_Previous: UIButton!
     @IBOutlet weak var btn_Next: UIButton!
-    @IBOutlet weak var btn_Last: UIButton!
     @IBOutlet weak var lbl_ShowPageNum: UILabel!
     @IBOutlet weak var lbl_PageNum: UILabel!
     //    @IBOutlet var menu_Barbutton: UIBarButtonItem?
+    
     //MARK:- Variable
+    public var docViewController = QLPreviewController()
+    public var arrDocuments = [NSURL]()
     var Str_NavigateFrom = ""
     var Str_ID = String()
     var startIndex: Int = 0
     var Arr_Data : NSMutableArray = []
     var Arr_Packing_Data : NSMutableArray = NSMutableArray()
+    var Arr_Packing_DataChack : NSMutableArray = NSMutableArray()
     var Str_NextLink : String = String()
     var Str_PreviousLink : String = String()
     var KLC_obj: KLCPopup?
     var obj_popUpVC : FilterPopup!
     var Home_Barbutton: UIBarButtonItem!
+    var markbool = true
     //MARK:- Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.UIdesign()
         self.Initialization()
     }
-    override func viewWillAppear(_ animated: Bool)
-    {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Packing List"
     }
@@ -54,22 +55,22 @@ class PackingListVC: UIViewController
         self.revealViewController()?.delegate = nil
     }
     func UIdesign() {
+        self.arrDocuments = []
+        self.docViewController = QLPreviewController()
+        self.docViewController.dataSource = self
+        self.docViewController.reloadData()
         self.tbl_data.rowHeight = UITableView.automaticDimension
         self.tbl_data.tableFooterView = UIView()
         self.tbl_data.separatorStyle = .singleLine
-        Utils.setborder(view: btn_First, bordercolor: Config.boderColor1, borderwidth: 1)
         Utils.setborder(view: btn_Previous, bordercolor: Config.boderColor1, borderwidth: 1)
         Utils.setborder(view: btn_Next, bordercolor: Config.boderColor1, borderwidth: 1)
-        Utils.setborder(view: btn_Last, bordercolor: Config.boderColor1, borderwidth: 1)
         Utils.setborder(view: lbl_PageNum, bordercolor: Config.boderColor1, borderwidth: 1)
-        Utils.setcornerRadius(view: btn_First, cornerradius: 5)
         Utils.setcornerRadius(view: btn_Previous, cornerradius: 5)
         Utils.setcornerRadius(view: btn_Next, cornerradius: 5)
-        Utils.setcornerRadius(view: btn_Last, cornerradius: 5)
         Utils.setcornerRadius(view: lbl_PageNum, cornerradius: 5)
     }
     func Initialization() {
-        
+        tbl_data.allowsMultipleSelectionDuringEditing = true
         if Str_NavigateFrom == "Packages" {
             ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["pl_input_id" : Str_ID])
         }else if Str_NavigateFrom == "Drawin Edit"{
@@ -110,6 +111,24 @@ class PackingListVC: UIViewController
         } else if longPressGesture.state == UIGestureRecognizer.State.began {
             print("Long press on row, at \(indexPath!.row)")
         }
+    }
+    func storeAndShare(withURLString: String) {
+        guard let url = URL(string: withURLString) else { return }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            let tmpURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
+            do {
+                try data.write(to: tmpURL)
+            } catch {
+                print(error)
+            }
+            DispatchQueue.main.async {
+                self.arrDocuments = [tmpURL as! NSURL]
+                self.docViewController.reloadData()
+                self.present(self.docViewController, animated: true, completion: nil)
+            }
+        }.resume()
     }
     // MARK: - Show Filter Popup Packing_List
     @objc func Get_Filter_popUp(_ Button : UIButton) {
@@ -176,6 +195,38 @@ class PackingListVC: UIViewController
     @IBAction func btn_Click_Last(_ sender: UIButton) {
         print("Last Button Click")
     }
+    // MARK: - Bind Buttons Clicks
+    func set_Button_Target(buttons : [UIButton], action : Selector, tag : Int) {
+        for i in 0..<buttons.count{
+            buttons[i].addTarget(self, action: action, for: .touchUpInside)
+            buttons[i].accessibilityHint = String(i)
+            buttons[i].tag = tag
+        }
+    }
+    @objc func btn_Cell_selectHeader_Clicks(_ sender: UIButton) {
+        markbool = false
+        tbl_data.reloadData()
+        
+    }
+    @objc func btn_Cell_select_Clicks(_ sender: UIButton) {
+        
+        if markbool == true {
+            if sender.isSelected {
+                sender.isSelected = false
+                  Arr_Packing_DataChack.removeObject(at: sender.tag)
+                  print(Arr_Packing_DataChack)
+                  Utils.setborder(view: sender, bordercolor: .gray, borderwidth: 1)
+            } else {
+                // checkmark it
+                sender.isSelected = true
+                  sender.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
+                  Arr_Packing_DataChack.add(Arr_Packing_Data[sender.tag])
+                  print(Arr_Packing_DataChack)
+            }
+        } else {
+            sender.isSelected = false
+        }
+    }
 }
 extension PackingListVC : UITableViewDataSource , UITableViewDelegate{
     
@@ -194,29 +245,20 @@ extension PackingListVC : UITableViewDataSource , UITableViewDelegate{
         
         if indexPath.section == 0 {
             let cell : TableViewHeaderCell = tableView.dequeueReusableCell(withIdentifier: "TableViewHeaderCell") as! TableViewHeaderCell
+            self.set_Button_Target(buttons: [cell.btn_Select], action: #selector(self.btn_Cell_selectHeader_Clicks), tag: indexPath.row)
+            cell.selectionStyle = .none
             
             return cell
         } else {
             let cell : TableViewCell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell") as! TableViewCell
             cell.Display_Cell(arr_data: Arr_Packing_Data, indexPath: indexPath)
-            //        let cellIndex = startIndex + indexPath.section
-            //        cell.lbl_ProjectName.text = self.Arr_Data[cellIndex] as! String
+           self.set_Button_Target(buttons: [cell.btn_Select], action: #selector(self.btn_Cell_select_Clicks(_:)), tag: indexPath.row)
             cell.selectionStyle = .none
             return cell
         }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //        if let cell : TableViewCell = tableView.cellForRow(at: indexPath) as! TableViewCell {
-        //            let selected =  UIView.animate(withDuration: 0.3, animations: {
-        //                if cell.view_BG.backgroundColor != Config.cellSelection {
-        //                    print(indexPath.row)
-        //                    cell.view_BG.backgroundColor = Config.cellSelection
-        //                } else {
-        //                    print(indexPath.row)
-        //                    cell.view_BG.backgroundColor = UIColor.white
-        //                }
-        //            })
-        //        }
+
         if indexPath.section == 1 {
             let Packing_Edit = Config.StoryBoard.instantiateViewController(identifier: "PackingListsEdit") as! PackingListsEdit
             Packing_Edit.str_ID =  String((Arr_Packing_Data[indexPath.row] as! PackingListModel).id)
@@ -238,24 +280,31 @@ extension PackingListVC : UITableViewDataSource , UITableViewDelegate{
                 completion(true)
                 print("View Click")
             }
+            let viewExcelSheet = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
+                completion(true)
+                self.storeAndShare(withURLString: (self.Arr_Packing_Data[indexPath.section] as! PackingListModel).plExcel!)
+            }
             viewAction.image = UIImage(named: "ic_eye")
             viewAction.backgroundColor = Config.bgColor
-            return UISwipeActionsConfiguration(actions: [viewAction])
+            viewExcelSheet.image = UIImage(named: "ic_excel")
+            viewExcelSheet.backgroundColor = Config.bgColor
+            return UISwipeActionsConfiguration(actions: [viewExcelSheet,viewAction])
         }
         return UISwipeActionsConfiguration(actions: [])
     }
 }
-//MARK:- SWRevealViewController Methods
-extension PackingListVC : SWRevealViewControllerDelegate {
-    // MARK: - Reveal View Controller Delagate Methods
-    func revealController(_ revealController: SWRevealViewController, didMoveTo position: FrontViewPosition) {
-        print(position)
-        print("HomeVC")
-        Utils.Disable_Front_ViewController(viewController: self, position: position)
+extension PackingListVC: QLPreviewControllerDataSource {
+ func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("view was cancelled")
+        dismiss(animated: true, completion: nil)
     }
-    func revealController(_ revealController: SWRevealViewController, willMoveTo position: FrontViewPosition) {
-        print(position)
-        print("HomeVC")
-        Utils.Disable_Front_ViewController(viewController: self, position: position)
+    
+    //MARK: Document Viewer Delegate methods
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return self.arrDocuments.count
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.arrDocuments[index] as QLPreviewItem
     }
 }

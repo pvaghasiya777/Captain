@@ -13,14 +13,9 @@ class ShippedStatusVC: UIViewController {
     @IBOutlet weak var tbl_data: UITableView!
     @IBOutlet weak var searchview: UISearchBar!
     @IBOutlet weak var btn_Filter: UIButton!
-    @IBOutlet weak var btn_Short: UIButton!
-    @IBOutlet weak var btn_More: UIButton!
     @IBOutlet weak var btn_M_Released: UIButton!
-    @IBOutlet weak var btn_Unlock: UIButton!
-    @IBOutlet weak var btn_First: UIButton!
     @IBOutlet weak var btn_Previous: UIButton!
     @IBOutlet weak var btn_Next: UIButton!
-    @IBOutlet weak var btn_Last: UIButton!
     @IBOutlet weak var lbl_ShowPageNum: UILabel!
     @IBOutlet weak var lbl_PageNum: UILabel!
     @IBOutlet var bar_Notification: UIBarButtonItem!
@@ -32,7 +27,7 @@ class ShippedStatusVC: UIViewController {
     var Str_PreviousLink : String = String()
     var KLC_obj: KLCPopup?
     var obj_popUpVC : FilterPopup!
-    
+    var Arr_onSiteStatusChack = NSMutableArray()
     //MARK:- Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,6 +113,37 @@ class ShippedStatusVC: UIViewController {
     override public var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         return .landscapeRight
     }
+    // MARK: - Bind Buttons Clicks
+    func set_Button_Target(buttons : [UIButton], action : Selector, tag : Int) {
+        for i in 0..<buttons.count{
+            buttons[i].addTarget(self, action: action, for: .touchUpInside)
+            buttons[i].accessibilityHint = String(i)
+            buttons[i].tag = tag
+        }
+    }
+    @objc func btn_Cell_selectHeader_Clicks(_ sender: UIButton) {
+        tbl_data.reloadData()
+        
+    }
+    @objc func btn_Cell_select_Clicks(_ sender: UIButton) {
+        
+//        if markbool == true {
+            if sender.isSelected {
+                sender.isSelected = false
+                  Arr_onSiteStatusChack.removeObject(at: sender.tag)
+                  print(Arr_onSiteStatusChack)
+                  Utils.setborder(view: sender, bordercolor: .gray, borderwidth: 1)
+            } else {
+                // checkmark it
+                sender.isSelected = true
+                  sender.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
+                  Arr_onSiteStatusChack.add(Arr_onSiteStatusData[sender.tag])
+                  print(Arr_onSiteStatusChack)
+            }
+//        } else {
+//            sender.isSelected = false
+//        }
+    }
 }
 //MARK:- TableView Initialization
 extension ShippedStatusVC : UITableViewDataSource , UITableViewDelegate{
@@ -139,6 +165,7 @@ extension ShippedStatusVC : UITableViewDataSource , UITableViewDelegate{
         } else {
             let cell : ShippedStatusCell = tableView.dequeueReusableCell(withIdentifier: "ShippedStatusCell") as! ShippedStatusCell
             cell.Display_Cell(viewController: self, indexPath: indexPath)
+            self.set_Button_Target(buttons: [cell.btn_Select], action: #selector(self.btn_Cell_select_Clicks(_:)), tag: indexPath.row)
             cell.selectionStyle = .none
             return cell
         }

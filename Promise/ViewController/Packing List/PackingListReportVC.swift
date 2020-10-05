@@ -27,6 +27,7 @@ class PackingListReportVC: UIViewController,SWRevealViewControllerDelegate
     @IBOutlet weak var lbl_PageNum: UILabel!
     @IBOutlet var menu_Barbutton: UIBarButtonItem!
    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.Initialization()
@@ -83,12 +84,10 @@ extension PackingListReportVC : UITableViewDataSource,UITableViewDelegate {
         } else {
             return 5
         }
-        
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PackageDetailsCell") as! PackageDetailsCell
-        
         return cell
         } else if indexPath.section == 1 {
              let cell : tblCustomDetailsHeaderCell = tableView.dequeueReusableCell(withIdentifier: "tblCustomDetailsHeaderCell") as! tblCustomDetailsHeaderCell

@@ -18,6 +18,8 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var txt_ReleasedDate: UITextField!
     @IBOutlet weak var lbl_ApprovalStatus: UILabel!
     @IBOutlet weak var lbl_ActiveStatus: UILabel!
+    @IBOutlet weak var btn_Select: UIButton!
+    
     
 
     override func awakeFromNib() {
@@ -53,7 +55,7 @@ class TableViewHeaderCell: UITableViewCell {
 //    @IBOutlet weak var lbl_Revision: UILabel!
 //    @IBOutlet weak var img_Relesed: UIImageView!
 //    @IBOutlet weak var txt_ReleasedDate: UITextField!
-    
+    @IBOutlet weak var btn_Select: UIButton!
 
     override func awakeFromNib() {
         super.awakeFromNib()

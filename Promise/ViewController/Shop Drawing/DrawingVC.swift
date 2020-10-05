@@ -10,21 +10,21 @@
 
 import UIKit
 import iOSDropDown
+import QuickLook
 class DrawingVC: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var tbl_Drawing: UITableView!
     @IBOutlet var Searc_project: UISearchBar!
     @IBOutlet var btn_Filter: UIButton!
-    @IBOutlet var btn_Sort: UIButton!
-    @IBOutlet var btn_FinalRevision: UIButton!
-    @IBOutlet weak var btn_First: UIButton!
+    
     @IBOutlet weak var btn_Previous: UIButton!
     @IBOutlet weak var btn_Next: UIButton!
-    @IBOutlet weak var btn_Last: UIButton!
-    @IBOutlet weak var lbl_ShowPageNum: UILabel!
+    @IBOutlet weak var lbl_ShowPageNum_Count: UILabel!
     @IBOutlet weak var lbl_PageNum: UILabel!
     @IBOutlet weak var txt_ProjectName: DropDown!
     //MARK:- variable
+    public var docViewController = QLPreviewController()
+    public var arrDocuments = [NSURL]()
     var Str_NavigateFrom = ""
     var Str_ID = ""
     var arrDrawing = [Result]()
@@ -38,7 +38,7 @@ class DrawingVC: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Shop Drawing"
+        self.navigationItem.title = "MBL"
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -47,6 +47,10 @@ class DrawingVC: UIViewController {
     }
     //MARK:- Initialisation
     func initializeview() {
+        self.arrDocuments = []
+        self.docViewController = QLPreviewController()
+        self.docViewController.dataSource = self
+        self.docViewController.reloadData()
         if Str_NavigateFrom == "Purchase" {
             ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: ["purchase_id" : Str_ID])
         }else if Str_NavigateFrom == "Project" {
@@ -64,6 +68,8 @@ class DrawingVC: UIViewController {
         self.tbl_Drawing.tableFooterView = UIView()
         self.tbl_Drawing.separatorStyle = .singleLine
         self.btn_Filter.addTarget(self, action: #selector(btn_FilterClick(_:)), for: .touchUpInside)
+        btn_Next.addTarget(self, action: #selector(btn_NextClick(_:)), for: .touchUpInside)
+        btn_Previous.addTarget(self, action: #selector(btn_PreviousClick(_:)), for: .touchUpInside)
     }
     func Load_Dashboard() {
         self.Home_Barbutton = Utils.Get_Navigation_Bar_Button(str_Iconname: "ic_dashboard", action: #selector(SWRevealViewController.revealToggle(_:)), viewController: self.revealViewController())
@@ -76,16 +82,8 @@ class DrawingVC: UIViewController {
     }
     //MARK:- UI design
     func UIdesign() {
-        Utils.setborder(view: btn_First, bordercolor: Config.boderColor1, borderwidth: 1)
-        Utils.setborder(view: btn_Previous, bordercolor: Config.boderColor1, borderwidth: 1)
-        Utils.setborder(view: btn_Next, bordercolor: Config.boderColor1, borderwidth: 1)
-        Utils.setborder(view: btn_Last, bordercolor: Config.boderColor1, borderwidth: 1)
-        Utils.setborder(view: lbl_PageNum, bordercolor: Config.boderColor1, borderwidth: 1)
-        Utils.setcornerRadius(view: btn_First, cornerradius: 5)
-        Utils.setcornerRadius(view: btn_Previous, cornerradius: 5)
-        Utils.setcornerRadius(view: btn_Next, cornerradius: 5)
-        Utils.setcornerRadius(view: btn_Last, cornerradius: 5)
-        Utils.setcornerRadius(view: lbl_PageNum, cornerradius: 5)
+        
+        
     }
     override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .landscapeRight
@@ -130,9 +128,30 @@ class DrawingVC: UIViewController {
         }
         self.KLC_obj?.show(withRoot: self.view)
     }
-    
-    
-    
+    func storeAndShare(withURLString: String) {
+        guard let url = URL(string: withURLString) else { return }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            let tmpURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
+            do {
+                try data.write(to: tmpURL)
+            } catch {
+                print(error)
+            }
+            DispatchQueue.main.async {
+                self.arrDocuments = [tmpURL as! NSURL]
+                self.docViewController.reloadData()
+                self.present(self.docViewController, animated: true, completion: nil)
+            }
+        }.resume()
+    }
+    @objc func btn_NextClick(_ sender: UIButton) {
+     
+    }
+    @objc func btn_PreviousClick(_ sender: UIButton) {
+      
+    }
 }
 //MARK:- TableView Initialisation
 extension DrawingVC : UITableViewDataSource,UITableViewDelegate {
@@ -179,9 +198,15 @@ extension DrawingVC : UITableViewDataSource,UITableViewDelegate {
                 DrwaingViewVC1.id = String(self.arrDrawing[indexPath.row].id)
                 self.navigationController?.pushViewController(DrwaingViewVC1, animated: true)
             }
+            let viewExcelSheet = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
+                completion(true)
+                self.storeAndShare(withURLString: Api_Urls.GET_API_drawing + "\(String(self.arrDrawing[indexPath.row].id))/export/")
+                }
             viewAction.image = UIImage(named: "ic_eye")
             viewAction.backgroundColor = Config.bgColor
-            return UISwipeActionsConfiguration(actions: [viewAction])
+            viewExcelSheet.image = UIImage(named: "ic_excel")
+            viewExcelSheet.backgroundColor = Config.bgColor
+            return UISwipeActionsConfiguration(actions: [viewExcelSheet,viewAction])
         }
         return UISwipeActionsConfiguration(actions: [])
     }
@@ -198,5 +223,20 @@ extension DrawingVC : SWRevealViewControllerDelegate {
         print(position)
         print("HomeVC")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
+    }
+}
+extension DrawingVC: QLPreviewControllerDataSource {
+ func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("view was cancelled")
+        dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: Document Viewer Delegate methods
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return self.arrDocuments.count
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.arrDocuments[index] as QLPreviewItem
     }
 }

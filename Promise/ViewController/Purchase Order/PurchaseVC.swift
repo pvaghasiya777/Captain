@@ -12,10 +12,8 @@ class PurchaseVC: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var tbl_Purchase: UITableView!
     @IBOutlet var menu_Barbutton: UIBarButtonItem!
-    @IBOutlet weak var btn_First: UIButton!
     @IBOutlet weak var btn_Previous: UIButton!
     @IBOutlet weak var btn_Next: UIButton!
-    @IBOutlet weak var btn_Last: UIButton!
     @IBOutlet weak var lbl_ShowPageNum: UILabel!
     @IBOutlet weak var lbl_PageNum: UILabel!
     //MARK:- variable
@@ -25,8 +23,7 @@ class PurchaseVC: UIViewController {
         super.viewDidLoad()
         self.Initialization()
     }
-    override func viewWillAppear(_ animated: Bool)
-    {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Purchase"
     }
@@ -43,16 +40,29 @@ class PurchaseVC: UIViewController {
             menu_Barbutton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             self.revealViewController()?.rearViewRevealWidth = 280
+           
         }
         self.tbl_Purchase.tableFooterView = UIView()
         self.tbl_Purchase.rowHeight = UITableView.automaticDimension
         self.tbl_Purchase.separatorStyle = .singleLine
         MasterServiceCall.shareInstance.Get_masterPurchaseList(Api_Str: Api_Urls.GET_API_masterPurchaselist, ViewController: self)
+        btn_Next.addTarget(self, action: #selector(btn_NextClick(_:)), for: .touchUpInside)
+        btn_Previous.addTarget(self, action: #selector(btn_PreviousClick(_:)), for: .touchUpInside)
     }
+    
+   @objc func btn_NextClick(_ sender: UIButton) {
+    
+   }
+   @objc func btn_PreviousClick(_ sender: UIButton) {
+     
+   }
+  
+    
+    
+    
 }
 //MARK:- TableView Initialization
-extension PurchaseVC : UITableViewDataSource,UITableViewDelegate
-{
+extension PurchaseVC : UITableViewDataSource,UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -69,6 +79,7 @@ extension PurchaseVC : UITableViewDataSource,UITableViewDelegate
             return cell
         } else {
             let cell : PurchaseCell = tableView.dequeueReusableCell(withIdentifier: "PurchaseCell") as! PurchaseCell
+           
             cell.DisplayCell(Arr_PurchaseData: Arr_PurchaseDetail, indexpath: indexPath)
             return cell
         }

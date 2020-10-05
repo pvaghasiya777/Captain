@@ -167,7 +167,7 @@ class HomeVC: UIViewController
     @IBAction func btn_ViewFilter_Click(_ sender: UIBarButtonItem) {
         print("Filter Button Click")
         let ViewFilterVC = Config.StoryBoard.instantiateViewController(withIdentifier: "ViewSelectFilter") as! ViewSelectFilter
-        self.present(ViewFilterVC, animated: true, completion: nil)
+        self.navigationController?.pushViewController(ViewFilterVC, animated: true)
     }
     @IBAction func btn_heaerCklick(_ sender: UIButton) {
         if sender.tag == 0 {

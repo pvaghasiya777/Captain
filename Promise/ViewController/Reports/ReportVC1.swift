@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Alamofire
 class ReportVC1: UIViewController {
     //MARK:- IBOutlet
     //TableView
@@ -19,7 +19,9 @@ class ReportVC1: UIViewController {
     @IBOutlet weak var tbl_PackingListReport_3: UITableView!
     //View
     @IBOutlet weak var view_PackagewiseReport: UIView!
+    
     @IBOutlet weak var view_PackingListReport: UIView!
+    
     //Button
     @IBOutlet weak var btn_PackagewiseReport_1: UIButton!
     @IBOutlet weak var btn_PackagewiseReport_2: UIButton!
@@ -28,19 +30,36 @@ class ReportVC1: UIViewController {
     @IBOutlet weak var btn_PackingListReport_2: UIButton!
     @IBOutlet weak var btn_PackingListReport_3: UIButton!
     @IBOutlet weak var btn_PackingListReport_4: UIButton!
+    //Show Pagination Number
+    @IBOutlet weak var lbl_PackWiseNumber: UILabel!
+    @IBOutlet weak var lbl_PackingListNum: UILabel!
+    
+    @IBOutlet weak var btn_Previous_PackagewiseReport: UIButton!
+    @IBOutlet weak var btn_Next_PackagewiseReport: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count_PackagewiseReport: UILabel!
+    @IBOutlet weak var lbl_PageNum_PackagewiseReport: UILabel!
+    
+    
+    @IBOutlet weak var btn_Previous_PackingListReport: UIButton!
+    @IBOutlet weak var btn_Next_PackingListReport: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count_PackingListReport: UILabel!
+    @IBOutlet weak var lbl_PageNum_PackingListReport: UILabel!
     //MARK:- Variable
     var pageName = String()
     var Arr_PackagWiseReport = [packageWiseReportModel]()
     var Arr_PackingListReport = [PackingListReportModel]()
+    var param : NSDictionary = NSDictionary()
+    var PageCount = 1
     //MARK:- LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.Initialization()
     }
     func Initialization(){
+        barbuttonheader() 
         if pageName == "Packagewise Report" {
-             title = "Packagewise Report"
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_PackagWiseReport, params: ["project_id":"1"], tag: 4)
+            title = "Packagewise Report"
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_PackagWiseReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any], tag: 4)
             tbl_PackagewiseReport.isHidden = false
             tbl_PackagewiseReport_1.isHidden = true
             tbl_PackingListReport.isHidden = true
@@ -48,9 +67,13 @@ class ReportVC1: UIViewController {
             tbl_PackingListReport_2.isHidden = true
             tbl_PackingListReport_3.isHidden = true
             view_PackingListReport.isHidden = true
+            btn_Next_PackagewiseReport.addTarget(self, action: #selector(btn_Next_PackagewiseReport(_:)), for: .touchUpInside)
+            btn_Previous_PackagewiseReport.addTarget(self, action: #selector(btn_Previous_PackagewiseReport(_:)), for: .touchUpInside)
+            
+            
         } else if pageName == "Packing List Report"{
-             title = "Packing List Report"
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_PackingListReport, params: ["project_id":"1"], tag: 5)
+            title = "Packing List Report"
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_PackingListReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any], tag: 5)
             tbl_PackagewiseReport.isHidden = true
             tbl_PackagewiseReport_1.isHidden = true
             tbl_PackingListReport.isHidden = false
@@ -58,6 +81,44 @@ class ReportVC1: UIViewController {
             tbl_PackingListReport_2.isHidden = true
             tbl_PackingListReport_3.isHidden = true
             view_PackagewiseReport.isHidden = true
+            btn_Next_PackingListReport.addTarget(self, action: #selector(btn_Next_PackingListReport(_:)), for: .touchUpInside)
+            btn_Previous_PackagewiseReport.addTarget(self, action: #selector(btn_Previous_PackingListReport(_:)), for: .touchUpInside)
+        }
+    }
+    
+    func barbuttonheader() {
+        let rightButtonPDF: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_pdf"),  style: .plain, target: self, action: #selector(barbtn_PDF(_:)))
+        let rightButtonExcel: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_excel"),  style: .plain, target: self, action: #selector(barbtn_excel(_:)))
+        let rightButtonMail: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_message"),  style: .plain, target: self, action: #selector(barbtn_Mail(_:)))
+        rightButtonMail.tintColor = App_Colors.ThemBlue
+        rightButtonPDF.tintColor = App_Colors.ThemBlue
+        rightButtonExcel.tintColor = App_Colors.ThemBlue
+        self.navigationItem.rightBarButtonItems  = [rightButtonMail,rightButtonPDF,rightButtonExcel]
+    }
+    @objc func barbtn_Mail(_ sender: UIBarButtonItem) {
+        self.SentMail(report_type: "mail",Param: param)
+    }
+    @objc func barbtn_PDF(_ sender: UIBarButtonItem) {
+        self.SentMail(report_type: "pdf",Param: param)
+    }
+    @objc func barbtn_excel(_ sender: UIBarButtonItem) {
+        self.SentMail(report_type: "excel",Param: param)
+    }
+    func SentMail(report_type : String,Param : NSDictionary) {
+        if param.count == 0 {
+            param = ["project_id":"1","report_type" : report_type]
+        }else {
+            let tempDic : NSMutableDictionary = NSMutableDictionary(dictionary: param)
+            tempDic.setValue(report_type, forKey: "report_type")
+            param = tempDic
+        }
+        switch pageName {
+        case "Packagewise Report":
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_PackagWiseReport, params: param as! Parameters, tag: 4)
+        case "Packing List Report" :
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_PackingListReport, params:param as! Parameters , tag: 5)
+        default:
+            print(pageName)
         }
     }
     @IBAction func btn_DetailFigureReportNum(_ sender: UIButton) {
@@ -98,10 +159,44 @@ class ReportVC1: UIViewController {
             self.tbl_PackingListReport_3.reloadData()
         }
     }
-//    func SetTableView(HidenTable :UITableView,ShowTable:UITableView) {
-//        HidenTable.isHidden
-//    }
-   
+    
+    //MARK:- Button next previous Click
+    @objc func btn_Next_PackagewiseReport(_ sender: UIButton) {
+        if Arr_PackagWiseReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_PackagWiseReport[0].next!, params: [:],tag: 4)
+            self.PageCount = PageCount + 1
+            self.lbl_PageNum_PackagewiseReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
+    @objc func btn_Previous_PackagewiseReport(_ sender: UIButton) {
+        if Arr_PackagWiseReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_PackagWiseReport[0].next!, params: [:],tag: 4)
+            self.PageCount = PageCount - 1
+            self.lbl_PageNum_PackagewiseReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
+    @objc func btn_Next_PackingListReport(_ sender: UIButton) {
+        if Arr_PackingListReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_PackingListReport[0].next!, params: [:],tag: 5)
+            self.PageCount = PageCount + 1
+            self.lbl_PageNum_PackingListReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
+    @objc func btn_Previous_PackingListReport(_ sender: UIButton) {
+        if Arr_PackingListReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_PackingListReport[0].next!, params: [:],tag: 5)
+            self.PageCount = PageCount - 1
+            self.lbl_PageNum_PackingListReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
 }
 extension ReportVC1 : UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -118,11 +213,11 @@ extension ReportVC1 : UITableViewDataSource {
             } else if tableView == tbl_PackingListReport {
                 return (Arr_PackingListReport.count == 0) ? Arr_PackingListReport.count : Arr_PackingListReport[0].results!.count
             } else if tableView == tbl_PackingListReport_1 {
-                 return (Arr_PackingListReport.count == 0) ? Arr_PackingListReport.count : Arr_PackingListReport[0].results!.count
+                return (Arr_PackingListReport.count == 0) ? Arr_PackingListReport.count : Arr_PackingListReport[0].results!.count
             } else if tableView == tbl_PackingListReport_2 {
-                 return (Arr_PackingListReport.count == 0) ? Arr_PackingListReport.count : Arr_PackingListReport[0].results!.count
+                return (Arr_PackingListReport.count == 0) ? Arr_PackingListReport.count : Arr_PackingListReport[0].results!.count
             } else {
-                 return (Arr_PackingListReport.count == 0) ? Arr_PackingListReport.count : Arr_PackingListReport[0].results!.count
+                return (Arr_PackingListReport.count == 0) ? Arr_PackingListReport.count : Arr_PackingListReport[0].results!.count
             }
         }
     }
@@ -182,6 +277,5 @@ extension ReportVC1 : UITableViewDataSource {
                 return cell
             }
         }
-        
     }
 }

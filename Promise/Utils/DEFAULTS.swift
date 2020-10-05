@@ -38,6 +38,19 @@ class DEFAULTS: NSObject {
         UserDefaults.standard.set(token, forKey: "token")
         UserDefaults.standard.synchronize()
     }
+    class func Get_View_Filter() -> NSDictionary {
+        if UserDefaults.standard.value(forKey: "View_Filter") != nil {
+            return UserDefaults.standard.value(forKey: "View_Filter") as! NSDictionary
+        } else {
+            return NSDictionary()
+        }
+    }
+    class func Set_View_Filter(arr_Places : NSDictionary) {
+        UserDefaults.standard.set(arr_Places, forKey: "View_Filter")
+        UserDefaults.standard.synchronize()
+    }
+    
+    
     
   //***********************SET Master Data*********************
     class func Set_UserPermission(UserData : GetPermissionModel) {

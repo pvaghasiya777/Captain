@@ -7,22 +7,25 @@
 //
 
 import UIKit
-
+import QuickLook
 class DocumentVC: UIViewController {
-
+    //MARK:-
     @IBOutlet weak var sampleTreeView: CITreeView!
+    //MARK:- Variable
     var data : [CITreeViewData] = []
     let treeViewCellIdentifier = "TreeViewCellIdentifier"
     let treeViewCellNibName = "CITreeViewCell"
     var Home_Barbutton: UIBarButtonItem!
     var arrFinal : NSMutableArray = NSMutableArray()
+    public var docViewController = QLPreviewController()
+       public var arrDocuments = [NSURL]()
+    //MARK:- Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.InitlizationView()
     }
     override func viewWillAppear(_ animated: Bool) {
        super.viewWillAppear(animated)
-       
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -30,9 +33,11 @@ class DocumentVC: UIViewController {
         self.revealViewController()?.delegate = nil
     }
     func InitlizationView() {
+        self.arrDocuments = []
+        self.docViewController = QLPreviewController()
+        self.docViewController.dataSource = self
+        self.docViewController.reloadData()
         sampleTreeView.register(UINib(nibName: treeViewCellNibName, bundle: nil), forCellReuseIdentifier: treeViewCellIdentifier)
-        sampleTreeView.expandAllRows()
-        sampleTreeView.reloadDataWithoutChangingRowStates()
         MasterServiceCall.shareInstance.Get_Document(Api_Str: Api_Urls.GET_API_Document, Viewcontroller: self)
         self.Load_Dashboard()
     }
@@ -46,7 +51,11 @@ class DocumentVC: UIViewController {
         self.navigationItem.setLeftBarButton(Home_Barbutton, animated: true)
     }
     @IBAction func reloadBarButtonAction(_ sender: UIBarButtonItem) {
-        sampleTreeView.expandAllRows()
+        if sender.tag == 1 {
+            sampleTreeView.expandAllRows()
+        }else {
+            sampleTreeView.collapseAllRows()
+        }
     }
     func getDefaultCITreeViewData(arr_data : NSDictionary) {
         let dic : NSDictionary =  arr_data.value(forKey: "Cabinet") as! NSDictionary
@@ -71,6 +80,8 @@ class DocumentVC: UIViewController {
         }
         print(arrFinal)
         self.data = [CITreeViewData(name: "Cabinet", children: self.arrFinal as! [CITreeViewData])]
+        sampleTreeView.expandAllRows()
+        sampleTreeView.reloadDataWithoutChangingRowStates()
     }
     func ParseDictionary(levelDic : NSDictionary, dicName : String) -> [CITreeViewData] {
         let arrNodes : NSMutableArray = NSMutableArray()
@@ -91,6 +102,31 @@ class DocumentVC: UIViewController {
             }
         }
         return arrNodes as! [CITreeViewData]
+    }
+    func storeAndShare(withURLString: String) {
+        guard let url = URL(string: withURLString) else { return }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            let tmpURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
+            do {
+                try data.write(to: tmpURL)
+            } catch {
+                print(error)
+            }
+            DispatchQueue.main.async {
+//                let filename = url.lastPathComponent
+//
+//                let folderURL = url.deletingLastPathComponent()
+//
+//                let fileURL = folderURL.appendingPathComponent(filename, isDirectory: false)
+
+
+                self.arrDocuments = [tmpURL as! NSURL]
+                self.docViewController.reloadData()
+                self.present(self.docViewController, animated: true, completion: nil)
+            }
+        }.resume()
     }
 }
 extension DocumentVC : CITreeViewDelegate {
@@ -120,7 +156,10 @@ extension DocumentVC : CITreeViewDelegate {
     
     func treeView(_ treeView: CITreeView, didSelectRowAt treeViewNode: CITreeViewNode, at indexPath: IndexPath) {
         print("Did Select Call")
-        print(((arrFinal[indexPath.section] as! CITreeViewData).children[0] as! CITreeViewData).name)
+        if ((treeViewNode.item as! CITreeViewData).name).contains(".xlsx") || ((treeViewNode.item as! CITreeViewData).name).contains(".pdf") {
+            print(((treeViewNode.item as! CITreeViewData).name))
+            self.storeAndShare(withURLString: ((treeViewNode.item as! CITreeViewData).name))
+        }
     }
     
     func treeView(_ treeView: CITreeView, didDeselectRowAt treeViewNode: CITreeViewNode, at indexPath: IndexPath) {
@@ -129,7 +168,6 @@ extension DocumentVC : CITreeViewDelegate {
         }
     }
 }
-
 extension DocumentVC : CITreeViewDataSource {
     func treeViewSelectedNodeChildren(for treeViewNodeItem: Any) -> [Any] {
         if let dataObj = treeViewNodeItem as? CITreeViewData {
@@ -137,18 +175,20 @@ extension DocumentVC : CITreeViewDataSource {
         }
         return []
     }
-    
     func treeViewDataArray() -> [Any] {
         return data
     }
     func treeView(_ treeView: CITreeView, cellForRowAt indexPath: IndexPath, with treeViewNode: CITreeViewNode) -> UITableViewCell {
         let cell = treeView.dequeueReusableCell(withIdentifier: treeViewCellIdentifier) as! CITreeViewCell
         let dataObj = treeViewNode.item as! CITreeViewData
-        cell.nameLabel.text = dataObj.name
+        if ((treeViewNode.item as! CITreeViewData).name).contains(".xlsx") || ((treeViewNode.item as! CITreeViewData).name).contains(".pdf") {
+           cell.nameLabel.text = (dataObj.name as NSString).lastPathComponent
+        }else {
+         cell.nameLabel.text = dataObj.name
+        }
         cell.setupCell(level: treeViewNode.level)
         return cell;
     }
-    
 }
 //MARK:- SWRevealViewController Methods
 extension DocumentVC : SWRevealViewControllerDelegate {
@@ -162,5 +202,20 @@ extension DocumentVC : SWRevealViewControllerDelegate {
         print(position)
         print("HomeVC")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
+    }
+}
+extension DocumentVC : QLPreviewControllerDataSource {
+ func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("view was cancelled")
+        dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: Document Viewer Delegate methods
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return self.arrDocuments.count
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.arrDocuments[index] as QLPreviewItem
     }
 }

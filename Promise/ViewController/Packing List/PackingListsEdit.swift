@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import QuickLook
 class PackingListsEdit: UIViewController {
     //MARK:- IBOutlet
     //view topBG
@@ -16,7 +16,7 @@ class PackingListsEdit: UIViewController {
     @IBOutlet weak var btn_Discard: UIButton!
     //view SecondBG
     @IBOutlet weak var view_SecondBG: UIView!
-    @IBOutlet weak var btn_SubmitforApproval: UIButton!
+   // @IBOutlet weak var btn_SubmitforApproval: UIButton!
     @IBOutlet weak var btn_Draft: UIButton!
     @IBOutlet weak var btn_Submitted: UIButton!
     @IBOutlet weak var btn_Approved: UIButton!
@@ -64,7 +64,19 @@ class PackingListsEdit: UIViewController {
     //Rejection view
     @IBOutlet weak var view_Rejectionview: UIView!
     @IBOutlet weak var tbl_RejectionHistory: UITableView!
+    
+    @IBOutlet weak var btn_ExcelFile: UIButton!
+    @IBOutlet weak var btn_PdfFile: UIButton!
+    @IBOutlet weak var btn_SignedPDFFile: UIButton!
+    //    @IBOutlet weak var btn_MaterialCertificate: UIButton!
+    //    @IBOutlet weak var btn_PackingCertificate: UIButton!
+    @IBOutlet weak var btn_Previous: UIButton!
+    @IBOutlet weak var btn_Next: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count: UILabel!
+    @IBOutlet weak var lbl_PageNum: UILabel!
     //MARK:- variable
+    public var docViewController = QLPreviewController()
+    public var arrDocuments = [NSURL]()
     var arrPackingListsID_Model = [PackinglistIDModel]()
     var Str_ProjectName = ""
     var Str_VendorName = ""
@@ -87,6 +99,10 @@ class PackingListsEdit: UIViewController {
     }
     //MARK:- Initialization
     func initializeview() {
+        self.arrDocuments = []
+        self.docViewController = QLPreviewController()
+        self.docViewController.dataSource = self
+        self.docViewController.reloadData()
         self.UIdesign()
         let appurl : String = Api_Urls.GET_API_packingList + "\(str_ID)" + "/"
         ServiceCall.shareInstance.Get_packingList_Edit(ViewController: self, Api_Str: appurl,tag: 0)
@@ -106,9 +122,6 @@ class PackingListsEdit: UIViewController {
         Utils.add_shadow_around_view(view: view_ThardBG, color: .gray, radius: 5, opacity: 5)
         Utils.setcornerRadius(view: btn_Save, cornerradius: 5)
         Utils.setcornerRadius(view: btn_Discard, cornerradius: 5)
-        Utils.setcornerRadius(view: btn_SubmitforApproval, cornerradius: 5)
-        
-        
     }
     @IBAction func btn_Click_Revision(_ sender: UIButton) {
         print("Revision Click")
@@ -120,7 +133,6 @@ class PackingListsEdit: UIViewController {
         }else {
             Utils.showToastWithMessageAtCenter(message: "Already In Revision Histroy")
         }
-        
     }
     //MARK:- Button Click Action
     @IBAction func btn_Click(_ sender: UIButton) {
@@ -172,18 +184,63 @@ class PackingListsEdit: UIViewController {
         txt_PLSequence.text = rowdata.pl_sequence
         txt_Status.text = rowdata.status
         if rowdata.approve_status == "draft" {
-            btn_Draft.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+            btn_Draft.setBackgroundImage(UIImage(named: "ic_StutsPathColor"), for: .normal)
             btn_Submitted.backgroundColor = .white
             btn_Approved.backgroundColor = .white
-        } else if rowdata.approve_status == "Submitted"  {
+            btn_Draft.setTitleColor(.white, for: .normal)
+        } else if rowdata.approve_status == "submitted"  {
             btn_Draft.backgroundColor = .white
-            btn_Submitted.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+            btn_Submitted.setBackgroundImage(UIImage(named: "ic_StutsPathColor"), for: .normal)
             btn_Approved.backgroundColor = .white
+            btn_Submitted.setTitleColor(.white, for: .normal)
         } else if rowdata.approve_status == "approved" {
             btn_Draft.backgroundColor = .white
             btn_Submitted.backgroundColor = .white
-            btn_Approved.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+            btn_Approved.setBackgroundImage(UIImage(named: "ic_StutsPathColor"), for: .normal)
+            btn_Approved.setTitleColor(.white, for: .normal)
         }
+        btn_ExcelFile.isHidden = (rowdata.pl_excel == nil) ? true : false
+        btn_PdfFile.isHidden = (rowdata.pl_pdf == nil) ? true : false
+        btn_ExcelFile.isHidden = (rowdata.pl_signed_pdf == nil) ? true : false
+        
+        btn_ExcelFile.addTarget(self, action: #selector(barbtn_excel(_:)), for: .touchUpInside)
+        btn_PdfFile.addTarget(self, action: #selector(barbtn_PDF(_:)), for: .touchUpInside)
+        btn_ExcelFile.addTarget(self, action: #selector(barbtn_SignedPDFFile(_:)), for: .touchUpInside)
+        //Document Attach
+        self.txt_PDFFile.text = (rowdata.pl_pdf != nil) ? (rowdata.pl_pdf! as NSString).lastPathComponent : "File Not Availabel"
+        self.txt_ExcelFile.text = (rowdata.pl_excel != nil) ? (rowdata.pl_excel! as NSString).lastPathComponent : "File Not Availabel"
+        self.txt_SignedPDFFile.text = (rowdata.pl_signed_pdf != nil) ? (rowdata.pl_signed_pdf! as NSString).lastPathComponent : "File Not Availabel"
+    }
+    @objc func barbtn_PDF(_ sender: UIButton) {
+        self.storeAndShare(withURLString: Api_Urls.DocumentBASE_URL + arrPackingListsID_Model[0].pl_pdf!)
+    }
+    @objc func barbtn_excel(_ sender: UIButton) {
+       self.storeAndShare(withURLString: Api_Urls.DocumentBASE_URL + arrPackingListsID_Model[0].pl_excel!)
+    }
+    @objc func barbtn_SignedPDFFile(_ sender: UIButton) {
+       self.storeAndShare(withURLString: Api_Urls.DocumentBASE_URL + arrPackingListsID_Model[0].pl_signed_pdf!)
+    }
+    func storeAndShare(withURLString: String) {
+        guard let url = URL(string: withURLString) else { return }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            let tmpURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
+            do {
+                try data.write(to: tmpURL)
+            } catch {
+                print(error)
+            }
+            DispatchQueue.main.async {
+                self.arrDocuments = [tmpURL as! NSURL]
+                self.docViewController.reloadData()
+                self.present(self.docViewController, animated: true, completion: nil)
+            }
+        }.resume()
+    }
+    @IBAction func btn_SaveClick_Action(_ sender: UIButton) {
+    }
+    @IBAction func btn_DiscardClick_Action(_ sender: UIButton) {
     }
 }
 //MARK:- TableView Initialisation
@@ -209,5 +266,20 @@ extension PackingListsEdit : UITableViewDataSource,UITableViewDelegate {
             cell.selectionStyle = .none
             return cell
         }
+    }
+}
+extension PackingListsEdit : QLPreviewControllerDataSource {
+ func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("view was cancelled")
+        dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: Document Viewer Delegate methods
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return self.arrDocuments.count
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.arrDocuments[index] as QLPreviewItem
     }
 }

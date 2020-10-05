@@ -7,9 +7,9 @@
 //
 
 import UIKit
-
+import Alamofire
 class ReportVC3: UIViewController {
-
+    
     @IBOutlet weak var tbl_GroupStructurewiseReport: UITableView!
     @IBOutlet weak var tbl_GroupStructurewiseReport1: UITableView!
     @IBOutlet weak var tbl_GroupStructurewiseReport2: UITableView!
@@ -24,18 +24,31 @@ class ReportVC3: UIViewController {
     @IBOutlet weak var btn_PackingListReport_4: UIButton!
     @IBOutlet weak var btn_PackingListReport_5: UIButton!
     @IBOutlet weak var btn_PackingListReport_6: UIButton!
+    @IBOutlet weak var lbl_GroupStrucherPageNumber: UILabel!
+    
+    @IBOutlet weak var btn_Previous_GroupStructurewiseReport: UIButton!
+    @IBOutlet weak var btn_Next_GroupStructurewiseReport: UIButton!
+    @IBOutlet weak var lbl_ShowPage_Count_GroupStructurewiseReport: UILabel!
+    @IBOutlet weak var lbl_PageNum_GroupStructurewiseReport: UILabel!
+    
+    
     var pageName = String()
     var Arr_GroupSReport = [GroupStrucherWiseReportModel]()
+    var param : NSDictionary = NSDictionary()
+    var PageCount = 1
     override func viewDidLoad() {
         super.viewDidLoad()
+        barbuttonheader()
         title = "Group Structure wise Report"
-        ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_GroupStrucherWiseReport, params: ["project_id":"1"], tag: 9)
+        ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_GroupStrucherWiseReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any] , tag: 9)
         tbl_GroupStructurewiseReport.isHidden = false
         tbl_GroupStructurewiseReport1.isHidden = true
         tbl_GroupStructurewiseReport2.isHidden = true
         tbl_GroupStructurewiseReport3.isHidden = true
         tbl_GroupStructurewiseReport4.isHidden = true
         tbl_GroupStructurewiseReport5.isHidden = true
+        btn_Next_GroupStructurewiseReport.addTarget(self, action: #selector(btn_Next_GroupStructurewiseReport(_:)), for: .touchUpInside)
+        btn_Previous_GroupStructurewiseReport.addTarget(self, action: #selector(btn_Previous_GroupStructurewiseReport(_:)), for: .touchUpInside)
     }
     
     @IBAction func btn_MarkwiseReportNum(_ sender: UIButton) {
@@ -89,6 +102,60 @@ class ReportVC3: UIViewController {
             self.tbl_GroupStructurewiseReport5.reloadData()
         }
     }
+    func barbuttonheader() {
+        let rightButtonPDF: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_pdf"),  style: .plain, target: self, action: #selector(barbtn_PDF(_:)))
+        let rightButtonExcel: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_excel"),  style: .plain, target: self, action: #selector(barbtn_excel(_:)))
+        let rightButtonMail: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_message"),  style: .plain, target: self, action: #selector(barbtn_Mail(_:)))
+        rightButtonMail.tintColor = App_Colors.ThemBlue
+        rightButtonPDF.tintColor = App_Colors.ThemBlue
+        rightButtonExcel.tintColor = App_Colors.ThemBlue
+        self.navigationItem.rightBarButtonItems  = [rightButtonMail,rightButtonPDF,rightButtonExcel]
+    }
+    @objc func barbtn_Mail(_ sender: UIBarButtonItem) {
+self.SentMail(report_type: "mail" , Param: param)
+    }
+    @objc func barbtn_PDF(_ sender: UIBarButtonItem) {
+       self.SentMail(report_type: "pdf" , Param: param)
+    }
+    @objc func barbtn_excel(_ sender: UIBarButtonItem) {
+        self.SentMail(report_type: "excel" , Param: param)
+    }
+    func SentMail(report_type : String,Param : NSDictionary) {
+        if param.count == 0 {
+            param = ["project_id":"1","report_type" : report_type]
+        }else {
+            let tempDic : NSMutableDictionary = NSMutableDictionary(dictionary: param)
+            tempDic.setValue(report_type, forKey: "report_type")
+            param = tempDic
+        }
+        switch pageName {
+        case "Group Structure wise Report":
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_GroupStrucherWiseReport, params: param as! Parameters, tag: 9)
+        default:
+            print(pageName)
+        }
+    }
+    //MARK:- Button next previous Click
+    //Group Structure wise Report
+    @objc func btn_Next_GroupStructurewiseReport(_ sender: UIButton) {
+        if Arr_GroupSReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_GroupSReport[0].next!, params: [:],tag: 9)
+            self.PageCount = PageCount + 1
+            self.lbl_ShowPage_Count_GroupStructurewiseReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
+    @objc func btn_Previous_GroupStructurewiseReport(_ sender: UIButton) {
+        if Arr_GroupSReport[0].next != nil {
+            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Arr_GroupSReport[0].next!, params: [:],tag: 9)
+            self.PageCount = PageCount + 1
+            self.lbl_ShowPage_Count_GroupStructurewiseReport.text = String(describing: PageCount)
+        }else {
+            Utils.showToastWithMessageAtCenter(message: "Next Data not Available")
+        }
+    }
+    
 }
 extension ReportVC3 : UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {

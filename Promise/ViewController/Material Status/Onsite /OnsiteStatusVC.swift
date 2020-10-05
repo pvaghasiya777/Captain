@@ -12,16 +12,10 @@ class OnsiteStatusVC: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var tbl_data: UITableView!
     @IBOutlet weak var searchview: UISearchBar!
-    @IBOutlet weak var btn_Action: UIButton!
     @IBOutlet weak var btn_Filter: UIButton!
-    @IBOutlet weak var btn_Short: UIButton!
-    @IBOutlet weak var btn_More: UIButton!
     @IBOutlet weak var btn_M_Released: UIButton!
-    @IBOutlet weak var btn_Unlock: UIButton!
-    @IBOutlet weak var btn_First: UIButton!
     @IBOutlet weak var btn_Previous: UIButton!
     @IBOutlet weak var btn_Next: UIButton!
-    @IBOutlet weak var btn_Last: UIButton!
     @IBOutlet weak var lbl_ShowPageNum: UILabel!
     @IBOutlet weak var lbl_PageNum: UILabel!
     @IBOutlet var bar_Notification: UIBarButtonItem!

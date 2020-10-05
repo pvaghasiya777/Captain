@@ -5,6 +5,7 @@ class HomeVC: UIViewController
 {
     //MARK:- IBOutlet
     @IBOutlet var btn_filter: UIBarButtonItem!
+    @IBOutlet var btn_filterView: UIBarButtonItem!
     @IBOutlet var menu_Barbutton: UIBarButtonItem!
     @IBOutlet weak var tbl_ReportSection: UITableView!
     @IBOutlet weak var view_TotalWeightkg: UIView!

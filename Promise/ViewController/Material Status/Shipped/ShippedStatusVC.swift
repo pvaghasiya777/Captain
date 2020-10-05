@@ -21,6 +21,7 @@ class ShippedStatusVC: UIViewController {
     @IBOutlet var bar_Notification: UIBarButtonItem!
     @IBOutlet var bar_Profile: UIBarButtonItem!
     @IBOutlet var btn_menubar: UIBarButtonItem!
+    @IBOutlet weak var switch_FinalRevision: UISwitch!
     //MARK:- variable
     var Arr_onSiteStatusData : NSMutableArray = NSMutableArray()
     var Str_NextLink : String = String()
@@ -58,10 +59,14 @@ class ShippedStatusVC: UIViewController {
                self.tbl_data.tableFooterView = UIView()
                self.tbl_data.separatorStyle = .singleLine
         
-        ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: [:],tag : 1)
+        ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: ["is_active" : switch_FinalRevision.isOn],tag : 1)
         self.btn_Filter.addTarget(self, action: #selector(Get_Filter_popUp(_:)), for: .touchUpInside)
         let value = UIInterfaceOrientation.landscapeRight.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
+    }
+    @IBAction func switch_FinalRevisionAction(_ sender: UISwitch) {
+        print(sender.isOn)
+        ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: ["is_active" : sender.isOn],tag : 1)
     }
     // MARK: - Show Filter Popup Shipped_Status
     @objc func Get_Filter_popUp(_ Button : UIButton) {

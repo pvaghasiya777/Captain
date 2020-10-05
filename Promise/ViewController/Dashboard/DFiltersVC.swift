@@ -250,191 +250,247 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       if tableView == tblproject {
-        self.Selected_tag = 1
-        self.Str_Selected_Filter = String(describing: Arr_Project[indexPath.row].id!)
-           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPurchaseOrder, tag: 2,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
-           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
-           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
-           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
-            if let cell = tableView.cellForRow(at: indexPath) {
-                resetChecks()
-                cell.accessoryType = .checkmark
-            }
-       }else if tableView == tblPurchaseOrder {
-        self.Selected_tag = 2
-         self.Str_Selected_Filter = String(describing: Arr_PurchaseOrder[indexPath.row].id!)
-          MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
-          MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
-          MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
-        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-            if cell.accessoryType == .checkmark{
-                cell.accessoryType = .none
-                self.selectcellrowRemove(tableview: tblPurchaseOrder, indexPath: indexPath)
-            } else {
-                cell.accessoryType = .checkmark
-                self.selectcellrow(tableview: tblPurchaseOrder, indexPath: indexPath)
-            }
-        }
-       }else if tableView == tblStructure {
-        self.Selected_tag = 3
-         self.Str_Selected_Filter = String(describing: Arr_Strucher[indexPath.row].id!)
-           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["structure_id": Arr_Strucher[indexPath.row].structure!],ViewController: self,VC_Tag: 1)
-           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["structure_id": Arr_Strucher[indexPath.row].structure!],ViewController: self,VC_Tag: 1)
-        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-            if cell.accessoryType == .checkmark{
-                cell.accessoryType = .none
-                self.selectcellrowRemove(tableview: tblStructure, indexPath: indexPath)
-            } else {
-                cell.accessoryType = .checkmark
-                self.selectcellrow(tableview: tblStructure, indexPath: indexPath)
-            }
-        }
-       } else if tableView == tblPackingList {
-        self.Selected_tag = 4
-         self.Str_Selected_Filter = String(describing: Arr_PackingList[indexPath.row].id!)
-           MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["pl_number": Arr_PackingList[indexPath.row].packingList!],ViewController: self,VC_Tag: 1)
-        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-            if cell.accessoryType == .checkmark{
-                cell.accessoryType = .none
-                self.selectcellrowRemove(tableview: tblPackingList, indexPath: indexPath)
-            } else{
-                cell.accessoryType = .checkmark
-                self.selectcellrow(tableview: tblPackingList, indexPath: indexPath)
-            }
-        }
-       } else { // tblmark
-           self.Selected_tag = 5
-         self.Str_Selected_Filter = Arr_Mark[indexPath.row].mark!
-        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-            if cell.accessoryType == .checkmark{
-                cell.accessoryType = .none
-                self.selectcellrowRemove(tableview: tblMark, indexPath: indexPath)
-            } else {
-                cell.accessoryType = .checkmark
-                
-                self.selectcellrow(tableview: tblMark, indexPath: indexPath)
-            }
-        }
+            if tableView == tblproject {
+                self.Selected_tag = 1
+                self.Str_Selected_Filter = String(describing: Arr_Project[indexPath.row].id!)
+                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPurchaseOrder, tag: 2,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
+                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
+                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
+                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
+                    if let cell = tableView.cellForRow(at: indexPath) {
+                        resetChecks()
+                        cell.accessoryType = .checkmark
+                        selectcellrow(tableview: tblproject, indexPath: indexPath)
+                    }
+            } else if tableView == tblPurchaseOrder {
+                self.Selected_tag = 2
+                 self.Str_Selected_Filter = String(describing: Arr_PurchaseOrder[indexPath.row].id!)
+                  MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
+                  MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
+                  MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
+                if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+                    if cell.accessoryType == .checkmark{
+                        cell.accessoryType = .none
+                    } else {
+                        cell.accessoryType = .checkmark
+                        if Search_PurchaseOrder.isEmpty  {
+                            let arrdata = NSMutableArray()
+                            arrdata.add(Arr_PurchaseOrder[indexPath.row].poNo!)
+                            arrPurchaseOrder.add(arrdata)
+                            selectcellrow(tableview: tblPurchaseOrder, indexPath: indexPath)
+                       } else {
+                            let arrdata = NSMutableArray()
+                            arrdata.add(Search_PurchaseOrder[indexPath.row].poNo!)
+                            arrSearch_PurchaseOrder.add(arrdata)
+                            selectcellrow(tableview: tblPurchaseOrder, indexPath: indexPath)
+                       }
+                    }
+                }
+            } else if tableView == tblStructure {
+                self.Selected_tag = 3
+                 self.Str_Selected_Filter = String(describing: Arr_Strucher[indexPath.row].id!)
+                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["structure_id": Arr_Strucher[indexPath.row].structure!],ViewController: self,VC_Tag: 1)
+                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["structure_id": Arr_Strucher[indexPath.row].structure!],ViewController: self,VC_Tag: 1)
+                if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+                    if cell.accessoryType == .checkmark{
+                        cell.accessoryType = .none
+                    } else {
+                        cell.accessoryType = .checkmark
+                        if Search_Strucher.isEmpty {
+                            let arrdata = NSMutableArray()
+                            arrdata.add(Arr_Strucher[indexPath.row].structure!)
+                            arrStrucher.add(arrdata)
+                            selectcellrow(tableview: tblStructure, indexPath: indexPath)
+                        } else {
+                            let arrdata = NSMutableArray()
+                            arrdata.add(Search_Strucher[indexPath.row].structure!)
+                            arrSearch_Strucher.add(arrdata)
+                            selectcellrow(tableview: tblStructure, indexPath: indexPath)
+                        }
+                    }
+                }
+            } else if tableView == tblPackingList {
+                self.Selected_tag = 4
+                 self.Str_Selected_Filter = String(describing: Arr_PackingList[indexPath.row].id!)
+                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["pl_number": Arr_PackingList[indexPath.row].packingList!],ViewController: self,VC_Tag: 1)
+                if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+                    if cell.accessoryType == .checkmark{
+                        cell.accessoryType = .none
+                    } else{
+                        cell.accessoryType = .checkmark
+                        if Search_PackingList.isEmpty {
+                            let arrdata = NSMutableArray()
+                            arrdata.add(Arr_PackingList[indexPath.row].packingList!)
+                            arrPackingList.add(arrdata)
+                            selectcellrow(tableview: tblPackingList, indexPath: indexPath)
+                        } else {
+                            let arrdata = NSMutableArray()
+                            arrdata.add(Search_PackingList[indexPath.row].packingList!)
+                            arrSearch_PackingList.add(arrdata)
+                            selectcellrow(tableview: tblPackingList, indexPath: indexPath)
+                        }
+                    }
+                }
+            } else { // tblmark
+                   self.Selected_tag = 5
+                 self.Str_Selected_Filter = Arr_Mark[indexPath.row].mark!
+                if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+                    if cell.accessoryType == .checkmark {
+                        cell.accessoryType = .none
+                        arrMark.removeObject(at: indexPath.row)
+                        print(arrMark)
+                    } else {
+                        cell.accessoryType = .checkmark
+                        if Search_Mark.isEmpty  {
+                            let arrdata = NSMutableArray()
+                            arrdata.add(Arr_Mark[indexPath.row].mark!)
+                            arrMark.add(arrdata)
+                          //  print(arrMark)
+                            selectcellrow(tableview: tblMark, indexPath: indexPath)
+                        } else {
+                            let arrdata = NSMutableArray()
+                            arrdata.add(Search_Mark[indexPath.row].mark!)
+                            arrSearch_Mark.add(arrdata)
+                            selectcellrow(tableview: tblMark, indexPath: indexPath)
+                        }
+                    }
+                }
+           }
        }
-   }
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if tableView == tblproject {
-            self.tblproject.cellForRow(at: indexPath)?.accessoryType = .none
-        } else if tableView == tblPurchaseOrder {
-            self.selectcellrow(tableview: tblPurchaseOrder, indexPath: indexPath)
-            arrPurchaseOrder.removeObjects(at: [indexPath.row])
-            
-            
-        } else if tableView == tblStructure {
-            self.selectcellrow(tableview: tblStructure, indexPath: indexPath)
-        } else if tableView == tblPackingList {
-            self.selectcellrow(tableview: tblPackingList, indexPath: indexPath)
-        } else if tableView == tblMark {
-            self.selectcellrow(tableview: tblMark, indexPath: indexPath)
-        }
-    }
-}
-
-extension DFiltersVC {
-    func selectcellrow(tableview : UITableView , indexPath : IndexPath) {
-        if tableview == tblproject {
-            if Search_Project.isEmpty {
-                let array_Project = NSMutableArray()
-                arrSearch_Project.removeAllObjects()
-                array_Project.add(Arr_Project[indexPath.row].project!)
-                arrProject = array_Project
-                print(array_Project,arrProject)
-                arrPurchaseOrder.removeAllObjects()
-                arrSearch_PurchaseOrder.removeAllObjects()
-                arrStrucher.removeAllObjects()
-                arrSearch_Strucher.removeAllObjects()
-                arrPackingList.removeAllObjects()
-                arrSearch_PackingList.removeAllObjects()
-                arrMark.removeAllObjects()
-                arrSearch_Mark.removeAllObjects()
-            } else {
-                arrProject.removeAllObjects()
-                let array_Search_Project = NSMutableArray()
-                array_Search_Project.add(Search_Project[indexPath.row].project!)
-                arrSearch_Project = array_Search_Project
-                print(array_Search_Project,arrSearch_Project)
-                arrPurchaseOrder.removeAllObjects()
-                arrSearch_PurchaseOrder.removeAllObjects()
-                arrStrucher.removeAllObjects()
-                arrSearch_Strucher.removeAllObjects()
-                arrPackingList.removeAllObjects()
-                arrSearch_PackingList.removeAllObjects()
-                arrMark.removeAllObjects()
-                arrSearch_Mark.removeAllObjects()
-
-            }
-        } else if tableview == tblPurchaseOrder {
-            if Search_PurchaseOrder.isEmpty  {
-                arrSearch_PurchaseOrder.removeAllObjects()
-                arrPurchaseOrder.add(Arr_PurchaseOrder[indexPath.row].poNo!)
-                print(arrPurchaseOrder)
-                arrStrucher.removeAllObjects()
-                arrSearch_Strucher.removeAllObjects()
-                arrPackingList.removeAllObjects()
-                arrSearch_PackingList.removeAllObjects()
-                arrMark.removeAllObjects()
-                arrSearch_Mark.removeAllObjects()
-            } else {
-                arrPurchaseOrder.removeAllObjects()
-                arrSearch_PurchaseOrder.add(Search_PurchaseOrder[indexPath.row].poNo!)
-                print(arrSearch_PurchaseOrder)
-                arrStrucher.removeAllObjects()
-                arrSearch_Strucher.removeAllObjects()
-                arrPackingList.removeAllObjects()
-                arrSearch_PackingList.removeAllObjects()
-                arrMark.removeAllObjects()
-                arrSearch_Mark.removeAllObjects()
-            }
-        } else if tableview == tblStructure {
-            if Search_Strucher.isEmpty {
-                arrSearch_Strucher.removeAllObjects()
-                arrStrucher.add(Arr_Strucher[indexPath.row].structure!)
-                print(arrStrucher)
-                arrPackingList.removeAllObjects()
-                arrSearch_PackingList.removeAllObjects()
-                arrMark.removeAllObjects()
-                arrSearch_Mark.removeAllObjects()
-            } else {
-                arrStrucher.removeAllObjects()
-                arrSearch_Strucher.add(Search_Strucher[indexPath.row].structure!)
-                print(arrSearch_Strucher)
-                arrPackingList.removeAllObjects()
-                arrSearch_PackingList.removeAllObjects()
-                arrMark.removeAllObjects()
-                arrSearch_Mark.removeAllObjects()
-            }
-        } else if tableview == tblPackingList {
-            if Search_PackingList.isEmpty {
-                arrSearch_PackingList.removeAllObjects()
-                arrPackingList.add(Arr_PackingList[indexPath.row].packingList!)
-                print(arrPackingList)
-                arrMark.removeAllObjects()
-                arrSearch_Mark.removeAllObjects()
-            } else {
-                arrSearch_PackingList.add(Search_PackingList[indexPath.row].packingList!)
-                print(arrSearch_PackingList)
-                arrPackingList.removeAllObjects()
-                arrMark.removeAllObjects()
-                arrSearch_Mark.removeAllObjects()
-            }
-        } else if tableview == tblMark {
-            if Search_Mark.isEmpty  {
-                arrSearch_Mark.removeAllObjects()
-                arrMark.add(Arr_Mark[indexPath.row].mark!)
-                print(arrMark)
-            } else {
-                arrMark.removeAllObjects()
-                arrSearch_Mark.add(Search_Mark[indexPath.row].mark!)
-                print(arrSearch_Mark)
+        func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+            if tableView == tblproject {
+                self.tblproject.cellForRow(at: indexPath)?.accessoryType = .none
+            } else if tableView == tblPurchaseOrder {
+                if let cell = tableView.cellForRow(at: indexPath.row) {
+                    if Search_PurchaseOrder.isEmpty {
+                        cell.accessoryType = .none
+                        arrPurchaseOrder.removeObject(at: indexPath.row)
+                        print(arrMark)
+                    } else {
+                        cell.accessoryType = .none
+                        arrSearch_PurchaseOrder.removeObject(at: indexPath.row)
+                        print(Search_PurchaseOrder)
+                    }
+                }
+            } else if tableView == tblStructure {
+                if let cell = tableView.cellForRow(at: indexPath.row) {
+                    if Search_Strucher.isEmpty {
+                        cell.accessoryType = .none
+                        arrStrucher.removeObject(at: indexPath.row)
+                        print(arrMark)
+                    } else {
+                        cell.accessoryType = .none
+                        arrSearch_Strucher.removeObject(at: indexPath.row)
+                        print(arrMark)
+                    }
+                }
+            } else if tableView == tblPackingList {
+                 if let cell = tableView.cellForRow(at: indexPath.row) {
+                    if Search_Strucher.isEmpty {
+                        cell.accessoryType = .none
+                        arrPackingList.removeObject(at: indexPath.row)
+                        print(arrMark)
+                    } else {
+                        cell.accessoryType = .none
+                        arrSearch_PackingList.removeObject(at: indexPath.row)
+                        print(arrMark)
+                    }
+                }
+            } else if tableView == tblMark {
+                 if let cell = tableView.cellForRow(at: indexPath.row) {
+                    if Search_Mark.isEmpty  {
+                        cell.accessoryType = .none
+                        arrMark.removeObject(at: indexPath.row)
+                    } else {
+                        cell.accessoryType = .none
+                        arrSearch_Mark.removeObject(at: indexPath.row)
+                    }
+                }
             }
         }
     }
+
+    extension DFiltersVC {
+        func selectcellrow(tableview : UITableView , indexPath : IndexPath) {
+            if tableview == tblproject {
+                if Search_Project.isEmpty {
+                    let array_Project = NSMutableArray()
+                    arrSearch_Project.removeAllObjects()
+                    array_Project.add(Arr_Project[indexPath.row].project!)
+                    arrProject = array_Project
+                    arrPurchaseOrder.removeAllObjects()
+                    arrSearch_PurchaseOrder.removeAllObjects()
+                    arrStrucher.removeAllObjects()
+                    arrSearch_Strucher.removeAllObjects()
+                    arrPackingList.removeAllObjects()
+                    arrSearch_PackingList.removeAllObjects()
+                    arrMark.removeAllObjects()
+                    arrSearch_Mark.removeAllObjects()
+                } else {
+                    arrProject.removeAllObjects()
+                    let array_Search_Project = NSMutableArray()
+                    array_Search_Project.add(Search_Project[indexPath.row].project!)
+                    arrSearch_Project = array_Search_Project
+                    arrPurchaseOrder.removeAllObjects()
+                    arrSearch_PurchaseOrder.removeAllObjects()
+                    arrStrucher.removeAllObjects()
+                    arrSearch_Strucher.removeAllObjects()
+                    arrPackingList.removeAllObjects()
+                    arrSearch_PackingList.removeAllObjects()
+                    arrMark.removeAllObjects()
+                    arrSearch_Mark.removeAllObjects()
+
+                }
+            } else if tableview == tblPurchaseOrder {
+                if Search_PurchaseOrder.isEmpty {
+                    arrSearch_PurchaseOrder.removeAllObjects()
+                    arrStrucher.removeAllObjects()
+                    arrSearch_Strucher.removeAllObjects()
+                    arrPackingList.removeAllObjects()
+                    arrSearch_PackingList.removeAllObjects()
+                    arrMark.removeAllObjects()
+                    arrSearch_Mark.removeAllObjects()
+                } else {
+                    arrPurchaseOrder.removeAllObjects()
+                    arrStrucher.removeAllObjects()
+                    arrSearch_Strucher.removeAllObjects()
+                    arrPackingList.removeAllObjects()
+                    arrSearch_PackingList.removeAllObjects()
+                    arrMark.removeAllObjects()
+                    arrSearch_Mark.removeAllObjects()
+                }
+            } else if tableview == tblStructure {
+                if Search_Strucher.isEmpty {
+                    arrSearch_Strucher.removeAllObjects()
+                    arrPackingList.removeAllObjects()
+                    arrSearch_PackingList.removeAllObjects()
+                    arrMark.removeAllObjects()
+                    arrSearch_Mark.removeAllObjects()
+                } else {
+                    arrStrucher.removeAllObjects()
+                    arrPackingList.removeAllObjects()
+                    arrSearch_PackingList.removeAllObjects()
+                    arrMark.removeAllObjects()
+                    arrSearch_Mark.removeAllObjects()
+                }
+            } else if tableview == tblPackingList {
+                if Search_PackingList.isEmpty {
+                    arrSearch_PackingList.removeAllObjects()
+                    arrMark.removeAllObjects()
+                    arrSearch_Mark.removeAllObjects()
+                } else {
+                    arrPackingList.removeAllObjects()
+                    arrMark.removeAllObjects()
+                    arrSearch_Mark.removeAllObjects()
+                }
+            } else if tableview == tblMark {
+                if Search_Mark.isEmpty  {
+                    arrSearch_Mark.removeAllObjects()
+                } else {
+                    arrMark.removeAllObjects()
+                }
+            }
+        }
     func resetChecks() {
         for i in 0..<tblproject.numberOfSections {
             for j in 0..<tblproject.numberOfRows(inSection: i) {

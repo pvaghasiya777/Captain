@@ -15,8 +15,8 @@ class ServiceCall: NSObject
     func Get_getProject(ViewController: UIViewController,Api_Str : String,Param : Parameters) {
         if AppDelegate.NetworkRechability(){
             SVProgressHUD.show(withStatus: "Loading...")
-            var Project_VC = ViewController as! ProjectVC
-            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: Param as! [String : String], success: { (responseObject, statusCode, JSONObject) in
+            let Project_VC = ViewController as! ProjectVC
+            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: Param, success: { (responseObject, statusCode, JSONObject) in
                 print(JSONObject)
                 SVProgressHUD.dismiss()
                 if statusCode == 200 {
@@ -41,7 +41,7 @@ class ServiceCall: NSObject
         if AppDelegate.NetworkRechability(){
             SVProgressHUD.show(withStatus: "Loading...")
              let vc = ViewController as! DrawingVC
-            AFWrapper.requestGETURL_JSON(Api_Urls.GET_API_drawing, headers:["Authorization": DEFAULTS.Get_TOKEN()], params: param as! [String : String], success: { (responseObject,statusCode) in
+            AFWrapper.requestGETURL_JSON(Api_Urls.GET_API_drawing, headers:["Authorization": DEFAULTS.Get_TOKEN()], params: param, success: { (responseObject,statusCode) in
                 do {
                     print(responseObject)
                     SVProgressHUD.dismiss()
@@ -156,7 +156,7 @@ class ServiceCall: NSObject
     func Get_onSiteStatus(ViewController: UIViewController,API_Str : String,Param : Parameters,tag : Int) {
         if AppDelegate.NetworkRechability(){
             SVProgressHUD.show(withStatus: "Loading...")
-            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(API_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: (Param as! [String : String]), success: { (responseObject, statusCode, JSONObject) in
+            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(API_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: Param, success: { (responseObject, statusCode, JSONObject) in
                 print(JSONObject)
                 SVProgressHUD.dismiss()
                 if statusCode == 200 {
@@ -200,7 +200,7 @@ class ServiceCall: NSObject
     func Get_onSiteStatusDetail(ViewController: UIViewController,Str_ID : String) {
         if AppDelegate.NetworkRechability(){
             SVProgressHUD.show(withStatus: "Loading...")
-            var OnsiteDetail_VC = ViewController as! OnsiteDetailVC
+            let OnsiteDetail_VC = ViewController as! OnsiteDetailVC
             AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Urls.GET_API_onSiteStatus + Str_ID + "/" , headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: [:], success: { (responseObject, statusCode, JSONObject) in
                 print(JSONObject)
                 SVProgressHUD.dismiss()
@@ -227,14 +227,14 @@ class ServiceCall: NSObject
     func Get_PLreports(ViewController: UIViewController,Api_Str : String,param : Parameters) {
         if AppDelegate.NetworkRechability(){
             SVProgressHUD.show(withStatus: "Loading...")
-            var Plinputs_VC = ViewController as! PlinputsVc
-            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: param as! [String : String], success: { (responseObject, statusCode, JSONObject) in
+            let Plinputs_VC = ViewController as! PlinputsVc
+            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: param, success: { (responseObject, statusCode, JSONObject) in
                 print(JSONObject)
                 SVProgressHUD.dismiss()
                 if statusCode == 200 {
 //                    let Arr_Data : NSMutableArray = NSMutableArray(array: (JSONObject.object as! NSDictionary).value(forKey: "results") as! NSArray)
                     if ((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int) != 0 {
-                         var Arr_Data : NSMutableArray = NSMutableArray()
+                        let Arr_Data : NSMutableArray = NSMutableArray()
                         for key in 0...((JSONObject.object as! NSDictionary).value(forKey: "results") as! NSArray).count - 1 {
                            print(key)
                             let dic = Utils.removeNSNull(from: (((JSONObject.object as! NSDictionary).value(forKey: "results") as! NSArray)[key] as! NSDictionary) as! [String : Any])
@@ -308,8 +308,8 @@ class ServiceCall: NSObject
     func Get_packingList(ViewController: UIViewController,Api_Str : String,params : Parameters) {
         if AppDelegate.NetworkRechability(){
             SVProgressHUD.show(withStatus: "Loading...")
-            var PackingList_VC = ViewController as! PackingListVC
-            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: params as! [String : String], success: { (responseObject, statusCode, JSONObject) in
+            let PackingList_VC = ViewController as! PackingListVC
+            AFWrapper.requestGETURL_WithParameter_ReturnStatuscode(Api_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: params, success: { (responseObject, statusCode, JSONObject) in
                 print(JSONObject)
                 SVProgressHUD.dismiss()
                 if statusCode == 200 {
@@ -335,12 +335,10 @@ class ServiceCall: NSObject
                     } else {
                         print("No Data Found")
                         TableViewHelper.EmptyMessage(message: "No records found", tableview: PackingList_VC.tbl_data, textColor: .black)
-                        
                     }
                 }else {
                     Utils.showToastWithMessageAtCenter(message: "")
                 }
-                
             })
             { (error,statuscode) in
                 SVProgressHUD.dismiss()

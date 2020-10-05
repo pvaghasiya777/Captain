@@ -21,6 +21,7 @@ class OnsiteStatusVC: UIViewController {
     @IBOutlet var bar_Notification: UIBarButtonItem!
     @IBOutlet var bar_Profile: UIBarButtonItem!
     @IBOutlet var btn_menubar: UIBarButtonItem!
+    @IBOutlet weak var switch_FinalRevision: UISwitch!
     //MARK:- Variable
     var Arr_onSiteStatusData : NSMutableArray = NSMutableArray()
     var Str_NextLink : String = String()
@@ -57,18 +58,22 @@ class OnsiteStatusVC: UIViewController {
         self.tbl_data.tableFooterView = UIView()
         self.tbl_data.separatorStyle = .singleLine
         self.btn_Filter.addTarget(self, action: #selector(Get_Filter_popUp(_:)), for: .touchUpInside)
-        ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: [:] ,tag : 0)
+        ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: ["is_active" : switch_FinalRevision.isOn] ,tag : 0)
         let value = UIInterfaceOrientation.landscapeRight.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
     }
     //MARK:- Button Click Event
     @IBAction func btn_Click_Next(_ sender: UIButton) {
         print("Next Button Click")
-        (Str_NextLink == "") ? Utils.showToastWithMessageAtCenter(message: "No Data Availabel")  : ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Str_NextLink, Param: [:],tag : 0)
+        (Str_NextLink == "") ? Utils.showToastWithMessageAtCenter(message: "No Data Availabel")  : ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Str_NextLink, Param: ["is_active" : switch_FinalRevision.isOn],tag : 0)
     }
     @IBAction func btn_Click_Previous(_ sender: UIButton) {
         print("Next Button Click")
-        (Str_PreviousLink == "") ? Utils.showToastWithMessageAtCenter(message: "No Data Availabel")  :ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Str_PreviousLink, Param: [:],tag : 0)
+        (Str_PreviousLink == "") ? Utils.showToastWithMessageAtCenter(message: "No Data Availabel")  :ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Str_PreviousLink, Param: ["is_active" : switch_FinalRevision.isOn],tag : 0)
+    }
+    @IBAction func switch_FinalRevisionAction(_ sender: UISwitch) {
+        print(sender.isOn)
+         ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: ["is_active" : sender.isOn],tag : 0)
     }
     //MARK:- Show Filter Popup Onsite
     @objc func Get_Filter_popUp(_ Button : UIButton) {

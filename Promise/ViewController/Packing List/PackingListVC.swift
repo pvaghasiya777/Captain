@@ -22,6 +22,7 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
     @IBOutlet weak var btn_Next: UIButton!
     @IBOutlet weak var lbl_ShowPageNum: UILabel!
     @IBOutlet weak var lbl_PageNum: UILabel!
+    @IBOutlet weak var switch_FinalRevision: UISwitch!
     //    @IBOutlet var menu_Barbutton: UIBarButtonItem?
     
     //MARK:- Variable
@@ -72,16 +73,16 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
     func Initialization() {
         tbl_data.allowsMultipleSelectionDuringEditing = true
         if Str_NavigateFrom == "Packages" {
-            ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["pl_input_id" : Str_ID])
+            ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["pl_input_id" : Str_ID,"is_active" : switch_FinalRevision.isOn])
         }else if Str_NavigateFrom == "Drawin Edit"{
-            ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["shop_drawing_id" : Str_ID])
+            ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["shop_drawing_id" : Str_ID,"is_active" : switch_FinalRevision.isOn])
         }else if Str_NavigateFrom == "PackingList_Revision" {
-            ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["number": Str_ID])
+            ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["number": Str_ID,"is_active" : switch_FinalRevision.isOn])
             DEFAULTS.Set_Revision_Count(Count: 1)
         }else if Str_NavigateFrom == "Project"{
-            ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["project_id" : Str_ID])
+            ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["project_id" : Str_ID,"is_active" : switch_FinalRevision.isOn])
         }else if Str_NavigateFrom == "Purchase"{
-            ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["purchase_id" : Str_ID])
+            ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["purchase_id" : Str_ID,"is_active" : switch_FinalRevision.isOn])
         }
         else {
             ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: [:])
@@ -93,6 +94,10 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
         //        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         //        longPressGesture.minimumPressDuration = 0.5
         //        self.tbl_data.addGestureRecognizer(longPressGesture)
+    }
+    @IBAction func switch_FinalRevisionAction(_ sender: UISwitch) {
+        print(sender.isOn)
+         ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["ordering": "project_id__name","is_active" : sender.isOn])
     }
     func Load_Dashboard() {
         self.Home_Barbutton = Utils.Get_Navigation_Bar_Button(str_Iconname: "ic_dashboard", action: #selector(SWRevealViewController.revealToggle(_:)), viewController: self.revealViewController())

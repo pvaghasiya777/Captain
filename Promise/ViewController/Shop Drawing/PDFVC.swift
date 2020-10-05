@@ -16,7 +16,7 @@ class PDFVC: UIViewController {
         override func viewDidLoad() {
             super.viewDidLoad()
             documentInteractionController.delegate = self
-            storeAndShare(withURLString:"http://demo.prime4promise.com" + strurl)
+            storeAndShare(withURLString: strurl)
         }
 }
 extension PDFVC {

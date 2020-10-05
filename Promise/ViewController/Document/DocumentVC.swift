@@ -158,7 +158,8 @@ extension DocumentVC : CITreeViewDelegate {
         print("Did Select Call")
         if ((treeViewNode.item as! CITreeViewData).name).contains(".xlsx") || ((treeViewNode.item as! CITreeViewData).name).contains(".pdf") {
             print(((treeViewNode.item as! CITreeViewData).name))
-            self.storeAndShare(withURLString: ((treeViewNode.item as! CITreeViewData).name))
+            self.storeAndShare(withURLString: ((treeViewNode.item as! CITreeViewData).name).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            )
         }
     }
     
@@ -209,12 +210,10 @@ extension DocumentVC : QLPreviewControllerDataSource {
         print("view was cancelled")
         dismiss(animated: true, completion: nil)
     }
-    
     //MARK: Document Viewer Delegate methods
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return self.arrDocuments.count
     }
-    
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         return self.arrDocuments[index] as QLPreviewItem
     }

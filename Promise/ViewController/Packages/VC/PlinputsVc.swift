@@ -19,6 +19,7 @@ class PlinputsVc: UIViewController
     @IBOutlet weak var btn_Next: UIButton!
     @IBOutlet weak var lbl_ShowPage_Count: UILabel!
     @IBOutlet weak var lbl_PageNum: UILabel!
+    @IBOutlet weak var switch_FinalRevision: UISwitch!
     public var docViewController = QLPreviewController()
     public var arrDocuments = [NSURL]()
     var Str_NavigateFrom = String()
@@ -48,19 +49,18 @@ class PlinputsVc: UIViewController
         self.docViewController.dataSource = self
         self.docViewController.reloadData()
         if Str_NavigateFrom == "Drawin Edit" {
-            ServiceCall.shareInstance.Get_PLreports(ViewController: self, Api_Str: Api_Urls.GET_API_plReports, param: ["shop_drawing_id" : Str_ID])
+            ServiceCall.shareInstance.Get_PLreports(ViewController: self, Api_Str: Api_Urls.GET_API_plReports, param: ["shop_drawing_id" : Str_ID,"ordering": "project_id__name","is_active" : switch_FinalRevision.isOn])
         } else if Str_NavigateFrom == "Project" {
-            ServiceCall.shareInstance.Get_PLreports(ViewController: self, Api_Str: Api_Urls.GET_API_plReports, param: ["project_id" : Str_ID])
+            ServiceCall.shareInstance.Get_PLreports(ViewController: self, Api_Str: Api_Urls.GET_API_plReports, param: ["project_id" : Str_ID,"ordering": "project_id__name","is_active" : switch_FinalRevision.isOn])
         }else if Str_NavigateFrom == "Purchase"{
-            ServiceCall.shareInstance.Get_PLreports(ViewController: self, Api_Str: Api_Urls.GET_API_plReports, param: ["purchase_id" : Str_ID])
+            ServiceCall.shareInstance.Get_PLreports(ViewController: self, Api_Str: Api_Urls.GET_API_plReports, param: ["purchase_id" : Str_ID,"ordering": "project_id__name","is_active" : switch_FinalRevision.isOn])
         }else {
-            ServiceCall.shareInstance.Get_PLreports(ViewController: self, Api_Str: Api_Urls.GET_API_plReports, param: [:])
+            ServiceCall.shareInstance.Get_PLreports(ViewController: self, Api_Str: Api_Urls.GET_API_plReports, param: ["ordering": "project_id__name","is_active" : switch_FinalRevision.isOn])
             self.Load_Dashboard()
         }
         self.btn_Filter.addTarget(self, action: #selector(Get_Filter_popUp(_:)), for: .touchUpInside)
         btn_Next.addTarget(self, action: #selector(btn_NextClick(_:)), for: .touchUpInside)
         btn_Previous.addTarget(self, action: #selector(btn_PreviousClick(_:)), for: .touchUpInside)
-        
     }
     func Load_Dashboard() {
         self.Home_Barbutton = Utils.Get_Navigation_Bar_Button(str_Iconname: "ic_dashboard", action: #selector(SWRevealViewController.revealToggle(_:)), viewController: self.revealViewController())
@@ -71,6 +71,10 @@ class PlinputsVc: UIViewController
         }
         self.navigationItem.setLeftBarButton(Home_Barbutton, animated: true)
     }
+    @IBAction func switch_FinalRevisionAction(_ sender: UISwitch) {
+           print(sender.isOn)
+        ServiceCall.shareInstance.Get_PLreports(ViewController: self, Api_Str: Api_Urls.GET_API_plReports, param: ["ordering": "name","is_active" : sender.isOn])
+       }
     // MARK: - Show Filter Popup Packages
     @objc func Get_Filter_popUp(_ Button : UIButton) {
         self.navigationController?.navigationBar.isTranslucent = true

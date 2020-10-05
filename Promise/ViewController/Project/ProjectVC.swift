@@ -29,6 +29,7 @@ class ProjectVC: UIViewController
     @IBOutlet weak var btn_Next: UIButton!
     @IBOutlet weak var lbl_ShowPageNum: UILabel!
     @IBOutlet weak var lbl_PageNum: UILabel!
+    @IBOutlet weak var switch_FinalRevision: UISwitch!
     //MARK:- Variable
     let sectionInsets = UIEdgeInsets(top: 8.0, left:  8.0, bottom: 8.0, right: 8.0)
     let itemsperrow : CGFloat = 3
@@ -54,7 +55,7 @@ class ProjectVC: UIViewController
     }
     func Initialization()
     {
-        ServiceCall.shareInstance.Get_getProject(ViewController: self, Api_Str: Api_Urls.GET_API_masterProject, Param: [:])
+        ServiceCall.shareInstance.Get_getProject(ViewController: self, Api_Str: Api_Urls.GET_API_masterProject, Param: ["is_active": switch_FinalRevision.isOn])
         self.CollectionView_Project.register(UINib(nibName: "Project_CollectionCell", bundle: nil), forCellWithReuseIdentifier: "Project_CollectionCell")
         self.tbl_Project.register(UINib(nibName: "Project_tbl_Cell", bundle: nil), forCellReuseIdentifier: "Project_tbl_Cell")
         self.View_Tbl_pagination.isHidden = true
@@ -75,6 +76,10 @@ class ProjectVC: UIViewController
         }
         let value = UIInterfaceOrientation.landscapeRight.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
+    }
+    @IBAction func switch_FinalRevisionAction(_ sender: UISwitch) {
+        print(sender.isOn)
+        ServiceCall.shareInstance.Get_getProject(ViewController: self, Api_Str: Api_Urls.GET_API_masterProject, Param: ["is_active": sender.isOn])
     }
     // MARK: - Show Filter Popup// MARK: - Show Filter Popup Project
     @objc func Get_Filter_popUp(_ Button : UIButton) {

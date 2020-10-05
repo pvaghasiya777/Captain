@@ -21,6 +21,7 @@ class DrawingVC: UIViewController {
     @IBOutlet weak var btn_Next: UIButton!
     @IBOutlet weak var lbl_ShowPageNum_Count: UILabel!
     @IBOutlet weak var lbl_PageNum: UILabel!
+    @IBOutlet weak var switch_FinalRevision: UISwitch!
     @IBOutlet weak var txt_ProjectName: DropDown!
     //MARK:- variable
     public var docViewController = QLPreviewController()
@@ -52,14 +53,14 @@ class DrawingVC: UIViewController {
         self.docViewController.dataSource = self
         self.docViewController.reloadData()
         if Str_NavigateFrom == "Purchase" {
-            ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: ["purchase_id" : Str_ID])
+            ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: ["is_active": switch_FinalRevision.isOn,"ordering" : "project_id__name","purchase_id" : Str_ID])
         }else if Str_NavigateFrom == "Project" {
-            ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: ["project_id" : Str_ID])
+            ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: ["is_active": switch_FinalRevision.isOn,"ordering" : "project_id__name","project_id" : Str_ID])
         }else if Str_NavigateFrom == "Drawing_Revision" {
-            ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: ["structure_id" : Str_ID])
+            ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: ["is_active": switch_FinalRevision.isOn,"ordering" : "project_id__name","structure_id" : Str_ID])
             DEFAULTS.Set_Revision_Count(Count: 1)
         }else {
-            ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: [:])
+            ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: ["is_active": switch_FinalRevision.isOn,"ordering" : "project_id__name"])
             self.Load_Dashboard()
             DEFAULTS.Set_Revision_Count(Count: 0)
         }
@@ -70,6 +71,10 @@ class DrawingVC: UIViewController {
         self.btn_Filter.addTarget(self, action: #selector(btn_FilterClick(_:)), for: .touchUpInside)
         btn_Next.addTarget(self, action: #selector(btn_NextClick(_:)), for: .touchUpInside)
         btn_Previous.addTarget(self, action: #selector(btn_PreviousClick(_:)), for: .touchUpInside)
+    }
+    @IBAction func switch_FinalRevisionAction(_ sender: UISwitch) {
+        print(sender.isOn)
+        ServiceCall.shareInstance.Get_getDrawing(ViewController: self,param: ["is_active": sender.isOn,"ordering" : "project_id__name"])
     }
     func Load_Dashboard() {
         self.Home_Barbutton = Utils.Get_Navigation_Bar_Button(str_Iconname: "ic_dashboard", action: #selector(SWRevealViewController.revealToggle(_:)), viewController: self.revealViewController())

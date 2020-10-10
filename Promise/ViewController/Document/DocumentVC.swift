@@ -18,7 +18,7 @@ class DocumentVC: UIViewController {
     var Home_Barbutton: UIBarButtonItem!
     var arrFinal : NSMutableArray = NSMutableArray()
     public var docViewController = QLPreviewController()
-       public var arrDocuments = [NSURL]()
+    public var arrDocuments = [NSURL]()
     //MARK:- Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,13 +115,6 @@ class DocumentVC: UIViewController {
                 print(error)
             }
             DispatchQueue.main.async {
-//                let filename = url.lastPathComponent
-//
-//                let folderURL = url.deletingLastPathComponent()
-//
-//                let fileURL = folderURL.appendingPathComponent(filename, isDirectory: false)
-
-
                 self.arrDocuments = [tmpURL as! NSURL]
                 self.docViewController.reloadData()
                 self.present(self.docViewController, animated: true, completion: nil)
@@ -151,18 +144,16 @@ extension DocumentVC : CITreeViewDelegate {
     func didCollapseTreeViewNode(treeViewNode: CITreeViewNode, atIndexPath: IndexPath) {}
     func treeView(_ treeView: CITreeView, heightForRowAt indexPath: IndexPath, with treeViewNode: CITreeViewNode) -> CGFloat {
         return 60
-        
     }
     
     func treeView(_ treeView: CITreeView, didSelectRowAt treeViewNode: CITreeViewNode, at indexPath: IndexPath) {
         print("Did Select Call")
-        if ((treeViewNode.item as! CITreeViewData).name).contains(".xlsx") || ((treeViewNode.item as! CITreeViewData).name).contains(".pdf") {
+        print("Did Select Call")
+        if ((treeViewNode.item as! CITreeViewData).name).contains(".xlsx") || ((treeViewNode.item as! CITreeViewData).name).contains(".pdf") || ((treeViewNode.item as! CITreeViewData).name).contains(".png") {
             print(((treeViewNode.item as! CITreeViewData).name))
-            self.storeAndShare(withURLString: ((treeViewNode.item as! CITreeViewData).name).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-            )
+            self.storeAndShare(withURLString: ((treeViewNode.item as! CITreeViewData).name).replacingOccurrences(of: ":8000", with: ""))
         }
     }
-    
     func treeView(_ treeView: CITreeView, didDeselectRowAt treeViewNode: CITreeViewNode, at indexPath: IndexPath) {
         if let parentNode = treeViewNode.parentNode{
             print(parentNode.item)

@@ -68,7 +68,6 @@ class HomeVC: UIViewController
         btn_Report.tintColor = .black
         tbl_ReportSection.isHidden = true
         ReportAPI.shareInstance.Get_DashBoardHome(Api_str: Api_Urls.GET_API_DashBoardProjectWise + "\(DEFAULTS.Get_ProjectID())/",ViewController: self,Tag: 1)
-//        MasterServiceCall.shareInstance.Get_masterUOM(Api_Str: Api_Urls.GET_API_masterUOM)
         self.Device_Orientaction()
         self.Design()
     }
@@ -91,9 +90,6 @@ class HomeVC: UIViewController
         }
     }
     func SetData() {
-//        let Temp = (Is_Mark == true) ?  NSMutableArray(array: Arr_DashBoardResult) :  NSMutableArray(array: Arr_DashBoardMarkwise)
-        
-//        let Arr_DashBoard = (Is_Mark == true) ? Arr_DashBoardMarkwise : Arr_DashBoardResult
         print(Arr_DashBoardResult)
         self.lbl_TotalWeightkg.text = String(describing: Arr_DashBoardResult[0].strWeight!)
         self.lbl_TotalPieces.text = String(describing: Arr_DashBoardResult[0].strPieces!)
@@ -172,7 +168,7 @@ class HomeVC: UIViewController
     }
     @IBAction func btn_heaerCklick(_ sender: UIButton) {
         if sender.tag == 0 {
-            btn_Dashboard.backgroundColor = UIColor(hexString: "2B3990")
+            btn_Dashboard.backgroundColor = App_Colors.ThemeColor
             btn_Dashboard.tintColor = .white
             btn_Report.backgroundColor = .white
             btn_Report.tintColor = .black
@@ -180,7 +176,7 @@ class HomeVC: UIViewController
         } else {
             btn_Dashboard.backgroundColor = .white
             btn_Dashboard.tintColor = .black
-            btn_Report.backgroundColor = UIColor(hexString: "2B3990")
+            btn_Report.backgroundColor = App_Colors.ThemeColor
             btn_Report.tintColor = .white
             tbl_ReportSection.isHidden = false
         }

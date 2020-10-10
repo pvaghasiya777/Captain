@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import QuickLook
 class Report2: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var tbl_POPositionwiseReport: UITableView!
@@ -63,6 +64,8 @@ class Report2: UIViewController {
     var Str_markWiseReportPrevious = ""
     var param : NSDictionary = NSDictionary()
     var PageCount = 1
+    public var docViewController = QLPreviewController()
+    public var arrDocuments = [NSURL]()
     //MARK:-
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +73,10 @@ class Report2: UIViewController {
     }
     func Initlization(){
         barbuttonheader()
+        self.arrDocuments = []
+        self.docViewController = QLPreviewController()
+        self.docViewController.dataSource = self
+        self.docViewController.reloadData()
         if pageName == "PO Positionwise Report" {
             title = "PO Positionwise Report"
             ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_POPositionReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any] , tag: 6)
@@ -161,11 +168,17 @@ class Report2: UIViewController {
         }
         switch pageName {
         case "PO Positionwise Report":
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_POPositionReport, params: param as! Parameters, tag: 6)
+            let CallApi = (report_type != "mail") ? ReportAPI.shareInstance.Get_DownloadDocument(ViewController: self, Api_Str: Api_Urls.GET_API_POPositionReport, params: param as! Parameters, tag: 6, report_Type: (report_type != "excel") ? "pdf" : "xlsx") : ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_POPositionReport, params: param as! Parameters, tag: 6)
+            print(CallApi)
+//            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_POPositionReport, params: param as! Parameters, tag: 6)
         case "Ident Codewise Report" :
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_IdentCodeWiseReport, params: param as! Parameters, tag: 7)
+            let CallApi = (report_type != "mail") ? ReportAPI.shareInstance.Get_DownloadDocument(ViewController: self, Api_Str: Api_Urls.GET_API_IdentCodeWiseReport, params: param as! Parameters, tag: 7, report_Type: (report_type != "excel") ? "pdf" : "xlsx") : ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_IdentCodeWiseReport, params: param as! Parameters, tag: 7)
+            print(CallApi)
+//            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_IdentCodeWiseReport, params: param as! Parameters, tag: 7)
         case "Structurewise Report" :
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_StrucherWiseReport, params: param as! Parameters, tag: 8)
+            let CallApi = (report_type != "mail") ? ReportAPI.shareInstance.Get_DownloadDocument(ViewController: self, Api_Str: Api_Urls.GET_API_StrucherWiseReport, params: param as! Parameters, tag: 8, report_Type: (report_type != "excel") ? "pdf" : "xlsx") : ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_StrucherWiseReport, params: param as! Parameters, tag: 8)
+            print(CallApi)
+//            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_StrucherWiseReport, params: param as! Parameters, tag: 8)
         default:
             print(pageName)
         }
@@ -390,5 +403,18 @@ extension Report2 : UITableViewDataSource {
             }
         }
         
+    }
+}
+extension Report2 : QLPreviewControllerDataSource {
+ func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("view was cancelled")
+        dismiss(animated: true, completion: nil)
+    }
+    //MARK: Document Viewer Delegate methods
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return self.arrDocuments.count
+    }
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.arrDocuments[index] as QLPreviewItem
     }
 }

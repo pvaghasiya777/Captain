@@ -128,7 +128,6 @@ open class PKMulipleSelectionVC: UIViewController,UITableViewDelegate,UITableVie
             let aStrImg:String = selectedIndex.contains((indexPath.row)) ? "Check": "unCheck"
             let image = UIImage(named: aStrImg, in: Bundle(for: PKMulipleSelectionVC.self), compatibleWith: nil)
             cell?.imgVewCheckUnckeck.image = image;
-            
             cell?.contentView.backgroundColor = backgroundColorTableView
             cell?.lblName.textColor = backgroundColorCellTitle
             return cell!

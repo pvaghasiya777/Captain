@@ -287,7 +287,7 @@ extension PackingListVC : UITableViewDataSource , UITableViewDelegate{
             }
             let viewExcelSheet = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
                 completion(true)
-                self.storeAndShare(withURLString: (self.Arr_Packing_Data[indexPath.section] as! PackingListModel).plExcel!)
+                self.storeAndShare(withURLString: ((self.Arr_Packing_Data[indexPath.section] as! PackingListModel).plExcel!).replacingOccurrences(of: ":8000", with: ""))
             }
             viewAction.image = UIImage(named: "ic_eye")
             viewAction.backgroundColor = Config.bgColor
@@ -303,7 +303,6 @@ extension PackingListVC: QLPreviewControllerDataSource {
         print("view was cancelled")
         dismiss(animated: true, completion: nil)
     }
-    
     //MARK: Document Viewer Delegate methods
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return self.arrDocuments.count

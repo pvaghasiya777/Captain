@@ -162,6 +162,10 @@ class DFiltersVC: UIViewController {
             print("Reset Button Click")
         }else if sender.tag == 13 {
             print("Apply Button Click")
+//            var Arr_Test = ["Test"]
+//            NSMutableArray(array: arrStrucher as NSArray).map{($0)}.forEach { Arr_Test.append($0 as! String)}
+//            let Arr_SingleID = arrStrucher.map{($0)}.joined()
+//            Arr_SingleID.forEach { arrStrucher.append($0)}
             let filterData : NSDictionary = ["Str_SelectedFilter": Str_Selected_Filter,"SelectedTag" : Selected_tag,"is_All": self.Is_Select_AllMaterialType,"is_Steel": self.Is_Select_SteelMaterialType,"is_Bolt": self.Is_Select_BoltMaterialType,"is_Extra": self.Is_Select_With_Extra_Pieces,"Without_Extra" : self.Is_Select_Without_Extra_Pieces ]
             let ViewFilterData : NSDictionary = ["Project" : self.arrProject,
                                                  "PurchaseOrder" : self.arrPurchaseOrder,
@@ -250,113 +254,119 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            if tableView == tblproject {
-                self.Selected_tag = 1
-                self.Str_Selected_Filter = String(describing: Arr_Project[indexPath.row].id!)
-                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPurchaseOrder, tag: 2,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
-                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
-                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
-                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
-                    if let cell = tableView.cellForRow(at: indexPath) {
-                        resetChecks()
-                        cell.accessoryType = .checkmark
-                        selectcellrow(tableview: tblproject, indexPath: indexPath)
-                    }
-            } else if tableView == tblPurchaseOrder {
-                self.Selected_tag = 2
-                 self.Str_Selected_Filter = String(describing: Arr_PurchaseOrder[indexPath.row].id!)
-                  MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
-                  MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
-                  MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
-                if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-                    if cell.accessoryType == .checkmark{
-                        cell.accessoryType = .none
+        if tableView == tblproject {
+            self.Selected_tag = 1
+            self.Str_Selected_Filter = String(describing: Arr_Project[indexPath.row].id!)
+            MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPurchaseOrder, tag: 2,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
+            MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
+            MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
+            MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["project_id": String(describing: Arr_Project[indexPath.row].id!)],ViewController: self,VC_Tag: 1)
+            if let cell = tableView.cellForRow(at: indexPath) {
+                resetChecks()
+                cell.accessoryType = .checkmark
+                selectcellrow(tableview: tblproject, indexPath: indexPath)
+            }
+        } else if tableView == tblPurchaseOrder {
+            self.Selected_tag = 2
+            self.Str_Selected_Filter = String(describing: Arr_PurchaseOrder[indexPath.row].id!)
+            MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
+            MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
+            MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["po_no": Arr_PurchaseOrder[indexPath.row].poNo!],ViewController: self,VC_Tag: 1)
+            if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+                if cell.accessoryType == .checkmark{
+                    cell.accessoryType = .none
+                    arrPurchaseOrder.removeObject(at: indexPath.row)
+                    print(arrPurchaseOrder)
+                } else {
+                    cell.accessoryType = .checkmark
+                    if Search_PurchaseOrder.isEmpty  {
+                        let arrdata = NSMutableArray()
+                        arrdata.add(Arr_PurchaseOrder[indexPath.row].poNo!)
+                        arrPurchaseOrder.add(arrdata)
+                        selectcellrow(tableview: tblPurchaseOrder, indexPath: indexPath)
                     } else {
-                        cell.accessoryType = .checkmark
-                        if Search_PurchaseOrder.isEmpty  {
-                            let arrdata = NSMutableArray()
-                            arrdata.add(Arr_PurchaseOrder[indexPath.row].poNo!)
-                            arrPurchaseOrder.add(arrdata)
-                            selectcellrow(tableview: tblPurchaseOrder, indexPath: indexPath)
-                       } else {
-                            let arrdata = NSMutableArray()
-                            arrdata.add(Search_PurchaseOrder[indexPath.row].poNo!)
-                            arrSearch_PurchaseOrder.add(arrdata)
-                            selectcellrow(tableview: tblPurchaseOrder, indexPath: indexPath)
-                       }
+                        let arrdata = NSMutableArray()
+                        arrdata.add(Search_PurchaseOrder[indexPath.row].poNo!)
+                        arrSearch_PurchaseOrder.add(arrdata)
+                        selectcellrow(tableview: tblPurchaseOrder, indexPath: indexPath)
                     }
                 }
-            } else if tableView == tblStructure {
-                self.Selected_tag = 3
-                 self.Str_Selected_Filter = String(describing: Arr_Strucher[indexPath.row].id!)
-                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["structure_id": Arr_Strucher[indexPath.row].structure!],ViewController: self,VC_Tag: 1)
-                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["structure_id": Arr_Strucher[indexPath.row].structure!],ViewController: self,VC_Tag: 1)
-                if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-                    if cell.accessoryType == .checkmark{
-                        cell.accessoryType = .none
+            }
+        } else if tableView == tblStructure {
+            self.Selected_tag = 3
+            self.Str_Selected_Filter = String(describing: Arr_Strucher[indexPath.row].id!)
+            MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["structure_id": Arr_Strucher[indexPath.row].structure!],ViewController: self,VC_Tag: 1)
+            MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["structure_id": Arr_Strucher[indexPath.row].structure!],ViewController: self,VC_Tag: 1)
+            if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+                if cell.accessoryType == .checkmark{
+                    cell.accessoryType = .none
+                    arrStrucher.removeObject(at: indexPath.row)
+                    print(arrStrucher)
+                } else {
+                    cell.accessoryType = .checkmark
+                    if Search_Strucher.isEmpty {
+                        let arrdata = NSMutableArray()
+                        arrdata.add(Arr_Strucher[indexPath.row].structure!)
+                        arrStrucher.add(arrdata)
+                        selectcellrow(tableview: tblStructure, indexPath: indexPath)
                     } else {
-                        cell.accessoryType = .checkmark
-                        if Search_Strucher.isEmpty {
-                            let arrdata = NSMutableArray()
-                            arrdata.add(Arr_Strucher[indexPath.row].structure!)
-                            arrStrucher.add(arrdata)
-                            selectcellrow(tableview: tblStructure, indexPath: indexPath)
-                        } else {
-                            let arrdata = NSMutableArray()
-                            arrdata.add(Search_Strucher[indexPath.row].structure!)
-                            arrSearch_Strucher.add(arrdata)
-                            selectcellrow(tableview: tblStructure, indexPath: indexPath)
-                        }
+                        let arrdata = NSMutableArray()
+                        arrdata.add(Search_Strucher[indexPath.row].structure!)
+                        arrSearch_Strucher.add(arrdata)
+                        selectcellrow(tableview: tblStructure, indexPath: indexPath)
                     }
                 }
-            } else if tableView == tblPackingList {
-                self.Selected_tag = 4
-                 self.Str_Selected_Filter = String(describing: Arr_PackingList[indexPath.row].id!)
-                   MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["pl_number": Arr_PackingList[indexPath.row].packingList!],ViewController: self,VC_Tag: 1)
-                if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-                    if cell.accessoryType == .checkmark{
-                        cell.accessoryType = .none
-                    } else{
-                        cell.accessoryType = .checkmark
-                        if Search_PackingList.isEmpty {
-                            let arrdata = NSMutableArray()
-                            arrdata.add(Arr_PackingList[indexPath.row].packingList!)
-                            arrPackingList.add(arrdata)
-                            selectcellrow(tableview: tblPackingList, indexPath: indexPath)
-                        } else {
-                            let arrdata = NSMutableArray()
-                            arrdata.add(Search_PackingList[indexPath.row].packingList!)
-                            arrSearch_PackingList.add(arrdata)
-                            selectcellrow(tableview: tblPackingList, indexPath: indexPath)
-                        }
-                    }
-                }
-            } else { // tblmark
-                   self.Selected_tag = 5
-                 self.Str_Selected_Filter = Arr_Mark[indexPath.row].mark!
-                if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-                    if cell.accessoryType == .checkmark {
-                        cell.accessoryType = .none
-                        arrMark.removeObject(at: indexPath.row)
-                        print(arrMark)
+            }
+        } else if tableView == tblPackingList {
+            self.Selected_tag = 4
+            self.Str_Selected_Filter = String(describing: Arr_PackingList[indexPath.row].id!)
+            MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["pl_number": Arr_PackingList[indexPath.row].packingList!],ViewController: self,VC_Tag: 1)
+            if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+                if cell.accessoryType == .checkmark{
+                    cell.accessoryType = .none
+                    arrPackingList.removeObject(at: indexPath.row)
+                    print(arrPackingList)
+                } else{
+                    cell.accessoryType = .checkmark
+                    if Search_PackingList.isEmpty {
+                        let arrdata = NSMutableArray()
+                        arrdata.add(Arr_PackingList[indexPath.row].packingList!)
+                        arrPackingList.add(arrdata)
+                        selectcellrow(tableview: tblPackingList, indexPath: indexPath)
                     } else {
-                        cell.accessoryType = .checkmark
-                        if Search_Mark.isEmpty  {
-                            let arrdata = NSMutableArray()
-                            arrdata.add(Arr_Mark[indexPath.row].mark!)
-                            arrMark.add(arrdata)
-                          //  print(arrMark)
-                            selectcellrow(tableview: tblMark, indexPath: indexPath)
-                        } else {
-                            let arrdata = NSMutableArray()
-                            arrdata.add(Search_Mark[indexPath.row].mark!)
-                            arrSearch_Mark.add(arrdata)
-                            selectcellrow(tableview: tblMark, indexPath: indexPath)
-                        }
+                        let arrdata = NSMutableArray()
+                        arrdata.add(Search_PackingList[indexPath.row].packingList!)
+                        arrSearch_PackingList.add(arrdata)
+                        selectcellrow(tableview: tblPackingList, indexPath: indexPath)
                     }
                 }
-           }
-       }
+            }
+        } else { // tblmark
+            self.Selected_tag = 5
+            self.Str_Selected_Filter = Arr_Mark[indexPath.row].mark!
+            if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+                if cell.accessoryType == .checkmark {
+                    cell.accessoryType = .none
+                    arrMark.removeObject(at: indexPath.row)
+                    print(arrMark)
+                } else {
+                    cell.accessoryType = .checkmark
+                    if Search_Mark.isEmpty  {
+                        let arrdata = NSMutableArray()
+                        arrdata.add(Arr_Mark[indexPath.row].mark!)
+                        arrMark.add(arrdata)
+                        //  print(arrMark)
+                        selectcellrow(tableview: tblMark, indexPath: indexPath)
+                    } else {
+                        let arrdata = NSMutableArray()
+                        arrdata.add(Search_Mark[indexPath.row].mark!)
+                        arrSearch_Mark.add(arrdata)
+                        selectcellrow(tableview: tblMark, indexPath: indexPath)
+                    }
+                }
+            }
+        }
+    }
         func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
             if tableView == tblproject {
                 self.tblproject.cellForRow(at: indexPath)?.accessoryType = .none

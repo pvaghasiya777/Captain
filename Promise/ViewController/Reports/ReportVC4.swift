@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import QuickLook
 class ReportVC4: UIViewController {
 
     @IBOutlet weak var tbl_SummaryReport: UITableView!
@@ -25,7 +26,8 @@ class ReportVC4: UIViewController {
     @IBOutlet weak var lbl_PageNum_SummaryReport: UILabel!
     
     
-    
+    public var docViewController = QLPreviewController()
+    public var arrDocuments = [NSURL]()
     var Arr_Summary = [SummaryReportModel]()
     var pageName = String()
     var param : NSDictionary = NSDictionary()
@@ -33,6 +35,10 @@ var PageCount = 1
     override func viewDidLoad() {
         super.viewDidLoad()
         barbuttonheader()
+        self.arrDocuments = []
+        self.docViewController = QLPreviewController()
+        self.docViewController.dataSource = self
+        self.docViewController.reloadData()
         title = "Summary Report"
         tbl_SummaryReport.isHidden = false
         tbl_SummaryReport1.isHidden = true
@@ -81,7 +87,9 @@ var PageCount = 1
         }
         switch pageName {
         case  "Summary Report" :
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_SummaryReport, params: param as! Parameters, tag: 10)
+            let CallApi = (report_type != "mail") ? ReportAPI.shareInstance.Get_DownloadDocument(ViewController: self, Api_Str: Api_Urls.GET_API_SummaryReport, params: param as! Parameters, tag: 10, report_Type: (report_type != "excel") ? "pdf" : "xlsx") : ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_SummaryReport, params: param as! Parameters, tag: 10)
+            print(CallApi)
+//            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_SummaryReport, params: param as! Parameters, tag: 10)
         default:
             print(pageName)
         }
@@ -140,6 +148,19 @@ extension ReportVC4 : UITableViewDataSource {
             }
         }
         
+    }
+}
+extension ReportVC4 : QLPreviewControllerDataSource {
+ func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("view was cancelled")
+        dismiss(animated: true, completion: nil)
+    }
+    //MARK: Document Viewer Delegate methods
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return self.arrDocuments.count
+    }
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.arrDocuments[index] as QLPreviewItem
     }
 }
 

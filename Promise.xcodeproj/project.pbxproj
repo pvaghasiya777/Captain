@@ -170,6 +170,10 @@
 		FA3273E22518E42800E89AC6 /* SubMenuCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA3273E02518E42800E89AC6 /* SubMenuCell.xib */; };
 		FA3273E52518E47D00E89AC6 /* PurchaseOrderformCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3273E32518E47D00E89AC6 /* PurchaseOrderformCell.swift */; };
 		FA3273E62518E47D00E89AC6 /* PurchaseOrderformCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA3273E42518E47D00E89AC6 /* PurchaseOrderformCell.xib */; };
+		FA5F3D77252D81500013F869 /* multiselectpopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5F3D72252D81500013F869 /* multiselectpopup.xib */; };
+		FA5F3D78252D81500013F869 /* popupcell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA5F3D74252D81500013F869 /* popupcell.xib */; };
+		FA5F3D79252D81500013F869 /* popupcell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5F3D75252D81500013F869 /* popupcell.swift */; };
+		FA5F3D7A252D81500013F869 /* multiselectpopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5F3D76252D81500013F869 /* multiselectpopup.swift */; };
 		FA621E4E24F0E7F900971586 /* ShippedStatusVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA621E4D24F0E7F900971586 /* ShippedStatusVC.swift */; };
 		FA621E5024F0E80400971586 /* ShippedStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA621E4F24F0E80400971586 /* ShippedStatusCell.swift */; };
 		FA7478FD24EA8C5B00DE06B5 /* DrawingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7478FB24EA8C5B00DE06B5 /* DrawingModel.swift */; };
@@ -394,6 +398,10 @@
 		FA3273E02518E42800E89AC6 /* SubMenuCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SubMenuCell.xib; sourceTree = "<group>"; };
 		FA3273E32518E47D00E89AC6 /* PurchaseOrderformCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseOrderformCell.swift; sourceTree = "<group>"; };
 		FA3273E42518E47D00E89AC6 /* PurchaseOrderformCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PurchaseOrderformCell.xib; sourceTree = "<group>"; };
+		FA5F3D72252D81500013F869 /* multiselectpopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = multiselectpopup.xib; sourceTree = "<group>"; };
+		FA5F3D74252D81500013F869 /* popupcell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = popupcell.xib; sourceTree = "<group>"; };
+		FA5F3D75252D81500013F869 /* popupcell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = popupcell.swift; sourceTree = "<group>"; };
+		FA5F3D76252D81500013F869 /* multiselectpopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = multiselectpopup.swift; sourceTree = "<group>"; };
 		FA621E4D24F0E7F900971586 /* ShippedStatusVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShippedStatusVC.swift; sourceTree = "<group>"; };
 		FA621E4F24F0E80400971586 /* ShippedStatusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShippedStatusCell.swift; sourceTree = "<group>"; };
 		FA7478FB24EA8C5B00DE06B5 /* DrawingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingModel.swift; sourceTree = "<group>"; };
@@ -518,6 +526,9 @@
 				E44CD7622514AF5E005325ED /* UserProfilePopUP.swift */,
 				E44CD7632514AF5E005325ED /* UserProfilePopUP.xib */,
 				E44CD7642514AF5E005325ED /* NiceButton.swift */,
+				FA5F3D76252D81500013F869 /* multiselectpopup.swift */,
+				FA5F3D72252D81500013F869 /* multiselectpopup.xib */,
+				FA5F3D73252D81500013F869 /* cell */,
 			);
 			name = Popup;
 			path = Krunal/Popup;
@@ -1021,6 +1032,15 @@
 			path = cell;
 			sourceTree = "<group>";
 		};
+		FA5F3D73252D81500013F869 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				FA5F3D74252D81500013F869 /* popupcell.xib */,
+				FA5F3D75252D81500013F869 /* popupcell.swift */,
+			);
+			path = cell;
+			sourceTree = "<group>";
+		};
 		FAA247202507AAE3007A9970 /* Packing Lists */ = {
 			isa = PBXGroup;
 			children = (
@@ -1161,8 +1181,10 @@
 				E4CB30D524E27973002ADF49 /* README.md in Resources */,
 				E47604B024D1865500AB6806 /* PackingReportHeaderCell.xib in Resources */,
 				E4CB30D424E27973002ADF49 /* LICENSE in Resources */,
+				FA5F3D77252D81500013F869 /* multiselectpopup.xib in Resources */,
 				E47EF9D92511214E00CEBF0F /* CITreeViewCell.xib in Resources */,
 				E47604B224D1865500AB6806 /* PackingReportCell.xib in Resources */,
+				FA5F3D78252D81500013F869 /* popupcell.xib in Resources */,
 				E4EAEA0924D4201A003DA453 /* ProjectDetail_Cell.xib in Resources */,
 				FA3273DE2518E36000E89AC6 /* Project_CollectionCell.xib in Resources */,
 				E44CD7662514AF5F005325ED /* FilterPopup.xib in Resources */,
@@ -1288,6 +1310,7 @@
 				E47604A324D184C500AB6806 /* PackingListVC.swift in Sources */,
 				E40C385A24F8E37C00BFC249 /* ProjectDetailsFormViewVC.swift in Sources */,
 				FAE607A524EC2D3E0019A0D1 /* DrawingHeaderCell.swift in Sources */,
+				FA5F3D79252D81500013F869 /* popupcell.swift in Sources */,
 				E44CD76A2514AF5F005325ED /* FilterPopup.swift in Sources */,
 				E456E1DF25110CC60048EEAB /* CITreeViewNode.swift in Sources */,
 				FAAF8E5424F64FF2002EEF60 /* DrwaingViewCell_4.swift in Sources */,
@@ -1335,6 +1358,7 @@
 				E4D6C9EC24D5428A000A9D55 /* PurchaseOrderHeaderCell.swift in Sources */,
 				E46CC9D624F67672006CAA16 /* singleMasterPurchaseModel.swift in Sources */,
 				FA23EE842525DBD5007B67ED /* IdentCodewiseReportVC.swift in Sources */,
+				FA5F3D7A252D81500013F869 /* multiselectpopup.swift in Sources */,
 				E44CD7772514D3E3005325ED /* UITableView+DropDown.swift in Sources */,
 				E4CB30E424E27973002ADF49 /* UIView+WebCacheOperation.m in Sources */,
 				E4AC233E24E90BB300FAEA3E /* PlinputsHeaderCell.swift in Sources */,
@@ -1540,7 +1564,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Promise/Promise.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = DRQBZVSS6C;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Promise/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1563,7 +1587,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Promise/Promise.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = DRQBZVSS6C;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Promise/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

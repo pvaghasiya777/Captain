@@ -19,7 +19,7 @@ struct Config
    static let cellSelection = UIColor(red: 1.00, green: 0.95, blue: 0.95, alpha: 1.00)
 }
 struct App_Colors {
-    static let ThemeColor = UIColor(hexString:"E1FFF7")
+    static let ThemeColor = UIColor(hexString:"2B3990")
     static let ThemeBackgroundColor = UIColor(hexString:"F6FAFF")
     static let ThemeFontColor = UIColor(hexString: "6d8ab0")
     static let DarkGray = UIColor(hexString: "616161")

@@ -56,7 +56,7 @@ class SidebarVC: DropDownTableViewController
     //MARK:- variable
     var Arr_Header : NSMutableArray = ["0","View Profile","Dashboard","Project","Purchase Order","Marks & Bolts","Packages","Packing List","Material Status","Document","Report","Logout"]
     var Arr_SubMainu : NSMutableArray = ["MBL","Shipped Status","Onsite Status"]
-
+    var Arr_Header_img : NSMutableArray = ["","ic_Project","ic_dashboard","ic_Project","ic_purchase","ic_shop_drwaing","ic_packages","ic_list","ic_status","ic_Google_Doc","ic_report","ic_logout"]
     var Arr_Menu_Image : NSMutableArray = ["","ic_Project","ic_dashboard","ic_Project","ic_purchase","ic_shop_drwaing","ic_packages","ic_list","ic_status","ic_Google_Doc","ic_report","ic_settings","ic_logout"]
     var Arr_sideMenu : NSMutableArray = NSMutableArray()
     var data: [State] = []
@@ -146,6 +146,7 @@ class SidebarVC: DropDownTableViewController
         } else {
             let cell:Menucell = tableView.dequeueReusableCell(withIdentifier: "Menucell") as! Menucell
             cell.lbl_SecondName?.text = self.data[row].name
+            cell.img_logo.image = UIImage(named: Arr_Header_img[row] as! String)
             if "Material Status" == String(data[row].name) || "Marks & Bolts" == String(data[row].name)
             {
                 if row == self.nsk_selectedRow {

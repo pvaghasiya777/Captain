@@ -8,6 +8,8 @@
 
 import UIKit
 import Alamofire
+import QuickLook
+import SKActivityIndicatorView
 class ReportVC1: UIViewController {
     //MARK:- IBOutlet
     //TableView
@@ -49,6 +51,8 @@ class ReportVC1: UIViewController {
     var Arr_PackagWiseReport = [packageWiseReportModel]()
     var Arr_PackingListReport = [PackingListReportModel]()
     var param : NSDictionary = NSDictionary()
+    public var docViewController = QLPreviewController()
+    public var arrDocuments = [NSURL]()
     var PageCount = 1
     //MARK:- LifeCycle
     override func viewDidLoad() {
@@ -56,7 +60,11 @@ class ReportVC1: UIViewController {
         self.Initialization()
     }
     func Initialization(){
-        barbuttonheader() 
+        barbuttonheader()
+        self.arrDocuments = []
+        self.docViewController = QLPreviewController()
+        self.docViewController.dataSource = self
+        self.docViewController.reloadData()
         if pageName == "Packagewise Report" {
             title = "Packagewise Report"
             ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_PackagWiseReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any], tag: 4)
@@ -103,6 +111,7 @@ class ReportVC1: UIViewController {
     }
     @objc func barbtn_excel(_ sender: UIBarButtonItem) {
         self.SentMail(report_type: "excel",Param: param)
+        
     }
     func SentMail(report_type : String,Param : NSDictionary) {
         if param.count == 0 {
@@ -114,13 +123,42 @@ class ReportVC1: UIViewController {
         }
         switch pageName {
         case "Packagewise Report":
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_PackagWiseReport, params: param as! Parameters, tag: 4)
+            let CallApi = (report_type != "mail") ? ReportAPI.shareInstance.Get_DownloadDocument(ViewController: self, Api_Str: Api_Urls.GET_API_PackagWiseReport, params: param as! Parameters, tag: 4, report_Type: (report_type != "excel") ? "pdf" : "xlsx") : ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_PackagWiseReport, params: param as! Parameters, tag: 4)
+            print(CallApi)
         case "Packing List Report" :
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_PackingListReport, params:param as! Parameters , tag: 5)
+            let CallApi = (report_type != "mail") ? ReportAPI.shareInstance.Get_DownloadDocument(ViewController: self, Api_Str: Api_Urls.GET_API_PackingListReport, params: param as! Parameters, tag: 4, report_Type: (report_type != "excel") ? "pdf" : "xlsx") : ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_PackingListReport, params:param as! Parameters , tag: 5)
         default:
             print(pageName)
         }
     }
+//    func Get_DownloadDocument(ViewController: UIViewController,Api_Str : String,params : Parameters,tag : Int,report_Type : String) {
+//        if AppDelegate.NetworkRechability(){
+//            Utils.ShowActivityIndicator(message: "Loading")
+//            AFWrapper.request_ResponseDat(Api_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: params, success: { (responseObject, statusCode, JSONObject) in
+//                print(responseObject)
+//                if statusCode == 200 {
+//                    if tag == 4 || tag == 5 {
+//                         NSTemporaryDirectory()
+//                      let DataFile = try! responseObject.write(to: URL(fileURLWithPath: NSTemporaryDirectory() + "\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)"), options: .atomicWrite)
+//                      let tmpURL = FileManager.default.temporaryDirectory.appendingPathComponent("\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)")
+//                        print(tmpURL)
+//                        self.arrDocuments = [tmpURL as! NSURL]
+//                        self.docViewController.reloadData()
+//                        self.present(self.docViewController, animated: true, completion: nil)
+//                    }
+//                }else {
+//                    Utils.showToastWithMessageAtCenter(message: "Json Failed")
+//                }
+//                SKActivityIndicator.dismiss()
+//            })
+//            { (error, statusCode) in
+//                SKActivityIndicator.dismiss()
+//                print(error.localizedDescription)
+//            }
+//        }else {
+//            //            Utils.showToastWithMessageAtCenter(message: "Strings.kNoInternetMessage")
+//        }
+//    }
     @IBAction func btn_DetailFigureReportNum(_ sender: UIButton) {
         if sender.tag == 1 {
             tbl_PackagewiseReport.isHidden = false
@@ -277,5 +315,18 @@ extension ReportVC1 : UITableViewDataSource {
                 return cell
             }
         }
+    }
+}
+extension ReportVC1 : QLPreviewControllerDataSource {
+ func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("view was cancelled")
+        dismiss(animated: true, completion: nil)
+    }
+    //MARK: Document Viewer Delegate methods
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return self.arrDocuments.count
+    }
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.arrDocuments[index] as QLPreviewItem
     }
 }

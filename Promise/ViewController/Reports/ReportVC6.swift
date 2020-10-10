@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import  QuickLook
 class ReportVC6: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var tbl_DetailFigureReport: UITableView!
@@ -61,12 +62,18 @@ class ReportVC6: UIViewController {
     var Arr_MarkWiseCumulativeReport = [MarkWiseCumulativeReportModel]()
     var param : NSDictionary = NSDictionary()
     var PageCount = 1
+    public var docViewController = QLPreviewController()
+    public var arrDocuments = [NSURL]()
     //MARK:- Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.Initialization()
     }
     func Initialization() {
+        self.arrDocuments = []
+        self.docViewController = QLPreviewController()
+        self.docViewController.dataSource = self
+        self.docViewController.reloadData()
         barbuttonheader()
         if pageName == "Detail Figure Report" {
             title = "Detail Figure Report"
@@ -194,11 +201,14 @@ class ReportVC6: UIViewController {
         }
         switch pageName {
         case "Detail Figure Report":
-           ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_DetailFigureReport, params: param as! Parameters,tag: 1)
+            let CallApi = (report_type != "mail") ? ReportAPI.shareInstance.Get_DownloadDocument(ViewController: self, Api_Str: Api_Urls.GET_API_DetailFigureReport, params: param as! Parameters, tag: 1, report_Type: (report_type != "excel") ? "pdf" : "xlsx") : ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_DetailFigureReport, params: param as! Parameters, tag: 1)
+                       print(CallApi)
         case "Markwise Report" :
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_MarkWiseReport, params: param as! Parameters , tag: 2)
+            let CallApi = (report_type != "mail") ? ReportAPI.shareInstance.Get_DownloadDocument(ViewController: self, Api_Str: Api_Urls.GET_API_MarkWiseReport, params: param as! Parameters, tag: 2, report_Type: (report_type != "excel") ? "pdf" : "xlsx") : ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_MarkWiseReport, params: param as! Parameters, tag: 2)
+                       print(CallApi)
         case "Markwise Cumulative Report" :
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_MarkCummReport, params: param as! Parameters, tag: 3)
+            let CallApi = (report_type != "mail") ? ReportAPI.shareInstance.Get_DownloadDocument(ViewController: self, Api_Str: Api_Urls.GET_API_MarkCummReport, params: param as! Parameters, tag: 3, report_Type: (report_type != "excel") ? "pdf" : "xlsx") : ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_MarkCummReport, params: param as! Parameters, tag: 3)
+                       print(CallApi)
         default:
             print(pageName)
         }
@@ -393,5 +403,18 @@ extension ReportVC6 : UITableViewDataSource {
             }
         }
         
+    }
+}
+extension ReportVC6 : QLPreviewControllerDataSource {
+ func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("view was cancelled")
+        dismiss(animated: true, completion: nil)
+    }
+    //MARK: Document Viewer Delegate methods
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return self.arrDocuments.count
+    }
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.arrDocuments[index] as QLPreviewItem
     }
 }

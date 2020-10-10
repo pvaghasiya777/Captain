@@ -31,6 +31,8 @@ class ReportsFiltersVC: UIViewController {
     @IBOutlet weak var btn_OK: UIButton!
     //MARK :- Variable
 //    var arrContent : NSMutableArray = ["IPhone","IMac","IPad","MacBook","IPod","MacMini","Apple TV"]
+    @IBOutlet  var popup : KLCPopup!
+    @IBOutlet var popup_Select : multiselectpopup?
     var Arr_Project = [FilterProjectModel]()
     var Arr_PurchaseOrder = [FilterPurchaseOrderModel]()
     var Arr_Strucher = [FilterStructureModel]()
@@ -92,11 +94,8 @@ class ReportsFiltersVC: UIViewController {
     func showMultipleSelectionTableview(arrContent : NSMutableArray) -> String
     {
         let podBundle = Bundle(for: PKMulipleSelectionVC.self)
-        
         var bundleURL = podBundle.url(forResource: "PatrickMultipleSelectionTableview", withExtension: "bundle")
-        
         var bundle = Bundle(url: bundleURL!)!
-        
         var storyboard = UIStoryboard(name: "Main", bundle: bundle)
         let vc:PKMulipleSelectionVC = storyboard.instantiateViewController(withIdentifier: "PKMulipleSelectionVC") as! PKMulipleSelectionVC
       //  vc.view.frame = CGRect(x: self.view.center.x - 100, y: self.view.center.y - 100, width: 300, height: 400)
@@ -133,7 +132,6 @@ class ReportsFiltersVC: UIViewController {
         // Data Passing Usning Block
          arrfiltervalue = ""
         vc.passDataWithIndex = { arrayData, selectedIndex in
-//            self.btnClickeMe.setTitle("\(arrayData)", for: UIControl.State.normal
             //Set data in TextField
             if self.text_tag == 1 { // Project
                 let Arr_Selected = self.Arr_Project.filter{($0.project! == String(describing: arrayData))}
@@ -169,7 +167,19 @@ class ReportsFiltersVC: UIViewController {
         self.view.addSubview(vc.view)
         self.addChild(vc)
         vc.didMove(toParent: self)
-        return arrfiltervalue //UserDefaults.standard.object(forKey: "data") as! String
+        return arrfiltervalue
+    }
+       // MARK: - Mode Selection Popup
+    func Mode_Selection(ArrContent:NSMutableArray , arrProjectTab : Int) {
+        self.popup_Select = multiselectpopup(nibName: "multiselectpopup", bundle: nil)
+        popup_Select?.arrcontant = ArrContent
+        popup_Select?.arrProjectTab = arrProjectTab
+        self.popup_Select!.view.frame = CGRect.init(x: 0, y: 0, width: 330, height: 460)
+        self.popup = KLCPopup(contentView: self.popup_Select?.view, showType: .growIn, dismissType: .growOut, maskType: .dimmed, dismissOnBackgroundTouch: false, dismissOnContentTouch: false)
+        self.popup.didFinishDismissingCompletion = {() -> Void in
+            print(self.popup_Select!.arrChack)
+        }
+        self.popup.show(withRoot: self.view)
     }
      @IBAction func btnMaterialTypeClick(_ sender: UIButton) {
           if sender.tag == 1 {
@@ -645,6 +655,7 @@ extension ReportsFiltersVC : UITextFieldDelegate {
         if textField.tag == 1 {
             self.text_tag = 1
             self.Arr_Project_Name = NSMutableArray(array: Arr_Project.map{($0.project!)} as NSArray)
+//            self.Mode_Selection(ArrContent: Arr_Project_Name, arrProjectTab: 1)
             self.dropProject.text = showMultipleSelectionTableview(arrContent:NSMutableArray(array: Arr_Project_Name))
         } else if textField.tag == 2  {
             self.text_tag = 2

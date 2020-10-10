@@ -37,7 +37,7 @@ class ReportAPI: NSObject
                                 Report_VC.Arr_MarkWiseReport = obj_Report.Load_Data_To_Array(arr_Data: Arr_Data)
                                 Report_VC.Str_markWiseReportNext = ((JSONObject.object as! NSDictionary).value(forKey: "next")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "next") as! String
                                 Report_VC.Str_markWiseReportPrevious = ((JSONObject.object as! NSDictionary).value(forKey: "previous")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "previous") as! String
-                                Report_VC.lbl_MarkwisePageNum.text = "Showing 1 to \(Arr_Data.count) of \(((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int)) results"
+                                Report_VC.lbl_PageNum_MarkwiseReport.text = "Showing 1 to \(Arr_Data.count) of \(((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int)) results"
                                 Report_VC.tbl_MarkwiseReport.reloadData()
                             }
                         }else if tag == 3 {
@@ -77,13 +77,13 @@ class ReportAPI: NSObject
                             Report_VC.lbl_IdentCodewiseNumber.text = "Showing 1 to \(results!.results!.count) of  \(String(describing: results!.count!)) results"
                             Report_VC.tbl_IdentCodewiseReport.reloadData()
                         }else if tag == 8 {
-                           if ((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int) != 0 {
+                            if ((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int) != 0 {
                                 let Arr_Data : NSMutableArray = NSMutableArray(array: ((JSONObject.object as! NSDictionary).value(forKey: "results") as! NSArray))
                                 let obj_Report = StrucherWiseReportModel()
                                 Report_VC.Arr_StrucherWiseReport = obj_Report.Load_Data_To_Array(arr_Data: Arr_Data)
                                 Report_VC.Str_markWiseReportNext = ((JSONObject.object as! NSDictionary).value(forKey: "next")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "next") as! String
                                 Report_VC.Str_markWiseReportPrevious = ((JSONObject.object as! NSDictionary).value(forKey: "previous")! is NSNull) ? "" : (JSONObject.object as! NSDictionary).value(forKey: "previous") as! String
-                            Report_VC.lbl_PageNum_StructurewiseReport.text = "Showing 1 to \(String(describing: Arr_Data.count)) of  \((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int) results"
+                                Report_VC.lbl_PageNum_StructurewiseReport.text = "Showing 1 to \(String(describing: Arr_Data.count)) of  \((JSONObject.object as! NSDictionary).value(forKey: "count") as! Int) results"
                                 Report_VC.tbl_StructurewiseReport.reloadData()
                             }
                         }
@@ -105,7 +105,7 @@ class ReportAPI: NSObject
                     
                 }else {
                     print("Json Failed")
-//                    Utils.showToastWithMessageAtCenter(message: "")
+                    //                    Utils.showToastWithMessageAtCenter(message: "")
                 }
                 SKActivityIndicator.dismiss()
             })
@@ -120,43 +120,109 @@ class ReportAPI: NSObject
             Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
         }
     }
-    func Get_DashBoardHome(Api_str : String,ViewController: UIViewController,Tag : Int) {
+    func Get_DownloadDocument(ViewController: UIViewController,Api_Str : String,params : Parameters,tag : Int,report_Type : String) {
         if AppDelegate.NetworkRechability(){
-            SVProgressHUD.show(withStatus: "Loading...")
-            let DashBoard_VC = ViewController as! HomeVC
-            AFWrapper.requestGETURL_JSON(Api_str, headers:["Authorization": DEFAULTS.Get_TOKEN()], params : [:], success: { (responseObject,statusCode) in
-                do {
-                    print(responseObject)
-                    if statusCode == 200 {
-                        if Tag == 5 {
-                            let results = try JSONDecoder().decode(DashBoardMarkWiseModel.self, from: responseObject)
-                            print(results)
-                            DashBoard_VC.Arr_DashBoardMarkwise = [results]
-                            DashBoard_VC.Is_Mark = true
-                            DashBoard_VC.SetMarkData()
-                        }else {
-                            let results = try JSONDecoder().decode(DashBoardModel.self, from: responseObject)
-                            print(results)
-                            DashBoard_VC.Arr_DashBoardResult = results.results!
-                            DashBoard_VC.SetData()
+            Utils.ShowActivityIndicator(message: "Loading")
+            AFWrapper.request_ResponseDat(Api_Str, headers: ["Authorization": DEFAULTS.Get_TOKEN()], params: params, success: { (responseObject, statusCode, JSONObject) in
+                print(responseObject)
+                if statusCode == 200{
+                    if tag == 1 || tag == 2 || tag == 3 {
+                        let Report_VC = ViewController as! ReportVC6
+                        let FileDownload = try! responseObject.write(to: URL(fileURLWithPath: NSTemporaryDirectory() + "\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)"), options: .atomicWrite)
+                        let tmpURL = FileManager.default.temporaryDirectory.appendingPathComponent("\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)")
+                        print(tmpURL)
+                        Report_VC.arrDocuments = [tmpURL as! NSURL]
+                        Report_VC.docViewController.reloadData()
+                        Report_VC.present(Report_VC.docViewController, animated: true, completion: nil)
+                    }else if tag == 4 || tag == 5 {
+                        let Report_VC = ViewController as! ReportVC1
+                        if tag == 4 {
+                            let FileDownload = try! responseObject.write(to: URL(fileURLWithPath: NSTemporaryDirectory() + "\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)"), options: .atomicWrite)
+                            let tmpURL = FileManager.default.temporaryDirectory.appendingPathComponent("\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)")
+                            print(tmpURL)
+                            Report_VC.arrDocuments = [tmpURL as! NSURL]
+                            Report_VC.docViewController.reloadData()
+                            Report_VC.present(Report_VC.docViewController, animated: true, completion: nil)
+                        }else if tag == 5 {
+                            let FileDownload = try! responseObject.write(to: URL(fileURLWithPath: NSTemporaryDirectory() + "\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)"), options: .atomicWrite)
+                            let tmpURL = FileManager.default.temporaryDirectory.appendingPathComponent("\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)")
+                            print(tmpURL)
+                            Report_VC.arrDocuments = [tmpURL as! NSURL]
+                            Report_VC.docViewController.reloadData()
+                            Report_VC.present(Report_VC.docViewController, animated: true, completion: nil)
                         }
-                        SVProgressHUD.dismiss()
+                    }else if tag == 6 || tag == 7 || tag == 8 {
+                        let Report_VC = ViewController as! Report2
+                        let FileDownload = try! responseObject.write(to: URL(fileURLWithPath: NSTemporaryDirectory() + "\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)"), options: .atomicWrite)
+                        let tmpURL = FileManager.default.temporaryDirectory.appendingPathComponent("\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)")
+                        print(tmpURL)
+                        Report_VC.arrDocuments = [tmpURL as! NSURL]
+                        Report_VC.docViewController.reloadData()
+                        Report_VC.present(Report_VC.docViewController, animated: true, completion: nil)
+                    }else if tag == 9 {
+                        let Report_VC = ViewController as! ReportVC3
+                        let FileDownload = try! responseObject.write(to: URL(fileURLWithPath: NSTemporaryDirectory() + "\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)"), options: .atomicWrite)
+                        let tmpURL = FileManager.default.temporaryDirectory.appendingPathComponent("\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)")
+                        print(tmpURL)
+                        Report_VC.arrDocuments = [tmpURL as! NSURL]
+                        Report_VC.docViewController.reloadData()
                     }else {
-                        print("Invalid Token")
-                        SVProgressHUD.dismiss()
+                        let Report_VC = ViewController as! ReportVC4
+                        let FileDownload = try! responseObject.write(to: URL(fileURLWithPath: NSTemporaryDirectory() + "\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)"), options: .atomicWrite)
+                        let tmpURL = FileManager.default.temporaryDirectory.appendingPathComponent("\((Date().string(with: "dd/mm/yyyy hh:mm:ss").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: " ", with: "_"))).\(report_Type)")
+                        print(tmpURL)
+                        Report_VC.arrDocuments = [tmpURL as! NSURL]
+                        Report_VC.docViewController.reloadData()
                     }
-                }catch let jsonErr{
-                    print("json error : \(jsonErr.localizedDescription)")
-                     SVProgressHUD.dismiss()
                 }
-            })
-            { (error) in
-//                SKActivityIndicator.dismiss()
-                 SVProgressHUD.dismiss()
-                print(error.localizedDescription)
-            }
-        }else {
-            Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
+                SKActivityIndicator.dismiss()
+            }){ (error, statusCode) in
+            SKActivityIndicator.dismiss()
+            
+            print(error.localizedDescription)
         }
+    }else {
+    Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
     }
+}
+func Get_DashBoardHome(Api_str : String,ViewController: UIViewController,Tag : Int) {
+    if AppDelegate.NetworkRechability(){
+        SVProgressHUD.show(withStatus: "Loading...")
+        let DashBoard_VC = ViewController as! HomeVC
+        AFWrapper.requestGETURL_JSON(Api_str, headers:["Authorization": DEFAULTS.Get_TOKEN()], params : [:], success: { (responseObject,statusCode) in
+            do {
+                print(responseObject)
+                if statusCode == 200 {
+                    if Tag == 5 {
+                        let results = try JSONDecoder().decode(DashBoardMarkWiseModel.self, from: responseObject)
+                        print(results)
+                        DashBoard_VC.Arr_DashBoardMarkwise = [results]
+                        DashBoard_VC.Is_Mark = true
+                        DashBoard_VC.SetMarkData()
+                    }else {
+                        let results = try JSONDecoder().decode(DashBoardModel.self, from: responseObject)
+                        print(results)
+                        DashBoard_VC.Arr_DashBoardResult = results.results!
+                        DashBoard_VC.SetData()
+                    }
+                    SVProgressHUD.dismiss()
+                }else {
+                    print("Invalid Token")
+                    SVProgressHUD.dismiss()
+                }
+            }catch let jsonErr{
+                print("json error : \(jsonErr.localizedDescription)")
+                SVProgressHUD.dismiss()
+            }
+        })
+        { (error) in
+            //                SKActivityIndicator.dismiss()
+            SVProgressHUD.dismiss()
+            print(error.localizedDescription)
+        }
+    }else {
+        Utils.showToastWithMessageAtCenter(message: Strings.kNoInternetMessage)
+    }
+}
+
 }

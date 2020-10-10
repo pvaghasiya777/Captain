@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import  QuickLook
 class ReportVC3: UIViewController {
     
     @IBOutlet weak var tbl_GroupStructurewiseReport: UITableView!
@@ -31,7 +32,8 @@ class ReportVC3: UIViewController {
     @IBOutlet weak var lbl_ShowPage_Count_GroupStructurewiseReport: UILabel!
     @IBOutlet weak var lbl_PageNum_GroupStructurewiseReport: UILabel!
     
-    
+    public var docViewController = QLPreviewController()
+    public var arrDocuments = [NSURL]()
     var pageName = String()
     var Arr_GroupSReport = [GroupStrucherWiseReportModel]()
     var param : NSDictionary = NSDictionary()
@@ -39,6 +41,10 @@ class ReportVC3: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         barbuttonheader()
+        self.arrDocuments = []
+        self.docViewController = QLPreviewController()
+        self.docViewController.dataSource = self
+        self.docViewController.reloadData()
         title = "Group Structure wise Report"
         ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_GroupStrucherWiseReport, params: (param.count == 0) ? ["project_id":"1"] : param as! [String : Any] , tag: 9)
         tbl_GroupStructurewiseReport.isHidden = false
@@ -112,10 +118,10 @@ class ReportVC3: UIViewController {
         self.navigationItem.rightBarButtonItems  = [rightButtonMail,rightButtonPDF,rightButtonExcel]
     }
     @objc func barbtn_Mail(_ sender: UIBarButtonItem) {
-self.SentMail(report_type: "mail" , Param: param)
+        self.SentMail(report_type: "mail" , Param: param)
     }
     @objc func barbtn_PDF(_ sender: UIBarButtonItem) {
-       self.SentMail(report_type: "pdf" , Param: param)
+        self.SentMail(report_type: "pdf" , Param: param)
     }
     @objc func barbtn_excel(_ sender: UIBarButtonItem) {
         self.SentMail(report_type: "excel" , Param: param)
@@ -129,8 +135,9 @@ self.SentMail(report_type: "mail" , Param: param)
             param = tempDic
         }
         switch pageName {
-        case "Group Structure wise Report":
-            ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_GroupStrucherWiseReport, params: param as! Parameters, tag: 9)
+        case "Group Structurewise Report":
+            let CallApi = (report_type != "mail") ? ReportAPI.shareInstance.Get_DownloadDocument(ViewController: self, Api_Str: Api_Urls.GET_API_GroupStrucherWiseReport, params: param as! Parameters, tag: 9, report_Type: (report_type != "excel") ? "pdf" : "xlsx") : ReportAPI.shareInstance.Get_ReportList(ViewController: self, Api_Str: Api_Urls.GET_API_GroupStrucherWiseReport, params: param as! Parameters, tag: 9)
+            print(CallApi)
         default:
             print(pageName)
         }
@@ -224,5 +231,18 @@ extension ReportVC3 : UITableViewDataSource {
             }
         }
         
+    }
+}
+extension ReportVC3 : QLPreviewControllerDataSource {
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("view was cancelled")
+        dismiss(animated: true, completion: nil)
+    }
+    //MARK: Document Viewer Delegate methods
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return self.arrDocuments.count
+    }
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.arrDocuments[index] as QLPreviewItem
     }
 }

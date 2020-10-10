@@ -73,6 +73,7 @@ class AFWrapper: NSObject
             }
         }
     }
+    //MARK:- With Parameter And Methode,Reruen Status Code
     class func requestmethode_WithParameter_ReturnStatuscode(_ strURL: String,method: HTTPMethod, headers : [String : String]?,params : [String : String]?, success:@escaping (Data,Int,JSON) -> Void, failure:@escaping (Error) -> Void)
     {
         let final_strURL : String = strURL
@@ -88,6 +89,29 @@ class AFWrapper: NSObject
             if responseObject.result.isFailure {
                 let error : Error = responseObject.result.error!
                 failure(error)
+            }
+        }
+    }
+    //MARK:- Return ad Response Data for document write
+    class func request_ResponseDat(_ strURL: String, headers : [String : String]?,params : Parameters?, success:@escaping (Data,Int,JSON) -> Void, failure:@escaping (Error,Int) -> Void)
+    {
+        let final_strURL : String = strURL
+        print(final_strURL)
+        print(params!)
+        Alamofire.request(final_strURL, method: .get, parameters: params, encoding: URLEncoding.default, headers: headers).responseData{ (responseObject) -> Void in
+            print(responseObject)
+            var StatusCode : Int = 1;
+            //            NSTemporaryDirectory()
+            //            responseObject.data!.write(to: URL(fileURLWithPath: NSTemporaryDirectory() + "abc1.xlsx"), options: .atomicWrite)
+            StatusCode = responseObject.response!.statusCode
+            if responseObject.result.isSuccess {
+                print(responseObject.response!.statusCode)
+                StatusCode = responseObject.response!.statusCode
+                success(responseObject.data!,StatusCode,JSON(responseObject.result.value!))
+            }
+            if responseObject.result.isFailure {
+                let error : Error = responseObject.result.error!
+                failure(error,StatusCode)
             }
         }
     }

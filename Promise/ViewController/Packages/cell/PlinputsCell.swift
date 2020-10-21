@@ -17,7 +17,10 @@ class PlinputsCell: UITableViewCell {
     @IBOutlet var lbl_strucherID: UILabel!
     @IBOutlet var lbl_approvalStatus: UILabel!
     @IBOutlet var lbl_ActiveStatus: UILabel!
-    
+    @IBOutlet weak var btn_PackagesView: UIButton!
+    @IBOutlet weak var btn_Edit: UIButton!
+    @IBOutlet weak var btn_Delete: UIButton!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

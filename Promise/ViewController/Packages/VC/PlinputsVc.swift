@@ -134,6 +134,31 @@ class PlinputsVc: UIViewController
             }
         }.resume()
     }
+    // MARK: - Edit,Delete,Puase Buttons Clicks
+    @objc func cell_Button_Clicks(_ sender : UIBarButtonItem) {
+        if sender.accessibilityHint == "0" {
+            let Packages_View = Config.StoryBoard.instantiateViewController(identifier: "PackagesViewVC") as! PackagesViewVC
+            Packages_View.str_ID =  String((self.Arr_PLInputs_Data[sender.tag] as! PLreportsModel).id)
+            Packages_View.Str_VendorName = (self.Arr_PLInputs_Data[sender.tag] as! PLreportsModel).vendorName!
+            Packages_View.Str_Strucher = (self.Arr_PLInputs_Data[sender.tag] as! PLreportsModel).shopDrawingName!
+            Packages_View.Str_ProjectName = (self.Arr_PLInputs_Data[sender.tag] as! PLreportsModel).projectName!
+            self.navigationController?.pushViewController(Packages_View, animated: true)
+        } else if sender.accessibilityHint == "1" {
+            self.storeAndShare(withURLString: Api_Urls.GET_API_plReports + "\(String((self.Arr_PLInputs_Data[sender.tag] as! PLreportsModel).id))/export/")
+        } else {
+            print("Delete")
+        }
+    }
+    
+    // MARK: - Bind Buttons Clicks
+    func set_Button_Target(buttons : [UIButton], action : Selector, tag : Int) {
+        for i in 0..<buttons.count{
+            buttons[i].addTarget(self, action: action, for: .touchUpInside)
+            buttons[i].accessibilityHint = String(i)
+            buttons[i].tag = tag
+        }
+    }
+    
 }
 extension PlinputsVc : UITableViewDelegate,UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -154,6 +179,7 @@ extension PlinputsVc : UITableViewDelegate,UITableViewDataSource {
         } else {
             let cell : PlinputsCell = tableView.dequeueReusableCell(withIdentifier: "PlinputsCell") as! PlinputsCell
             cell.Display_Cell(viewController: self, indexPath: indexPath)
+            self.set_Button_Target(buttons: [cell.btn_PackagesView,cell.btn_Edit,cell.btn_Delete], action: #selector(self.cell_Button_Clicks(_:)), tag : indexPath.section)
             cell.selectionStyle = .none
             return cell
         }
@@ -169,30 +195,6 @@ extension PlinputsVc : UITableViewDelegate,UITableViewDataSource {
         Next.Str_Title = (Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).name!
         Next.navigationItem.title = (Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).name!
         self.navigationController?.pushViewController(Next, animated: true)
-    }
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if indexPath.section == 1 {
-            let viewAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-                let Packages_View = Config.StoryBoard.instantiateViewController(identifier: "PackagesViewVC") as! PackagesViewVC
-                Packages_View.str_ID =  String((self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).id)
-                Packages_View.Str_VendorName = (self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).vendorName!
-                Packages_View.Str_Strucher = (self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).shopDrawingName!
-                Packages_View.Str_ProjectName = (self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).projectName!
-                self.navigationController?.pushViewController(Packages_View, animated: true)
-                completion(true)
-                print("View Click")
-            }
-            let viewExcelSheet = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-                completion(true)
-                self.storeAndShare(withURLString: Api_Urls.GET_API_plReports + "\(String((self.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel).id))/export/")
-            }
-            viewAction.image = UIImage(named: "ic_eye")
-            viewAction.backgroundColor = Config.bgColor
-            viewExcelSheet.image = UIImage(named: "ic_excel")
-            viewExcelSheet.backgroundColor = Config.bgColor
-            return UISwipeActionsConfiguration(actions: [viewExcelSheet,viewAction])
-        }
-        return UISwipeActionsConfiguration(actions: [])
     }
 }
 //MARK:- SWRevealViewController Methods

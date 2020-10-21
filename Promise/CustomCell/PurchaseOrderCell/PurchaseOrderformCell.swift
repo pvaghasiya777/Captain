@@ -12,7 +12,6 @@ class PurchaseOrderformCell: UITableViewCell {
     //MARK :- IBOutlet
     @IBOutlet var view_PurchaseDetails: UIView!
     @IBOutlet var view_PurchaseDetails2: UIView!
-    @IBOutlet var view_DocumentAttachment: UIView!
     //ViewPurchase Details First
     @IBOutlet var txt_Number: UITextField!
     @IBOutlet var txt_Vendor: DropDown!
@@ -28,26 +27,21 @@ class PurchaseOrderformCell: UITableViewCell {
     @IBOutlet var txt_Dimension: UITextField!
     @IBOutlet var txt_Volume: UITextField!
     @IBOutlet var btn_isActive: UIButton!
-    //ViewDocument Attachment
-    @IBOutlet var txt_ExcelFile: UITextField!
-    @IBOutlet var txt_PDFFIle: UITextField!
-    @IBOutlet var btn_ExcelFile: UIButton!
-    @IBOutlet var btn_PDFFIle: UIButton!
     //Commom Action
     @IBOutlet var btn_FormDetails: UIButton!
-    @IBOutlet var btn_DocumentAttachment: UIButton!
     @IBOutlet var lbl_FormDetails: UILabel!
     @IBOutlet var lbl_DocumentAttachment: UILabel!
     //Mark :- Variable
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        view_DocumentAttachment.isHidden = true
         lbl_DocumentAttachment.isHidden = true
         Utils.EnableTextField(textFields: [txt_Number,txt_Vendor,txt_Project,txt_WeightUOM,txt_Dimension,txt_Volume,txt_DeliveryDate,txt_Date,txt_Project,txt_POType,txt_Address,txt_Currency,txt_ShipperDetails])
         Utils.set_Image_on_RightView_of_Textfield(textfield: txt_Date, imagename: "ic_calendar", width: 20, height: 20)
         Utils.set_Image_on_RightView_of_Textfield(textfield: txt_DeliveryDate, imagename: "ic_calendar", width: 20, height: 20)
     }
+    
+    
     func DisplayCell(Arr_Data : [SingleMasterPurchaseModel],indexpath : IndexPath) {
         print(Arr_Data)
         if Arr_Data.count != 0 {
@@ -74,7 +68,7 @@ class PurchaseOrderformCell: UITableViewCell {
     }
     //Buttion Action
     @IBAction func btn_formAndDocument(_ sender: UIButton) {
-        self.view_DocumentAttachment.isHidden = (sender.tag == 1) ? false : true
+//        self.view_DocumentAttachment.isHidden = (sender.tag == 1) ? false : true
         self.view_PurchaseDetails2.isHidden = (sender.tag == 1) ?  true : false
         self.view_PurchaseDetails.isHidden = (sender.tag == 1) ?  true : false
         self.lbl_FormDetails.isHidden = (sender.tag == 1) ?  true : false

@@ -23,7 +23,8 @@ class PL_PackageDetailsCell: UITableViewCell {
         // Initialization code
     }
     func Display_Cell(viewController : PLinputDetails , indexPath : IndexPath) {
-        let Arr_Data = viewController.Arr_PLDetail[0].inputMasterIDS![indexPath.row]
+        let cellIndex = viewController.startIndex + indexPath.row
+        let Arr_Data = viewController.Arr_PLDetail[0].inputMasterIDS![cellIndex]
         print(Arr_Data)
         let KOP = DEFAULTS.Get_MasterKindOfPackage().filter {$0.id! == Arr_Data.packageID!}
         self.lbl_PackageName.text = String(describing: Arr_Data.package!)

@@ -11,8 +11,6 @@ import UIKit
 class ProjectDetailsFormViewVC: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var view_topBG: UIView!
-    @IBOutlet weak var btn_Save: UIButton!
-    @IBOutlet weak var btn_Discard: UIButton!
     @IBOutlet weak var view_SecondBG : UIView!
     @IBOutlet weak var btn_Structure : UIButton!
     @IBOutlet weak var btn_Packages : UIButton!
@@ -55,10 +53,11 @@ class ProjectDetailsFormViewVC: UIViewController {
     //MARK:- Initialization
     func Initialization() {
         Utils.EnableTextField(textFields: [txt_Name,txt_ProjectCode,txt_ContractNumber,txt_ConsigneeBuyer,txt_Reference,txt_SiteLocation,txt_Description,txt_StartDate,txt_EndDate,txt_Manager])
-        Utils.Set_Same_Corner_Radius(views: [txt_Name,txt_ProjectCode,txt_ContractNumber,txt_ConsigneeBuyer,txt_Reference,txt_SiteLocation,txt_Description,txt_StartDate,txt_EndDate,txt_Manager,btn_Shipper,btn_Active,btn_Discard,btn_Save], cornerRadius: 5)
+        Utils.Set_Same_Corner_Radius(views: [txt_Name,txt_ProjectCode,txt_ContractNumber,txt_ConsigneeBuyer,txt_Reference,txt_SiteLocation,txt_Description,txt_StartDate,txt_EndDate,txt_Manager,btn_Shipper,btn_Active], cornerRadius: 5)
         Utils.add_shadow_around_view_Multiple(views: [view_SecondBG,view_topBG], color: .gray, radius: 3, opacity: 3)
         Utils.set_Image_on_RightView_of_Textfield(textfield: txt_StartDate, imagename: "ic_calendar", width: 20, height:20)
         Utils.set_Image_on_RightView_of_Textfield(textfield: txt_EndDate, imagename: "ic_calendar", width: 20, height: 20)
+
     }
     
     func SetData(){

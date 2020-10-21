@@ -19,7 +19,6 @@ class PackingListsEditCell: UITableViewCell {
     }
     func Display_Cell(Arr_Data : [PackinglistIDModel], indexPath: IndexPath) {
         let Arr_RejectReson = Arr_Data[0].reject_reasons![indexPath.row]
-        print(Arr_RejectReson)
 //        self.lbl_RejectedBy.text = Arr_RejectReson
         
     }

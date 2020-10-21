@@ -1,3 +1,4 @@
+
 //
 //  PackagesViewVC.swift
 //  report
@@ -12,9 +13,6 @@ class PackagesViewVC: UIViewController {
     
     //MARK:- IBOutlet
     @IBOutlet weak var view_MasterDetailButton: UIView!
-    @IBOutlet weak var tbl_MasterDetails_1: UITableView!
-    @IBOutlet weak var tbl_MasterDetails_2: UITableView!
-    @IBOutlet weak var tbl_SingleDetails: UITableView!
     @IBOutlet weak var btn_MasterDetails: UIButton!
     @IBOutlet weak var btn_SingleDetails: UIButton!
     @IBOutlet weak var btn_InputDetail: UIButton!
@@ -44,7 +42,20 @@ class PackagesViewVC: UIViewController {
     @IBOutlet weak var txt_TotalNetWeightkg: UITextField!
     @IBOutlet weak var txt_TotalGrossWeightkg: UITextField!
     @IBOutlet weak var txt_TotalVolumem: UITextField!
+//  Master Details
+    @IBOutlet weak var tbl_MasterDetails_1: UITableView!
+    @IBOutlet weak var tbl_MasterDetails_2: UITableView!
+    @IBOutlet weak var btn_MPrevious: UIButton!
+    @IBOutlet weak var btn_MNext: UIButton!
+    @IBOutlet weak var lbl_MShowPagination: UILabel!
+    @IBOutlet weak var lbl_MPageNum: UILabel!
     
+//    Single Details
+    @IBOutlet weak var tbl_SingleDetails: UITableView!
+    @IBOutlet weak var btn_SPrevious: UIButton!
+    @IBOutlet weak var btn_SNext: UIButton!
+    @IBOutlet weak var lbl_SShowPagination: UILabel!
+    @IBOutlet weak var lbl_SPageNum: UILabel!
     //MARK:- variable
     var Arr_PLDetail = [PlreportDetailModel]()
     var Arr_SingleDetail = [InputSingleID]()
@@ -76,6 +87,9 @@ class PackagesViewVC: UIViewController {
         self.lbl_MasterDetails.backgroundColor = .white
         self.lbl_SingleDetails.backgroundColor = .white
         self.tbl_SingleDetails.allowsSelection = false
+
+  
+//       Utils.EnableTextField(textFields: [txt_Name,txt_InputNumber,txt_Revisionnumber,txt_PurchaseOrderNumber,txt_Project,txt_Project,txt_Status,txt_Vendor,txt_Structure,txt_Address,txt_CountryOfOrigin,txt_PickupLocation,txt_ContactDetails,txt_NameOfGoods,txt_InspectionTime,txt_TotalNetWeightkg,txt_TotalGrossWeightkg,txt_TotalVolumem])
     }
     func SetData(){
         print(Arr_PLDetail)
@@ -99,6 +113,7 @@ class PackagesViewVC: UIViewController {
         self.txt_CountryOfOrigin.text = Arr_CountryOrigin[0].name!
         let Arr_Address = DEFAULTS.Get_AddressStruct().filter {$0.id == Arr_PLDetail[0].addressID!}
         self.txt_Address.text = Arr_Address[0].name!
+        
         
         //Set SingleDetail
         let Arr_SingleID = Arr_PLDetail[0].inputMasterIDS!.map{($0.inputSingleIDS!)}.joined()

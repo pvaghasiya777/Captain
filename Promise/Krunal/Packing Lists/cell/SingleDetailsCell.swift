@@ -25,7 +25,6 @@ class SingleDetailsCell: UITableViewCell {
 
     func DisplayCell(Arr_Data : [Pl_single_ids],indexPath : IndexPath) {
         let Arr_SingleDetail = Arr_Data[indexPath.row]
-        print(Arr_SingleDetail)
         lbl_PLNumber.text = Arr_SingleDetail.number
         lbl_Revision.text = Arr_SingleDetail.revision
         lbl_PackageName.text =  String(Arr_SingleDetail.package!)

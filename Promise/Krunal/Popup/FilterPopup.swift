@@ -30,7 +30,7 @@ class FilterPopup: UIViewController {
     var Arr_Packages_Filter = ["Project Name","Vendor Name","Purchase Order","Group name","Strucher Id","Approval Status","status","Is PLInput Genrated","Is Group Strucher","Is Active"]
     var Arr_PackingList_Filter = ["Project Name","Vendor Name","Purchase Order","Group name","Strucher Id","PL Number","Package Name","Approval Status","Status","Is Released","Is Group Strucher","Is Active"]
     var Arr_Project_Filter = ["Project Code","Project Name","Site Location","Manager Name","Refrences","Is Shipper","Is Active"]
-    var Arr_Drawing_Filter = ["Project Name","Purchase Order","Group Name","Strucher Id","Approval Status","Doc Status","Is PL Input Created","Is Group Strucher","Is Active"]
+    var Arr_Drawing_Filter = ["Project Name","Purchase Order","Group Name","Structure Id","Approval Status","Doc Status","Is PL Input Created","Is Group Structure","Is Active"]
     
     var Arr_Second_FIlter = ["Contains","Start with","Equal"]
     var Arr_IsActive = ["True","False"]

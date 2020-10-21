@@ -214,23 +214,33 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
         
     }
     @objc func btn_Cell_select_Clicks(_ sender: UIButton) {
-        
-        if markbool == true {
-            if sender.isSelected {
-                sender.isSelected = false
-                  Arr_Packing_DataChack.removeObject(at: sender.tag)
-                  print(Arr_Packing_DataChack)
-                  Utils.setborder(view: sender, bordercolor: .gray, borderwidth: 1)
+        if sender.accessibilityHint == "0" {
+            if markbool == true {
+                if sender.isSelected {
+                    sender.isSelected = false
+                      Arr_Packing_DataChack.removeObject(at: sender.tag)
+                      print(Arr_Packing_DataChack)
+                      Utils.setborder(view: sender, bordercolor: .gray, borderwidth: 1)
+                } else {
+                    // checkmark it
+                    sender.isSelected = true
+                      sender.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
+                      Arr_Packing_DataChack.add(Arr_Packing_Data[sender.tag])
+                      print(Arr_Packing_DataChack)
+                }
             } else {
-                // checkmark it
-                sender.isSelected = true
-                  sender.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
-                  Arr_Packing_DataChack.add(Arr_Packing_Data[sender.tag])
-                  print(Arr_Packing_DataChack)
+                sender.isSelected = false
             }
-        } else {
-            sender.isSelected = false
-        }
+        } else if sender.accessibilityHint == "1" {
+            let PackingLists_View = Config.StoryBoard.instantiateViewController(identifier: "PackingListsViewVC") as! PackingListsViewVC
+            PackingLists_View.str_ID =  String((self.Arr_Packing_Data[sender.tag] as! PackingListModel).id)
+            self.navigationController?.pushViewController(PackingLists_View, animated: true)
+        } else if sender.accessibilityHint == "2" {
+            self.storeAndShare(withURLString: ((self.Arr_Packing_Data[sender.tag] as! PackingListModel).plExcel!).replacingOccurrences(of: ":8000", with: ""))
+        } else if sender.accessibilityHint == "3" {
+                   
+    }
+
     }
 }
 extension PackingListVC : UITableViewDataSource , UITableViewDelegate{
@@ -257,7 +267,7 @@ extension PackingListVC : UITableViewDataSource , UITableViewDelegate{
         } else {
             let cell : TableViewCell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell") as! TableViewCell
             cell.Display_Cell(arr_data: Arr_Packing_Data, indexPath: indexPath)
-           self.set_Button_Target(buttons: [cell.btn_Select], action: #selector(self.btn_Cell_select_Clicks(_:)), tag: indexPath.row)
+           self.set_Button_Target(buttons: [cell.btn_Select,cell.btn_Edit,cell.btn_Download,cell.btn_Delete], action: #selector(self.btn_Cell_select_Clicks(_:)), tag: indexPath.row)
             cell.selectionStyle = .none
             return cell
         }
@@ -276,27 +286,7 @@ extension PackingListVC : UITableViewDataSource , UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if indexPath.section == 1 {
-            let viewAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-                let PackingLists_View = Config.StoryBoard.instantiateViewController(identifier: "PackingListsViewVC") as! PackingListsViewVC
-                PackingLists_View.str_ID =  String((self.Arr_Packing_Data[indexPath.section] as! PackingListModel).id)
-                self.navigationController?.pushViewController(PackingLists_View, animated: true)
-                completion(true)
-                print("View Click")
-            }
-            let viewExcelSheet = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-                completion(true)
-                self.storeAndShare(withURLString: ((self.Arr_Packing_Data[indexPath.section] as! PackingListModel).plExcel!).replacingOccurrences(of: ":8000", with: ""))
-            }
-            viewAction.image = UIImage(named: "ic_eye")
-            viewAction.backgroundColor = Config.bgColor
-            viewExcelSheet.image = UIImage(named: "ic_excel")
-            viewExcelSheet.backgroundColor = Config.bgColor
-            return UISwipeActionsConfiguration(actions: [viewExcelSheet,viewAction])
-        }
-        return UISwipeActionsConfiguration(actions: [])
-    }
+
 }
 extension PackingListVC: QLPreviewControllerDataSource {
  func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {

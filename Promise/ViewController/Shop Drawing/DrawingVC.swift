@@ -122,7 +122,7 @@ class DrawingVC: UIViewController {
                     print(SecondFilter!)
                     print(FilterValue)
                     print(FilterParam)
-                    if FirstFilter == "Project Name" || FirstFilter == "Group Name" || FirstFilter == "Strucher Id" || FirstFilter == "Approval Status" || FirstFilter == "Doc Status" || FirstFilter == "Purchase Order"  {
+                    if FirstFilter == "Project Name" || FirstFilter == "Group Name" || FirstFilter == "Structure id" || FirstFilter == "Approval Status" || FirstFilter == "Doc Status" || FirstFilter == "Purchase Order"  {
                         ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: [FilterParam : FilterValue])
                     }else {
                         ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: [FilterParam : SecondFilter!])
@@ -157,6 +157,30 @@ class DrawingVC: UIViewController {
     @objc func btn_PreviousClick(_ sender: UIButton) {
       
     }
+    
+    // MARK: - Edit,Delete,Puase Buttons Clicks
+    @objc func cell_Button_Clicks(_ sender : UIBarButtonItem) {
+        if sender.accessibilityHint == "0" {
+           let DrwaingViewVC1 = Config.StoryBoard.instantiateViewController(withIdentifier: "DrwaingViewVC_1") as! DrwaingViewVC_1
+            DrwaingViewVC1.id = String(self.arrDrawing[sender.tag].id)
+           self.navigationController?.pushViewController(DrwaingViewVC1, animated: true)
+
+        } else if sender.accessibilityHint == "1" {
+          self.storeAndShare(withURLString: Api_Urls.GET_API_drawing + "\(String(self.arrDrawing[sender.tag].id))/export/")
+        } else {
+            print("Delete")
+        }
+    }
+    
+    // MARK: - Bind Buttons Clicks
+    func set_Button_Target(buttons : [UIButton], action : Selector, tag : Int) {
+        for i in 0..<buttons.count{
+            buttons[i].addTarget(self, action: action, for: .touchUpInside)
+            buttons[i].accessibilityHint = String(i)
+            buttons[i].tag = tag
+        }
+    }
+    
 }
 //MARK:- TableView Initialisation
 extension DrawingVC : UITableViewDataSource,UITableViewDelegate {
@@ -178,6 +202,7 @@ extension DrawingVC : UITableViewDataSource,UITableViewDelegate {
         } else {
             let cell : DrawingCell = tableView.dequeueReusableCell(withIdentifier: "DrawingCell") as! DrawingCell
             cell.DisplayCell(arr: arrDrawing, indexPath: indexPath)
+            self.set_Button_Target(buttons: [cell.btn_DrawingView,cell.btn_Edit,cell.btn_Delete], action: #selector(self.cell_Button_Clicks(_:)), tag : indexPath.section)
             cell.selectionStyle = .none
             return cell
         }
@@ -194,26 +219,6 @@ extension DrawingVC : UITableViewDataSource,UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
-    }
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if indexPath.section == 1 {
-            let viewAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-                completion(true)
-                let DrwaingViewVC1 = Config.StoryBoard.instantiateViewController(withIdentifier: "DrwaingViewVC_1") as! DrwaingViewVC_1
-                DrwaingViewVC1.id = String(self.arrDrawing[indexPath.row].id)
-                self.navigationController?.pushViewController(DrwaingViewVC1, animated: true)
-            }
-            let viewExcelSheet = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-                completion(true)
-                self.storeAndShare(withURLString: Api_Urls.GET_API_drawing + "\(String(self.arrDrawing[indexPath.row].id))/export/")
-                }
-            viewAction.image = UIImage(named: "ic_eye")
-            viewAction.backgroundColor = Config.bgColor
-            viewExcelSheet.image = UIImage(named: "ic_excel")
-            viewExcelSheet.backgroundColor = Config.bgColor
-            return UISwipeActionsConfiguration(actions: [viewExcelSheet,viewAction])
-        }
-        return UISwipeActionsConfiguration(actions: [])
     }
 }
 //MARK:- SWRevealViewController Methods

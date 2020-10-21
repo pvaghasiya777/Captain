@@ -19,7 +19,9 @@ class DrawingCell: UITableViewCell {
     @IBOutlet weak var lbl_RevisionNumber: UILabel!
     @IBOutlet weak var lbl_ApprovalStatus: UILabel!
     @IBOutlet weak var lbl_ActiveStatus: UILabel!
-    
+    @IBOutlet weak var btn_DrawingView: UIButton!
+    @IBOutlet weak var btn_Edit: UIButton!
+    @IBOutlet weak var btn_Delete: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

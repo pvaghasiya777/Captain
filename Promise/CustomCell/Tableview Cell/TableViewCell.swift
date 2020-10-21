@@ -19,6 +19,10 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var lbl_ApprovalStatus: UILabel!
     @IBOutlet weak var lbl_ActiveStatus: UILabel!
     @IBOutlet weak var btn_Select: UIButton!
+    @IBOutlet weak var btn_PackingListView: UIButton!
+    @IBOutlet weak var btn_Edit: UIButton!
+    @IBOutlet weak var btn_Download: UIButton!
+    @IBOutlet weak var btn_Delete: UIButton!
     
     
 

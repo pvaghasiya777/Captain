@@ -21,8 +21,6 @@ class ProjectVC: UIViewController
     @IBOutlet var btn_CollectionView: UIButton!
     @IBOutlet var btn_Filter: UIButton!
     @IBOutlet var btn_TableView: UIButton!
-    @IBOutlet var btn_Sort: UIButton!
-    @IBOutlet var btn_Menu: UIButton!
     @IBOutlet var CollectionView_Project: UICollectionView!
     @IBOutlet var tbl_Project: UITableView!
     @IBOutlet weak var btn_Previous: UIButton!
@@ -55,7 +53,7 @@ class ProjectVC: UIViewController
     }
     func Initialization()
     {
-        ServiceCall.shareInstance.Get_getProject(ViewController: self, Api_Str: Api_Urls.GET_API_masterProject, Param: ["is_active": switch_FinalRevision.isOn])
+        ServiceCall.shareInstance.Get_getProject(ViewController: self, Api_Str: Api_Urls.GET_API_masterProject, Param: ["is_active": true])
         self.CollectionView_Project.register(UINib(nibName: "Project_CollectionCell", bundle: nil), forCellWithReuseIdentifier: "Project_CollectionCell")
         self.tbl_Project.register(UINib(nibName: "Project_tbl_Cell", bundle: nil), forCellReuseIdentifier: "Project_tbl_Cell")
         self.View_Tbl_pagination.isHidden = true
@@ -88,7 +86,7 @@ class ProjectVC: UIViewController
         self.obj_popUpVC.Str_FilterVC = "Project"
         self.obj_popUpVC!.view.clipsToBounds = true
         self.obj_popUpVC!.view.layer.cornerRadius = 5.0
-        self.obj_popUpVC!.view.frame = CGRect.init(x: 0, y: 0, width: 400, height: 260)
+        self.obj_popUpVC!.view.frame = CGRect.init(x: 0, y: 0, width: 414, height: 289)
         self.KLC_obj = KLCPopup(contentView: self.obj_popUpVC!.view, showType: .bounceInFromTop , dismissType: .bounceOutToTop, maskType: .dimmed, dismissOnBackgroundTouch: true, dismissOnContentTouch: false)
         self.KLC_obj?.didFinishDismissingCompletion =
             {() -> Void in

@@ -28,8 +28,9 @@ class PurchaseOrderCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     //MARK:- Data Display Cell
-    func DisplayCell(Arr_Data : [SingleMasterPurchaseModel],indexpath : IndexPath) {
-        let Arr_PurchaseData = Arr_Data[0].purchase_lines![indexpath.row]
+    func DisplayCell(Arr_Data : [SingleMasterPurchaseModel],indexpath : IndexPath,viewController : PurchaseOrderVC) {
+        let cellIndex = viewController.startIndex + indexpath.row
+        let Arr_PurchaseData = Arr_Data[0].purchase_lines![cellIndex]
         print(Arr_PurchaseData)
         self.lbl_POamd.text = Arr_PurchaseData.amendment!
         self.lbl_POPosition.text = String(describing: Arr_PurchaseData.po_position!)

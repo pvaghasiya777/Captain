@@ -66,7 +66,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UgP-QD-V9u">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UgP-QD-V9u">
                                 <rect key="frame" x="0.0" y="53" width="555.5" height="505"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Purchase Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="w3x-cy-sHE">
@@ -405,73 +405,9 @@
                                     <constraint firstItem="OpQ-2p-lRF" firstAttribute="leading" secondItem="Eiy-8q-Ztr" secondAttribute="trailing" constant="14" id="yAH-at-nYW"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bov-dh-fqY">
-                                <rect key="frame" x="0.0" y="53" width="1119" height="193"/>
-                                <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Choose File" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TGX-82-DqH">
-                                        <rect key="frame" x="3" y="74" width="400" height="65"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="400" id="88c-GD-JLj"/>
-                                            <constraint firstAttribute="height" constant="65" id="xCi-68-zbi"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q2C-uM-H0j">
-                                        <rect key="frame" x="403" y="74" width="133" height="65"/>
-                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="65" id="JZc-Gs-DM5"/>
-                                            <constraint firstAttribute="width" constant="133" id="pVE-4j-aAC"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="17"/>
-                                        <state key="normal" title="Browse">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                    </button>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Choose File" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RZM-qF-8VJ">
-                                        <rect key="frame" x="578" y="74" width="400" height="65"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="65" id="c8E-uM-Vgd"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UK4-Dx-C2X">
-                                        <rect key="frame" x="978" y="74" width="133" height="65"/>
-                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="65" id="NGS-lI-CXc"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="17"/>
-                                        <state key="normal" title="Browse">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="UK4-Dx-C2X" firstAttribute="leading" secondItem="RZM-qF-8VJ" secondAttribute="trailing" id="0ic-PL-3J6"/>
-                                    <constraint firstItem="q2C-uM-H0j" firstAttribute="top" secondItem="bov-dh-fqY" secondAttribute="top" constant="74" id="4PO-rL-39g"/>
-                                    <constraint firstItem="q2C-uM-H0j" firstAttribute="width" secondItem="UK4-Dx-C2X" secondAttribute="width" id="4u2-JT-Ntj"/>
-                                    <constraint firstItem="RZM-qF-8VJ" firstAttribute="top" secondItem="bov-dh-fqY" secondAttribute="top" constant="74" id="9HA-Pe-1kR"/>
-                                    <constraint firstAttribute="trailing" secondItem="UK4-Dx-C2X" secondAttribute="trailing" constant="8" id="CzQ-B3-GHe"/>
-                                    <constraint firstItem="TGX-82-DqH" firstAttribute="width" secondItem="RZM-qF-8VJ" secondAttribute="width" id="Efq-ZH-NgR"/>
-                                    <constraint firstItem="UK4-Dx-C2X" firstAttribute="top" secondItem="bov-dh-fqY" secondAttribute="top" constant="74" id="SCp-3k-NYT"/>
-                                    <constraint firstItem="TGX-82-DqH" firstAttribute="top" secondItem="bov-dh-fqY" secondAttribute="top" constant="74" id="ZLu-Sh-KsS"/>
-                                    <constraint firstAttribute="height" constant="193" id="b6x-HQ-ckU"/>
-                                    <constraint firstItem="TGX-82-DqH" firstAttribute="leading" secondItem="bov-dh-fqY" secondAttribute="leading" constant="3" id="igs-mZ-nPp"/>
-                                    <constraint firstItem="UK4-Dx-C2X" firstAttribute="leading" secondItem="RZM-qF-8VJ" secondAttribute="trailing" id="nXf-Fb-mSc"/>
-                                    <constraint firstItem="q2C-uM-H0j" firstAttribute="leading" secondItem="TGX-82-DqH" secondAttribute="trailing" id="wP2-31-uWv"/>
-                                    <constraint firstItem="RZM-qF-8VJ" firstAttribute="leading" secondItem="q2C-uM-H0j" secondAttribute="trailing" constant="42" id="zs2-z6-lCG"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="UgP-QD-V9u" firstAttribute="top" secondItem="bov-dh-fqY" secondAttribute="top" id="358-9m-hJ3"/>
                             <constraint firstItem="fBM-RS-esv" firstAttribute="leading" secondItem="w2z-wO-4ac" secondAttribute="trailing" constant="3" id="6aa-gA-u9l"/>
                             <constraint firstAttribute="bottom" secondItem="UgP-QD-V9u" secondAttribute="bottom" constant="2" id="BK4-f8-S0H"/>
                             <constraint firstItem="fBM-RS-esv" firstAttribute="top" secondItem="YEF-oR-P0g" secondAttribute="top" constant="3" id="Bkw-0g-3U0"/>
@@ -480,13 +416,10 @@
                             <constraint firstItem="vGF-OP-AlM" firstAttribute="top" secondItem="w2z-wO-4ac" secondAttribute="bottom" id="M3y-C9-Tww"/>
                             <constraint firstItem="mSK-eI-3xL" firstAttribute="top" secondItem="fBM-RS-esv" secondAttribute="bottom" id="QeH-e8-p3F"/>
                             <constraint firstItem="u4G-Th-upa" firstAttribute="top" secondItem="YEF-oR-P0g" secondAttribute="top" constant="53" id="TyY-oD-Cap"/>
-                            <constraint firstItem="bov-dh-fqY" firstAttribute="leading" secondItem="YEF-oR-P0g" secondAttribute="leading" id="VBJ-pl-rpu"/>
                             <constraint firstItem="UgP-QD-V9u" firstAttribute="leading" secondItem="YEF-oR-P0g" secondAttribute="leading" id="WNi-wM-QfN"/>
-                            <constraint firstItem="bov-dh-fqY" firstAttribute="top" secondItem="vGF-OP-AlM" secondAttribute="bottom" constant="8" id="XRP-Ca-fZz"/>
                             <constraint firstItem="mSK-eI-3xL" firstAttribute="leading" secondItem="vGF-OP-AlM" secondAttribute="trailing" constant="3" id="dsk-SY-Z7w"/>
                             <constraint firstAttribute="bottom" secondItem="u4G-Th-upa" secondAttribute="bottom" constant="2" id="f6a-T1-CPI"/>
                             <constraint firstAttribute="trailing" secondItem="u4G-Th-upa" secondAttribute="trailing" id="fon-5Z-vrz"/>
-                            <constraint firstAttribute="trailing" secondItem="bov-dh-fqY" secondAttribute="trailing" id="jac-Ki-TYn"/>
                             <constraint firstItem="w2z-wO-4ac" firstAttribute="top" secondItem="YEF-oR-P0g" secondAttribute="top" constant="3" id="jbV-Ul-eKV"/>
                             <constraint firstItem="w2z-wO-4ac" firstAttribute="leading" secondItem="YEF-oR-P0g" secondAttribute="leading" constant="3" id="pst-Mo-KbL"/>
                             <constraint firstItem="UgP-QD-V9u" firstAttribute="width" secondItem="u4G-Th-upa" secondAttribute="width" id="s1g-rx-Fbw"/>
@@ -505,9 +438,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="btn_ExcelFile" destination="q2C-uM-H0j" id="KcC-lH-z1S"/>
                 <outlet property="btn_FormDetails" destination="w2z-wO-4ac" id="c3w-cs-3Fd"/>
-                <outlet property="btn_PDFFIle" destination="UK4-Dx-C2X" id="VO2-VY-4Ee"/>
                 <outlet property="btn_isActive" destination="UPk-VR-i1b" id="asb-C8-3F8"/>
                 <outlet property="lbl_DocumentAttachment" destination="mSK-eI-3xL" id="KdO-K9-0R2"/>
                 <outlet property="lbl_FormDetails" destination="vGF-OP-AlM" id="PWO-Ie-RY7"/>
@@ -516,16 +447,13 @@
                 <outlet property="txt_Date" destination="MQP-6s-3f8" id="PI9-dQ-wGI"/>
                 <outlet property="txt_DeliveryDate" destination="nB3-p0-iSY" id="v45-fb-ajd"/>
                 <outlet property="txt_Dimension" destination="X9b-np-RpJ" id="Pv3-Oq-Qls"/>
-                <outlet property="txt_ExcelFile" destination="TGX-82-DqH" id="2r4-yh-Env"/>
                 <outlet property="txt_Number" destination="mb0-Bc-5Ag" id="OWo-2u-8DU"/>
-                <outlet property="txt_PDFFIle" destination="RZM-qF-8VJ" id="fS7-BP-2Nh"/>
                 <outlet property="txt_POType" destination="SUj-Zy-bp8" id="9bn-f3-xMs"/>
                 <outlet property="txt_Project" destination="mvI-Ym-JTL" id="tob-aU-XS7"/>
                 <outlet property="txt_ShipperDetails" destination="bRb-XI-kNy" id="3sG-Qg-bIF"/>
                 <outlet property="txt_Vendor" destination="xys-hq-GQN" id="Dj5-jy-ru4"/>
                 <outlet property="txt_Volume" destination="Bn3-Lb-Nq9" id="leM-ez-eJ9"/>
                 <outlet property="txt_WeightUOM" destination="D1C-nZ-ydJ" id="Yqs-kK-utH"/>
-                <outlet property="view_DocumentAttachment" destination="bov-dh-fqY" id="1kI-kb-Ltm"/>
                 <outlet property="view_PurchaseDetails" destination="UgP-QD-V9u" id="v9f-lJ-iHQ"/>
                 <outlet property="view_PurchaseDetails2" destination="u4G-Th-upa" id="I4l-kj-csb"/>
             </connections>

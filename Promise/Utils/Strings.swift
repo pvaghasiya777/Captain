@@ -17,10 +17,11 @@ struct Strings
     static let kSelectPatient = "First Select The Patient Name "
     static let kSelectStartDate = "Please Enter Start Date."
     static let kSelectEndDate = "Please Enter Your End Date."
-
-    
     static let kSelectFoodType = "Please select Food Type"
     static let kSelectFoodName = "Please select Food Name"
     static let kSelectQty = "Please Enter Your Quantity."
+    
+    //Packages Pagination
+    static let kNoMoreData = "No more data available to read"
     
 }

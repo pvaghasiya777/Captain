@@ -27,6 +27,9 @@ struct FilterPurchaseOrderModel: Codable {
     }
 }
 
+
+
+
 // MARK: - FilterPurchaseOrderModelElement
 //   let filterPurchaseOrderModel = try? newJSONDecoder().decode([FilterStructureModel].self, from: jsonData)
 struct FilterStructureModel: Codable {

@@ -90,7 +90,6 @@ class HomeVC: UIViewController
         }
     }
     func SetData() {
-        print(Arr_DashBoardResult)
         self.lbl_TotalWeightkg.text = String(describing: Arr_DashBoardResult[0].strWeight!)
         self.lbl_TotalPieces.text = String(describing: Arr_DashBoardResult[0].strPieces!)
         self.lbl_ReleasedWeightload.text = Arr_DashBoardResult[0].strRelWeight!
@@ -115,7 +114,6 @@ class HomeVC: UIViewController
         self.OnSiteWeightkg.needleValue = CGFloat(Utils.Get_NeedleValue(Value: self.lbl_OnSiteWeightpr.text!))
     }
     func SetMarkData() {
-        print(Arr_DashBoardMarkwise)
         self.lbl_TotalWeightkg.text = String(describing: Arr_DashBoardMarkwise[0].strWeight!)
         self.lbl_TotalPieces.text = String(describing: Arr_DashBoardMarkwise[0].strPieces!)
         self.lbl_ReleasedWeightload.text = String(describing: Arr_DashBoardMarkwise[0].strRelWeight!)
@@ -173,12 +171,20 @@ class HomeVC: UIViewController
             btn_Report.backgroundColor = .white
             btn_Report.tintColor = .black
             tbl_ReportSection.isHidden = true
+            btn_filter.image = (UIImage(named: "ic_filter"))
+            btn_filter.isEnabled = true
+            btn_filterView.image = (UIImage(named: "ic_eye"))
+            btn_filterView.isEnabled = true
         } else {
             btn_Dashboard.backgroundColor = .white
             btn_Dashboard.tintColor = .black
             btn_Report.backgroundColor = App_Colors.ThemeColor
             btn_Report.tintColor = .white
             tbl_ReportSection.isHidden = false
+            btn_filter.image = (UIImage(named: ""))
+            btn_filter.isEnabled = false
+            btn_filterView.image = (UIImage(named: ""))
+            btn_filterView.isEnabled = false
         }
     }
     override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -252,11 +258,9 @@ extension HomeVC : UITableViewDataSource ,UITableViewDelegate{
 extension HomeVC : SWRevealViewControllerDelegate {
     // MARK: - Reveal View Controller Delagate Methods
     func revealController(_ revealController: SWRevealViewController, didMoveTo position: FrontViewPosition) {
-        print(position)
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
     func revealController(_ revealController: SWRevealViewController, willMoveTo position: FrontViewPosition) {
-        print(position)
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
 }

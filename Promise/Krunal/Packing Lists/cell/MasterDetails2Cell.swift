@@ -28,7 +28,6 @@ class MasterDetails2Cell: UITableViewCell {
 
     func DisplayCell(Arr_Data : [PackinglistIDModel],indexPath : IndexPath) {
         let Arr_MasterDetail = Arr_Data[0].pl_master_ids![indexPath.row]
-        print(Arr_MasterDetail)
         lbl_GrossWeightkg.text = String(Arr_MasterDetail.gross_weight!)
         lbl_NetWeightkg.text = String(Arr_MasterDetail.net_weight!)
         lbl_MinTemperatureC.text = String(Arr_MasterDetail.min_temp!)

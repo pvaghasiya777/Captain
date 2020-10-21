@@ -27,7 +27,6 @@ class MasterDetails1Cell: UITableViewCell {
     }
     func DisplayCell(Arr_Data : [PackinglistIDModel],indexPath : IndexPath) {
         let Arr_MasterDetail = Arr_Data[0].pl_master_ids![indexPath.row]
-        print(Arr_MasterDetail)
         lbl_ProjectName.text = Arr_MasterDetail.project_name
         lbl_lblVendorName.text = Arr_MasterDetail.vendor_name
         lbl_PurchaseOrder.text = Arr_MasterDetail.purchase_id

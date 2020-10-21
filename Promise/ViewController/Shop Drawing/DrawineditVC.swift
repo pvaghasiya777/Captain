@@ -204,12 +204,12 @@ class DrawineditVC: UIViewController {
         txt_TotalNetWeight.text = String(describing: rowdata.total_net_weight!)
         txt_TotalPaintingWeight.text = String(describing: rowdata.total_painting_weight!)
         txt_TotalFireproofingWeight.text = String(describing: rowdata.total_fireproofing_weight!)
-        if rowdata.doc_status == "draft" {
+        if rowdata.status == "draft" {
             btn_Draft.setBackgroundImage(UIImage(named: "ic_StutsPathColor"), for: .normal)
             btn_Draft.setTitleColor(.white, for: .normal)
             btn_Submitted.backgroundColor = .white
             btn_Approved.backgroundColor = .white
-        } else if rowdata.doc_status == "submit" {
+        } else if rowdata.status == "submit" {
             btn_Draft.backgroundColor = .white
             btn_Submitted.setBackgroundImage(UIImage(named: "ic_StutsPathColor"), for: .normal)
             btn_Submitted.setTitleColor(.white, for: .normal)

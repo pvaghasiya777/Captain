@@ -39,7 +39,6 @@ class LoginVC: UIViewController,SWRevealViewControllerDelegate
         return .portrait
     }
     @IBAction func btn_Click_Login(_ sender: UIButton) {
-       print("Login Button Click")
        if validateFields() {
            ServiceCall.shareInstance.post_Login(viewConroller: self, parameters:
            ["username": self.txt_Username.text!,

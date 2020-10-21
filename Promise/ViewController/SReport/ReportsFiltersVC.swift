@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import PatrickMultipleSelectionTableview
 import Alamofire
 class ReportsFiltersVC: UIViewController {
     //MARK:- Outlet
@@ -30,7 +29,7 @@ class ReportsFiltersVC: UIViewController {
     @IBOutlet weak var btnWithoutExtraPieces: UIButton!
     @IBOutlet weak var btn_OK: UIButton!
     //MARK :- Variable
-//    var arrContent : NSMutableArray = ["IPhone","IMac","IPad","MacBook","IPod","MacMini","Apple TV"]
+
     @IBOutlet  var popup : KLCPopup!
     @IBOutlet var popup_Select : multiselectpopup?
     var Arr_Project = [FilterProjectModel]()
@@ -40,7 +39,6 @@ class ReportsFiltersVC: UIViewController {
     var Arr_Mark = [MarkResult]()
     var str_FilterName = ""
     var Arr_Project_Name : NSMutableArray = NSMutableArray()
-    var arrfiltervalue = String()
     var text_tag = Int()
     //Filter Param
     var str_Filter_ProjectID = "1"
@@ -90,94 +88,56 @@ class ReportsFiltersVC: UIViewController {
         MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["project_id": DEFAULTS.Get_ProjectID()],ViewController: self,VC_Tag: 2)
         MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["project_id": DEFAULTS.Get_ProjectID()],ViewController: self,VC_Tag: 2)
     }
-    //MARK :- PickUp Filter Selection
-    func showMultipleSelectionTableview(arrContent : NSMutableArray) -> String
-    {
-        let podBundle = Bundle(for: PKMulipleSelectionVC.self)
-        var bundleURL = podBundle.url(forResource: "PatrickMultipleSelectionTableview", withExtension: "bundle")
-        var bundle = Bundle(url: bundleURL!)!
-        var storyboard = UIStoryboard(name: "Main", bundle: bundle)
-        let vc:PKMulipleSelectionVC = storyboard.instantiateViewController(withIdentifier: "PKMulipleSelectionVC") as! PKMulipleSelectionVC
-      //  vc.view.frame = CGRect(x: self.view.center.x - 100, y: self.view.center.y - 100, width: 300, height: 400)
-        if self.text_tag == 1 {
-            let arrdata : NSMutableArray = []
-             arrdata.addObjects(from: arrContent as! [String])
-            vc.arrContent = arrdata
-        } else if self.text_tag == 2 {
-            let arrdata : NSMutableArray = []
-             arrdata.addObjects(from: arrContent as! [String])
-            vc.arrContent = arrdata
-        } else if self.text_tag == 3 {
-            let arrdata : NSMutableArray = []
-             arrdata.addObjects(from: arrContent as! [String])
-            vc.arrContent = arrdata
-        } else if self.text_tag == 4 {
-            let arrdata : NSMutableArray = []
-             arrdata.addObjects(from: arrContent as! [String])
-            vc.arrContent = arrdata
-        }
-        vc.backgroundColorDoneButton = UIColor(hexString: "353283")
-        (displayP3Red:87.0/255.0, green: 188.0/255.0, blue: 100.0/255.0, alpha: 1.0)
-        vc.backgroundColorHeaderView = UIColor(hexString: "353283")
-        
-        vc.backgroundColorTableView = UIColor(hexString: "F3FAFF")
-        vc.backgroundColorCellTitle = UIColor.black
-        vc.backgroundColorDoneTitle = UIColor.white
-        vc.backgroundColorSelectALlTitle = UIColor.white
-        // Get Selected Index from PKMultipleSelectionVC
-        UserDefaults.standard.set([], forKey: "indexPath")
-        if let returnIndex = UserDefaults.standard.object(forKey: "indexPath") as? [Int] {
-            vc.objGetSelectedIndex = returnIndex
-        }
-        // Data Passing Usning Block
-         arrfiltervalue = ""
-        vc.passDataWithIndex = { arrayData, selectedIndex in
-            //Set data in TextField
-            if self.text_tag == 1 { // Project
-                let Arr_Selected = self.Arr_Project.filter{($0.project! == String(describing: arrayData))}
-                self.dropProject.text = arrayData as? String
-                self.str_Filter_ProjectID = String(describing: Arr_Selected[0].id!)
-                MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPurchaseOrder, tag: 2,param: ["project_id": String(describing: Arr_Selected[0].id!)],ViewController: self,VC_Tag: 2)
-                MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["project_id": String(describing: Arr_Selected[0].id!)],ViewController: self,VC_Tag: 2)
-                MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["project_id": String(describing: Arr_Selected[0].id!)],ViewController: self,VC_Tag: 2)
-                MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["project_id": String(describing: Arr_Selected[0].id!)],ViewController: self,VC_Tag: 2)
-            } else if self.text_tag == 2 { // Purchase Order
-                self.dropPurchaseOrder.text = arrayData as? String
-                self.str_Filter_PurchaseOrder = String(describing: arrayData)
-                self.str_FilterParam_PurchaseOrder = ((UserDefaults.standard.object(forKey: "indexPath") as! [Int]).count > 1) ? Multiple_Filter_Value.GET_PurchaseOrder : "po_no"
-                MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: [self.str_FilterParam_PurchaseOrder : String(describing: arrayData)],ViewController: self,VC_Tag: 2)
-                MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: [self.str_FilterParam_PurchaseOrder : String(describing: arrayData)],ViewController: self,VC_Tag: 2)
-                MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: [self.str_FilterParam_PurchaseOrder : String(describing: arrayData)],ViewController: self,VC_Tag: 2)
-            } else if self.text_tag == 3 { // Strucher
-                self.dropStructure.text = arrayData as? String
-                self.str_Filter_Strucher = String(describing: arrayData)
-                self.str_FilterParam_Strucher = ((UserDefaults.standard.object(forKey: "indexPath") as! [Int]).count > 1) ? Multiple_Filter_Value.GET_Strucher : "structure"
-                MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: [self.str_FilterParam_Strucher : String(describing: arrayData)],ViewController: self,VC_Tag: 2)
-                MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: [self.str_FilterParam_Strucher : String(describing: arrayData)],ViewController: self,VC_Tag: 2)
-            } else if self.text_tag == 4 { // Packing List
-                self.dropPackingList.text = arrayData as? String
-                self.str_Filter_PackingList = String(describing: arrayData)
-                self.str_FilterParam_PackingList = ((UserDefaults.standard.object(forKey: "indexPath") as! [Int]).count > 1) ? Multiple_Filter_Value.GET_PackingList : "pl_number"
-                 MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: [self.str_FilterParam_PackingList : String(describing: arrayData)],ViewController: self,VC_Tag: 2)
-            }
-            UserDefaults.standard.set(arrayData, forKey: "data")
-            UserDefaults.standard.synchronize()
-        }
-        vc.willMove(toParent: self)
-        self.view.addSubview(vc.view)
-        self.addChild(vc)
-        vc.didMove(toParent: self)
-        return arrfiltervalue
-    }
-       // MARK: - Mode Selection Popup
-    func Mode_Selection(ArrContent:NSMutableArray , arrProjectTab : Int) {
+    // MARK: - Mode Selection Popup
+    func Mode_Selection(ArrContent:[Person] , arrProjectTab : Int) {
         self.popup_Select = multiselectpopup(nibName: "multiselectpopup", bundle: nil)
         popup_Select?.arrcontant = ArrContent
         popup_Select?.arrProjectTab = arrProjectTab
         self.popup_Select!.view.frame = CGRect.init(x: 0, y: 0, width: 330, height: 460)
         self.popup = KLCPopup(contentView: self.popup_Select?.view, showType: .growIn, dismissType: .growOut, maskType: .dimmed, dismissOnBackgroundTouch: false, dismissOnContentTouch: false)
         self.popup.didFinishDismissingCompletion = {() -> Void in
-            print(self.popup_Select!.arrChack)
+            if self.popup_Select?.arrchakdata != []
+            {
+                if self.popup_Select!.arrProjectTab == 1 { // Project
+                    self.dropProject.text = self.popup_Select!.arrchakdata.map{($0 as! chack).poNo}[0]
+                    self.dropProject.resignFirstResponder()
+                    self.str_Filter_ProjectID = String(self.popup_Select!.arrchakdata.map{($0 as! chack).id}[0])
+                    MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPurchaseOrder, tag: 2,param: ["project_id": self.str_Filter_ProjectID],ViewController: self,VC_Tag: 2)
+                    MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["project_id": self.str_Filter_ProjectID],ViewController: self,VC_Tag: 2)
+                    MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: ["project_id": self.str_Filter_ProjectID],ViewController: self,VC_Tag: 2)
+                    MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["project_id": self.str_Filter_ProjectID],ViewController: self,VC_Tag: 2)
+                } else if self.popup_Select!.arrProjectTab == 2 { // Purchase Order
+                    let id_count = self.popup_Select!.arrchakdata.count
+                    var data = NSMutableArray(array: self.popup_Select!.arrchakdata.map{($0 as! chack).poNo})
+                    let strData = data.componentsJoined(by: ",")
+                    self.dropPurchaseOrder.text = strData
+                    self.dropPurchaseOrder.resignFirstResponder()
+                    self.str_Filter_PurchaseOrder = strData
+                    self.str_FilterParam_PurchaseOrder = ((UserDefaults.standard.object(forKey: "indexPath") as! [Int]).count > 1) ? Multiple_Filter_Value.GET_PurchaseOrder : "po_no"
+                    self.str_FilterParam_PurchaseOrder = (self.popup_Select!.arrchakdata.count > 1) ? Multiple_Filter_Value.GET_PurchaseOrder : "po_no"
+                    
+                    MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: [self.str_FilterParam_PurchaseOrder : String(describing: strData)],ViewController: self,VC_Tag: 2)
+                    MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: [self.str_FilterParam_PurchaseOrder : String(describing: strData)],ViewController: self,VC_Tag: 2)
+                    MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: [self.str_FilterParam_PurchaseOrder : String(describing: strData)],ViewController: self,VC_Tag: 2)
+                } else if self.popup_Select!.arrProjectTab == 3 { // Strucher
+                    var data = NSMutableArray(array: self.popup_Select!.arrchakdata.map{($0 as! chack).poNo})
+                    let strData = data.componentsJoined(by: ",")
+                    self.dropStructure.text = strData
+                    self.dropStructure.resignFirstResponder()
+                    self.str_Filter_Strucher = String(describing: strData)
+                    self.str_FilterParam_Strucher = (self.popup_Select!.arrchakdata.count > 1) ? Multiple_Filter_Value.GET_Strucher : "structure"
+                    MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPackingList, tag: 4,param: [self.str_FilterParam_Strucher : String(describing: strData)],ViewController: self,VC_Tag: 2)
+                    MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: [self.str_FilterParam_Strucher : String(describing: strData)],ViewController: self,VC_Tag: 2)
+                } else if self.popup_Select!.arrProjectTab == 4 { // Packing List
+                    var data = NSMutableArray(array: self.popup_Select!.arrchakdata.map{($0 as! chack).poNo})
+                    let strData = data.componentsJoined(by: ",")
+                    self.dropPackingList.text = strData
+                    self.dropPackingList.resignFirstResponder()
+                    self.str_Filter_PackingList = String(describing: strData)
+                    self.str_FilterParam_PackingList = (self.popup_Select!.arrchakdata.count > 1) ? Multiple_Filter_Value.GET_PackingList : "pl_number"
+                    MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: [self.str_FilterParam_PackingList : String(describing: strData)],ViewController: self,VC_Tag: 2)
+                }
+            }
         }
         self.popup.show(withRoot: self.view)
     }
@@ -246,7 +206,6 @@ class ReportsFiltersVC: UIViewController {
         }
     }
     @IBAction func btnOKClick(_ sender: UIButton) {
-       print("Ok Button Click")
         self.view.endEditing(true)
         if str_FilterName == "Markwise Report" || str_FilterName == "Detail Figure Report" || str_FilterName == "Markwise Cumulative Report" {
             let Report_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportVC6") as! ReportVC6
@@ -274,7 +233,6 @@ class ReportsFiltersVC: UIViewController {
             self.SetFilterValue(Report_VC: Report_VC,tag:5)
             self.navigationController?.pushViewController(Report_VC, animated: true)
         }
-        
     }
     func SetFilterValue(Report_VC:UIViewController,tag:Int) {
         if tag == 1 {
@@ -645,7 +603,7 @@ extension ReportsFiltersVC : UITextFieldDelegate {
 // MARK: - TextField Delegate Methods
     func textFieldShouldReturn(_ textField: UITextField) -> Bool{
         textField.resignFirstResponder()
-        return true
+        return false
     }
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return true
@@ -655,20 +613,32 @@ extension ReportsFiltersVC : UITextFieldDelegate {
         if textField.tag == 1 {
             self.text_tag = 1
             self.Arr_Project_Name = NSMutableArray(array: Arr_Project.map{($0.project!)} as NSArray)
-//            self.Mode_Selection(ArrContent: Arr_Project_Name, arrProjectTab: 1)
-            self.dropProject.text = showMultipleSelectionTableview(arrContent:NSMutableArray(array: Arr_Project_Name))
+            let id1  = Arr_Project.compactMap{$0.id}
+            let pon  = Arr_Project.compactMap{$0.project}
+            var parsonmodel = [Person]()
+            parsonmodel.append(Person(id: id1, poNo: pon))
+            self.Mode_Selection(ArrContent: parsonmodel, arrProjectTab: 1)
         } else if textField.tag == 2  {
             self.text_tag = 2
-            self.Arr_Project_Name = NSMutableArray(array: Arr_PurchaseOrder.map{($0.poNo!)} as NSArray)
-            self.dropPurchaseOrder.text = showMultipleSelectionTableview(arrContent:Arr_Project_Name)
+            let id1 : [Int] = Arr_PurchaseOrder.compactMap{$0.id!}
+            let pon : [String] = Arr_PurchaseOrder.compactMap{$0.poNo!}
+            var parsonmodel = [Person]()
+            parsonmodel.append(Person(id: id1, poNo: pon))
+            self.Mode_Selection(ArrContent: parsonmodel, arrProjectTab: 2)
         } else if textField.tag == 3  {
             self.text_tag = 3
-            self.Arr_Project_Name = NSMutableArray(array: Arr_Strucher.map{($0.structure!)} as NSArray)
-            self.dropStructure.text = showMultipleSelectionTableview(arrContent:Arr_Project_Name)
+            let id1 : [Int] = Arr_Strucher.compactMap{$0.id!}
+            let pon : [String] = Arr_Strucher.compactMap{$0.structure!}
+            var parsonmodel = [Person]()
+            parsonmodel.append(Person(id: id1, poNo: pon))
+            self.Mode_Selection(ArrContent: parsonmodel, arrProjectTab: 3)
         } else if textField.tag == 4  {
             self.text_tag = 4
-            self.Arr_Project_Name = NSMutableArray(array: Arr_PackingList.map{($0.packingList!)} as NSArray)
-            self.dropPackingList.text = showMultipleSelectionTableview(arrContent:Arr_Project_Name)
+            let id1 : [Int] = Arr_PackingList.compactMap{$0.id!}
+            let pon : [String] = Arr_PackingList.compactMap{$0.packingList!}
+            var parsonmodel = [Person]()
+            parsonmodel.append(Person(id: id1, poNo: pon))
+            self.Mode_Selection(ArrContent: parsonmodel, arrProjectTab: 4)
         }
     }
 }

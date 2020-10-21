@@ -38,7 +38,7 @@ class PackageDetailsVC: UIViewController {
    //MARK:- Initialisation
     func initializeview() {
         Utils.EnableTextField(textFields: [txt_PackageName,txt_KindOfPackage,txt_Length_ft,txt_WidthFt,txt_Heightft,txt_GrossWeightlb,txt_Stackable,txt_OnDeckShipment,txt_StorageSymbol,txt_MinTemperature_F,txt_MaxTemperature_F,txt_PLSequence,txt_VendorPackage,txt_TruckNumber])
-        Utils.Set_Corner_Radius(views: [btn_Save,btn_cancel], radius: 5)
+//        Utils.Set_Corner_Radius(views: [btn_Save,btn_cancel], radius: 5)
         self.SetData()
     }
     func SetData() {

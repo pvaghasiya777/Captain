@@ -10,11 +10,12 @@ import UIKit
 class PLinputDetails: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet var tbl_Package_Detail: UITableView!
+    @IBOutlet weak var view_tbl_Package_DetailPagination: UIView!
     @IBOutlet weak var view_topBG: UIView!
     @IBOutlet weak var btn_Save: UIButton!
     @IBOutlet weak var btn_Discard: UIButton!
     @IBOutlet weak var view_SecondBG: UIView!
-//    @IBOutlet weak var btn_CreateNew: UIButton!
+    //    @IBOutlet weak var btn_CreateNew: UIButton!
     @IBOutlet weak var btn_Draft: UIButton!
     @IBOutlet weak var btn_Submitted: UIButton!
     @IBOutlet weak var btn_Approved: UIButton!
@@ -52,9 +53,10 @@ class PLinputDetails: UIViewController {
     //Rejection view
     @IBOutlet weak var view_Rejectionview: UIView!
     @IBOutlet weak var tbl_RejectionHistory: UITableView!
+    //Pagination View
     @IBOutlet weak var btn_Previous: UIButton!
     @IBOutlet weak var btn_Next: UIButton!
-    @IBOutlet weak var lbl_ShowPage_Count: UILabel!
+    @IBOutlet weak var lbl_ShowPagination: UILabel!
     @IBOutlet weak var lbl_PageNum: UILabel!
     //MARK:- Variable
     var Arr_PLDetail = [PlreportDetailModel]()
@@ -62,6 +64,8 @@ class PLinputDetails: UIViewController {
     var Arr_Address = [MasterAddressModel]()
     var Arr_Purchase = [MasterPurchaseModel]()
     var arr_rejectH = [RejectReason]()
+    var startIndex: Int = 0
+    var PageNumber : Int = 1
     var Str_id = ""
     var Str_Project = ""
     var Str_Vendor = ""
@@ -72,7 +76,7 @@ class PLinputDetails: UIViewController {
         self.UIdesign()
     }
     override func viewWillAppear(_ animated: Bool) {
-       super.viewWillAppear(animated)
+        super.viewWillAppear(animated)
         self.navigationItem.title = Str_Title
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -83,7 +87,7 @@ class PLinputDetails: UIViewController {
         ServiceCall.shareInstance.Get_PLreportsDetail(ViewController: self, Api_Str: Api_Urls.GET_API_plReports + Str_id + "/", tag: 0)
         self.btn_PackagesList.addTarget(self, action: #selector(Get_PackingListClick(_:)), for: .touchUpInside)
         self.lbl_PackageDetails.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
-        
+        self.lbl_PageNum.text = String(describing: PageNumber)
         self.lbl_Quantities.backgroundColor = .white
         self.lbl_Rejection.backgroundColor = .white
         self.view_Details.isHidden = false
@@ -95,15 +99,13 @@ class PLinputDetails: UIViewController {
         self.tbl_RejectionHistory.rowHeight = UITableView.automaticDimension
         self.tbl_RejectionHistory.tableFooterView = UIView()
         self.tbl_RejectionHistory.separatorStyle = .singleLine
-        btn_Next.addTarget(self, action: #selector(btn_NextClick(_:)), for: .touchUpInside)
-               btn_Previous.addTarget(self, action: #selector(btn_PreviousClick(_:)), for: .touchUpInside)
+        self.btn_Next.addTarget(self, action: #selector(btn_NextClick(_:)), for: .touchUpInside)
+        self.btn_Previous.addTarget(self, action: #selector(btn_PreviousClick(_:)), for: .touchUpInside)
     }
     func UIdesign() {
         Utils.add_shadow_around_view(view: view_topBG, color: .gray, radius: 5, opacity: 5)
         Utils.add_shadow_around_view(view: view_SecondBG, color: .gray, radius: 5, opacity: 5)
         Utils.add_shadow_around_view(view: view_ThardBG, color: .gray, radius: 5, opacity: 5)
-        Utils.setborder(view: btn_Save, bordercolor: Config.boderColor, borderwidth: 1)
-        Utils.setborder(view: btn_Discard, bordercolor: Config.boderColor1, borderwidth: 1)
         Utils.Set_Same_Corner_Radius(views: [btn_Save,btn_Discard], cornerRadius: 5)
         Utils.EnableTextField(textFields: [txt_Name,txt_InputNumber,txt_Revisionnumber,txt_PONumber,txt_Project,txt_Vendor,txt_PickupLocation,txt_ContactDetails,txt_NameOfGoods,txt_InspectionTime,txt_CountryOfOrigin,txt_Address,txt_Structure,txt_GrossWeight,txt_NetWeight,txt_TotalVolume])
     }
@@ -145,6 +147,7 @@ class PLinputDetails: UIViewController {
             btn_Approved.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
             btn_Approved.setTitleColor(.white, for: .normal)
         }
+        self.lbl_ShowPagination.text = "Showing \(1) to \(startIndex + 10) of \(Arr_PLDetail[0].inputMasterIDS!.count) results"
     }
     func Set_Quantites() {
         self.txt_GrossWeight.text = Arr_PLDetail[0].totalGrossWeight!
@@ -166,7 +169,7 @@ class PLinputDetails: UIViewController {
             view_Quantities.isHidden = true
             view_Rejectionview.isHidden = true
             self.tbl_Package_Detail.isHidden = false
-           // self.tbl_Package_Detail.reloadData()
+            // self.tbl_Package_Detail.reloadData()
         } else if sender.tag == 2{
             lbl_PackageDetails.backgroundColor = .white
             lbl_Quantities.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
@@ -188,27 +191,43 @@ class PLinputDetails: UIViewController {
             if Arr_PLDetail[0].rejectReasons!.count == 0 {
                 TableViewHelper.EmptyMessage(message: "No records found", tableview: tbl_RejectionHistory, textColor: .black)
             }else {
-             self.tbl_RejectionHistory.reloadData()
+                self.tbl_RejectionHistory.reloadData()
             }
             
         }
     }
     @IBAction func btn_SaveClick_Action(_ sender: UIButton) {
-       }
+    }
     @IBAction func btn_DiscardClick_Action(_ sender: UIButton) {
     }
     
     @objc func btn_NextClick(_ sender: UIButton) {
-     
+        if startIndex + 10 > Arr_PLDetail[0].inputMasterIDS!.count - 1 {
+            Utils.showToastWithMessage(message: Strings.kNoMoreData)
+        } else {
+            startIndex = startIndex + 10
+            self.PageNumber = PageNumber + 1
+            self.lbl_PageNum.text = String(describing: PageNumber)
+            self.lbl_ShowPagination.text = "Showing \(startIndex) to \(startIndex + 10) of \(Arr_PLDetail[0].inputMasterIDS!.count) results"
+            self.tbl_Package_Detail.reloadData()
+        }
     }
     @objc func btn_PreviousClick(_ sender: UIButton) {
-      
+        if startIndex - 10 < 0 {
+            Utils.showToastWithMessage(message: Strings.kNoMoreData)
+        } else {
+            startIndex = startIndex - 10
+            self.PageNumber = PageNumber - 1
+            self.lbl_ShowPagination.text = "Showing \(startIndex) to \((startIndex == 0) ? 10 : startIndex - 10 ) of \(Arr_PLDetail[0].inputMasterIDS!.count) results"
+            self.lbl_PageNum.text = String(describing: PageNumber)
+            self.tbl_Package_Detail.reloadData()
+        }
     }
 }
 extension PLinputDetails: UITableViewDelegate,UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         if tableView == tbl_Package_Detail {
-        return 2
+            return 2
         } else {
             return 2
         }
@@ -218,7 +237,7 @@ extension PLinputDetails: UITableViewDelegate,UITableViewDataSource {
             if section == 0 {
                 return 1
             } else {
-              return ((Arr_PLDetail.count == 0) ? Arr_PLDetail.count : Arr_PLDetail[0].inputMasterIDS!.count)
+                return min (10, ((Arr_PLDetail.count == 0) ? Arr_PLDetail.count : Arr_PLDetail[0].inputMasterIDS!.count - startIndex))
             }
         } else {
             if section == 0 {
@@ -274,7 +293,7 @@ extension PLinputDetails: UITableViewDelegate,UITableViewDataSource {
                 let viewAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
                     // Perform your action here
                     completion(true)
-                    print("View Click")
+                    
                     let AddedItems_VC = Config.StoryBoard.instantiateViewController(identifier: "AddedItemsVC") as! AddedItemsVC
                     AddedItems_VC.Arr_PLDetail = self.Arr_PLDetail
                     AddedItems_VC.IndexpathRow = indexPath.row

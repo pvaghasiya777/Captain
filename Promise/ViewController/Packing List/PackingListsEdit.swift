@@ -8,12 +8,12 @@
 
 import UIKit
 import QuickLook
+import KRProgressHUD
 class PackingListsEdit: UIViewController {
     //MARK:- IBOutlet
     //view topBG
     @IBOutlet weak var view_topBG: UIView!
-    @IBOutlet weak var btn_Save: UIButton!
-    @IBOutlet weak var btn_Discard: UIButton!
+  
     //view SecondBG
     @IBOutlet weak var view_SecondBG: UIView!
    // @IBOutlet weak var btn_SubmitforApproval: UIButton!
@@ -64,6 +64,7 @@ class PackingListsEdit: UIViewController {
     //Rejection view
     @IBOutlet weak var view_Rejectionview: UIView!
     @IBOutlet weak var tbl_RejectionHistory: UITableView!
+    @IBOutlet weak var view_Pagination: UIView!
     
     @IBOutlet weak var btn_ExcelFile: UIButton!
     @IBOutlet weak var btn_PdfFile: UIButton!
@@ -106,25 +107,22 @@ class PackingListsEdit: UIViewController {
         self.UIdesign()
         let appurl : String = Api_Urls.GET_API_packingList + "\(str_ID)" + "/"
         ServiceCall.shareInstance.Get_packingList_Edit(ViewController: self, Api_Str: appurl,tag: 0)
-        print(arrPackingListsID_Model)
         lbl_Documents.backgroundColor = .white
         lbl_Rejection.backgroundColor = .white
         view_ProjectDetails.isHidden = false
         view_Documentsview.isHidden = true
         view_Rejectionview.isHidden = true
+        self.view_Pagination.isHidden = (arrPackingListsID_Model == nil) ? true : false
         TableViewHelper.EmptyMessage(message: "No records found", tableview: tbl_RejectionHistory, textColor: .gray)
-        
     }
     //MARK:- UI design
     func UIdesign() {
         Utils.add_shadow_around_view(view: view_topBG, color: .gray, radius: 5, opacity: 5)
         Utils.add_shadow_around_view(view: view_SecondBG, color: .gray, radius: 5, opacity: 5)
         Utils.add_shadow_around_view(view: view_ThardBG, color: .gray, radius: 5, opacity: 5)
-        Utils.setcornerRadius(view: btn_Save, cornerradius: 5)
-        Utils.setcornerRadius(view: btn_Discard, cornerradius: 5)
+        Utils.add_shadow_around_view_Multiple(views: [btn_RivisonHistory], color: .gray, radius: 3, opacity: 1)
     }
     @IBAction func btn_Click_Revision(_ sender: UIButton) {
-        print("Revision Click")
         if DEFAULTS.Get_Revision_Count() == 0 {
             let PackingList_VC = Config.StoryBoard.instantiateViewController(identifier: "PackingListVC") as! PackingListVC
             PackingList_VC.Str_NavigateFrom = "PackingList_Revision"
@@ -199,17 +197,20 @@ class PackingListsEdit: UIViewController {
             btn_Approved.setBackgroundImage(UIImage(named: "ic_StutsPathColor"), for: .normal)
             btn_Approved.setTitleColor(.white, for: .normal)
         }
-        btn_ExcelFile.isHidden = (rowdata.pl_excel == nil) ? true : false
-        btn_PdfFile.isHidden = (rowdata.pl_pdf == nil) ? true : false
-        btn_ExcelFile.isHidden = (rowdata.pl_signed_pdf == nil) ? true : false
+        btn_ExcelFile.isHidden = (rowdata.pl_excel == "") ? true : false
+        btn_PdfFile.isHidden = (rowdata.pl_pdf == "") ? true : false
+        btn_SignedPDFFile.isHidden = (rowdata.pl_signed_pdf == nil) ? true : false
+        
         
         btn_ExcelFile.addTarget(self, action: #selector(barbtn_excel(_:)), for: .touchUpInside)
         btn_PdfFile.addTarget(self, action: #selector(barbtn_PDF(_:)), for: .touchUpInside)
-        btn_ExcelFile.addTarget(self, action: #selector(barbtn_SignedPDFFile(_:)), for: .touchUpInside)
+        btn_SignedPDFFile.addTarget(self, action: #selector(barbtn_SignedPDFFile(_:)), for: .touchUpInside)
         //Document Attach
         self.txt_PDFFile.text = (rowdata.pl_pdf != nil) ? (rowdata.pl_pdf! as NSString).lastPathComponent : "File Not Availabel"
         self.txt_ExcelFile.text = (rowdata.pl_excel != nil) ? (rowdata.pl_excel! as NSString).lastPathComponent : "File Not Availabel"
         self.txt_SignedPDFFile.text = (rowdata.pl_signed_pdf != nil) ? (rowdata.pl_signed_pdf! as NSString).lastPathComponent : "File Not Availabel"
+        
+        
     }
     @objc func barbtn_PDF(_ sender: UIButton) {
         self.storeAndShare(withURLString: Api_Urls.DocumentBASE_URL + arrPackingListsID_Model[0].pl_pdf!)
@@ -221,22 +222,29 @@ class PackingListsEdit: UIViewController {
        self.storeAndShare(withURLString: Api_Urls.DocumentBASE_URL + arrPackingListsID_Model[0].pl_signed_pdf!)
     }
     func storeAndShare(withURLString: String) {
-        guard let url = URL(string: withURLString) else { return }
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            let tmpURL = FileManager.default.temporaryDirectory
-                .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
-            do {
-                try data.write(to: tmpURL)
-            } catch {
-                print(error)
-            }
-            DispatchQueue.main.async {
-                self.arrDocuments = [tmpURL as! NSURL]
-                self.docViewController.reloadData()
-                self.present(self.docViewController, animated: true, completion: nil)
-            }
-        }.resume()
+        if AppDelegate.NetworkRechability(){
+            Utils.ShowActivityIndicator(message: Strings.kLoading)
+            guard let url = URL(string: withURLString) else { return }
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                guard let data = data, error == nil else { return }
+                let tmpURL = FileManager.default.temporaryDirectory
+                    .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
+                do {
+                    try data.write(to: tmpURL)
+                } catch {
+                    print(error)
+                }
+                DispatchQueue.main.async {
+                    self.arrDocuments = [tmpURL as! NSURL]
+                    self.docViewController.reloadData()
+                    KRProgressHUD.dismiss()
+                    self.present(self.docViewController, animated: true, completion: nil)
+                }
+            }.resume()
+        }else {
+            Utils.showToastWithMessage(message: Strings.kNoInternetMessage)
+        }
+        
     }
     @IBAction func btn_SaveClick_Action(_ sender: UIButton) {
     }
@@ -270,10 +278,8 @@ extension PackingListsEdit : UITableViewDataSource,UITableViewDelegate {
 }
 extension PackingListsEdit : QLPreviewControllerDataSource {
  func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        print("view was cancelled")
         dismiss(animated: true, completion: nil)
     }
-    
     //MARK: Document Viewer Delegate methods
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return self.arrDocuments.count

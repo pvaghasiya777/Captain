@@ -9,6 +9,7 @@
 import UIKit
 import iOSDropDown
 import QuickLook
+import KRProgressHUD
 class DrawineditVC: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var view_topBG: UIView!
@@ -121,9 +122,9 @@ class DrawineditVC: UIViewController {
     func UIdesign() {
         Utils.EnableTextField(textFields: [txt_Purchase,txt_Project,txt_Vendor,txt_StructureId,txt_GroupName,txt_Revision,txt_Lot,txt_LotSub,txt_ContractorDocument,txt_SubContractor,txt_TotalQuantity,txt_TotalNetWeight,txt_TotalPaintingWeight,txt_TotalFireproofingWeight,txt_ExcelFile,txt_PDFFile])
         Utils.EnableTextField(textFields: [drop_PreparedBy,drop_CheckedBy,drop_ApprovedBy,drop_Status])
-        Utils.add_shadow_around_view_Multiple(views: [view_topBG,view_SecondBG,view_ThardBG], color: .gray, radius: 5, opacity: 5)
+        Utils.add_shadow_around_view_Multiple(views: [view_SecondBG,view_ThardBG], color: .gray, radius: 5, opacity: 5)
         Utils.add_shadow_around_view(view: btn_Active, color: .gray, radius: 2, opacity: 5)
-//        Utils.add_shadow_around_view(view: btn_IsPackageCreated, color: .gray, radius: 2, opacity: 5)
+         Utils.add_shadow_around_view_Multiple(views: [btn_RivisonHistory,btn_Packages,btn_PackagesList], color: .gray, radius: 3, opacity: 1)
         Utils.Set_Same_Corner_Radius(views: [btn_Save,btn_Discard,btn_IsGroupStructure,btn_Active,btn_IsGroupStructure], cornerRadius: 5)
     }
     //MARK:- Button Click Action
@@ -175,9 +176,9 @@ class DrawineditVC: UIViewController {
     
     func dataset(){
         let rowdata = arrStructureInfo[0]
-        self.btn_Packages.addSubview(Utils.set_Badge(Count: rowdata.package_count!))
-        self.btn_PackagesList.addSubview(Utils.set_Badge(Count: rowdata.packing_count!))
-        self.btn_RivisonHistory.addSubview(Utils.set_Badge(Count: rowdata.history_count!))
+        self.btn_Packages.addSubview(Utils.set_Badge(Count: Int(rowdata.package_count!)))
+        self.btn_PackagesList.addSubview(Utils.set_Badge(Count: Int(rowdata.packing_count!)))
+        self.btn_RivisonHistory.addSubview(Utils.set_Badge(Count: Int(rowdata.history_count!)))
         txt_Purchase.text = rowdata.purchase_id
         txt_Project.text = projectName
         txt_Vendor.text = vendorName
@@ -194,30 +195,30 @@ class DrawineditVC: UIViewController {
         self.txt_PDFFile.text = (rowdata.shop_drawing_pdf != nil) ? (rowdata.shop_drawing_pdf! as NSString).lastPathComponent : "File Not Availabel"
         self.txt_ExcelFile.text = (rowdata.shop_drawing_excel != nil) ? (rowdata.shop_drawing_excel! as NSString).lastPathComponent : "File Not Availabel"
         let Arr_Employee = DEFAULTS.Get_MasterEmployee()
-        drop_PreparedBy.text = Arr_Employee.filter{$0.id! == rowdata.prepared_by!}[0].name!
-        drop_CheckedBy.text = Arr_Employee.filter{$0.id! == rowdata.checked_by!}[0].name!
-        drop_ApprovedBy.text = Arr_Employee.filter{$0.id! == rowdata.approved_by!}[0].name!
+        drop_PreparedBy.text = (rowdata.prepared_by != nil) ? Arr_Employee[0].results!.filter{$0.id! == rowdata.prepared_by!}[0].firstName! : ""
+        drop_CheckedBy.text = (rowdata.checked_by != nil) ? Arr_Employee[0].results!.filter{$0.id! == rowdata.checked_by!}[0].firstName! : ""
+        drop_ApprovedBy.text = (rowdata.approved_by != nil) ? Arr_Employee[0].results!.filter{$0.id! == rowdata.approved_by!}[0].firstName! : ""
         btn_Active.setBackgroundImage(UIImage(named: ((rowdata.is_active == true) ? "ic_check": "")), for: .normal)
         btn_IsPackageCreated.setBackgroundImage(UIImage(named: ((rowdata.is_active == true) ? "ic_check": "")), for: .normal)
-        //////        Quantities view
+        //        Quantities view
         txt_TotalQuantity.text = String(describing: rowdata.total_quantity!)
         txt_TotalNetWeight.text = String(describing: rowdata.total_net_weight!)
         txt_TotalPaintingWeight.text = String(describing: rowdata.total_painting_weight!)
         txt_TotalFireproofingWeight.text = String(describing: rowdata.total_fireproofing_weight!)
         if rowdata.status == "draft" {
-            btn_Draft.setBackgroundImage(UIImage(named: "ic_StutsPathColor"), for: .normal)
+            btn_Draft.setBackgroundImage(ImageNames.kActiveYes, for: .normal)
             btn_Draft.setTitleColor(.white, for: .normal)
             btn_Submitted.backgroundColor = .white
             btn_Approved.backgroundColor = .white
         } else if rowdata.status == "submit" {
             btn_Draft.backgroundColor = .white
-            btn_Submitted.setBackgroundImage(UIImage(named: "ic_StutsPathColor"), for: .normal)
+            btn_Submitted.setBackgroundImage(ImageNames.kActiveYes, for: .normal)
             btn_Submitted.setTitleColor(.white, for: .normal)
             btn_Approved.backgroundColor = .white
         } else {
             btn_Draft.backgroundColor = .white
             btn_Submitted.backgroundColor = .white
-            btn_Approved.setBackgroundImage(UIImage(named: "ic_StutsPathColor"), for: .normal)
+            btn_Approved.setBackgroundImage(ImageNames.kActiveYes, for: .normal)
             btn_Approved.setTitleColor(.white, for: .normal)
         }
         btn_PDFFile.isHidden = (rowdata.shop_drawing_pdf == nil) ? true : false
@@ -227,27 +228,34 @@ class DrawineditVC: UIViewController {
     }
     @objc func barbtn_PDF(_ sender: UIButton) {
         self.storeAndShare(withURLString: Api_Urls.DocumentBASE_URL + arrStructureInfo[0].shop_drawing_pdf!)
-     }
-     @objc func barbtn_excel(_ sender: UIButton) {
-       self.storeAndShare(withURLString: Api_Urls.DocumentBASE_URL + arrStructureInfo[0].shop_drawing_excel!)
-     }
+    }
+    @objc func barbtn_excel(_ sender: UIButton) {
+        self.storeAndShare(withURLString: Api_Urls.DocumentBASE_URL + arrStructureInfo[0].shop_drawing_excel!)
+    }
     func storeAndShare(withURLString: String) {
-        guard let url = URL(string: withURLString) else { return }
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            let tmpURL = FileManager.default.temporaryDirectory
-                .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
-            do {
-                try data.write(to: tmpURL)
-            } catch {
-                print(error)
-            }
-            DispatchQueue.main.async {
-                self.arrDocuments = [tmpURL as! NSURL]
-                self.docViewController.reloadData()
-                self.present(self.docViewController, animated: true, completion: nil)
-            }
-        }.resume()
+        if AppDelegate.NetworkRechability(){
+            Utils.ShowActivityIndicator(message: Strings.kLoading)
+            guard let url = URL(string: withURLString) else { return }
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                guard let data = data, error == nil else { return }
+                let tmpURL = FileManager.default.temporaryDirectory
+                    .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
+                do {
+                    try data.write(to: tmpURL)
+                } catch {
+                    print(error)
+                }
+                DispatchQueue.main.async {
+                    self.arrDocuments = [tmpURL as! NSURL]
+                    self.docViewController.reloadData()
+                    KRProgressHUD.dismiss()
+                    self.present(self.docViewController, animated: true, completion: nil)
+                }
+            }.resume()
+        }else {
+            Utils.showToastWithMessage(message: Strings.kNoInternetMessage)
+        }
+        
     }
     @IBAction func btn_ActiveClick(_ sender: UIButton) {
         //         let rodata = arrStructureInfo[0]
@@ -260,23 +268,20 @@ class DrawineditVC: UIViewController {
     //MARK:- Button Click Action
     @IBAction func btn_Click_Inside(_ sender: UIButton) {
         if sender.tag == 1 {
-            print("Packges Click")
             let Plinputs_Vc = Config.StoryBoard.instantiateViewController(identifier: "PlinputsVc") as! PlinputsVc
             Plinputs_Vc.Str_NavigateFrom = "Drawin Edit"
-            Plinputs_Vc.Str_ID = String(describing: arrStructureInfo[0].id!)
+            Plinputs_Vc.Str_ID = String(describing: String(describing: Int(arrStructureInfo[0].id!)))
             self.navigationController?.pushViewController(Plinputs_Vc, animated: true)
         }else if sender.tag == 2 {
-            print("Packing List Click")
             let PackingList_VC = Config.StoryBoard.instantiateViewController(identifier: "PackingListVC") as! PackingListVC
             PackingList_VC.Str_NavigateFrom = "Drawin Edit"
-            PackingList_VC.Str_ID = String(describing: arrStructureInfo[0].id!)
+            PackingList_VC.Str_ID =  String(describing: Int(arrStructureInfo[0].id!))
             self.navigationController?.pushViewController(PackingList_VC, animated: true)
         }else {
             if DEFAULTS.Get_Revision_Count() == 0 {
-                print("Revision histroy")
                 let Drawing_VC = Config.StoryBoard.instantiateViewController(identifier: "DrawingVC") as! DrawingVC
                 Drawing_VC.Str_NavigateFrom = "Drawing_Revision"
-                Drawing_VC.Str_ID = String(describing: arrStructureInfo[0].structure_id!)
+                Drawing_VC.Str_ID = String(describing: String(describing: Int(arrStructureInfo[0].id!)))
                 DEFAULTS.Set_Revision_Count(Count: 1)
                 self.navigationController?.pushViewController(Drawing_VC, animated: true)
             }else {
@@ -285,7 +290,7 @@ class DrawineditVC: UIViewController {
         }
     }
     @IBAction func btn_SaveClick_Action(_ sender: UIButton) {
-       }
+    }
     @IBAction func btn_DiscardClick_Action(_ sender: UIButton) {
     }
 }
@@ -317,11 +322,9 @@ extension DrawineditVC : UITableViewDataSource,UITableViewDelegate {
     }
 }
 extension DrawineditVC : QLPreviewControllerDataSource {
- func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        print("view was cancelled")
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         dismiss(animated: true, completion: nil)
     }
-    
     //MARK: Document Viewer Delegate methods
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return self.arrDocuments.count

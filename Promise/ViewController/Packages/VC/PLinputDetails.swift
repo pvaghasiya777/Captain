@@ -11,6 +11,7 @@ class PLinputDetails: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet var tbl_Package_Detail: UITableView!
     @IBOutlet weak var view_tbl_Package_DetailPagination: UIView!
+    @IBOutlet weak var ViewRejectionPagination: UIView!
     @IBOutlet weak var view_topBG: UIView!
     @IBOutlet weak var btn_Save: UIButton!
     @IBOutlet weak var btn_Discard: UIButton!
@@ -103,14 +104,13 @@ class PLinputDetails: UIViewController {
         self.btn_Previous.addTarget(self, action: #selector(btn_PreviousClick(_:)), for: .touchUpInside)
     }
     func UIdesign() {
-        Utils.add_shadow_around_view(view: view_topBG, color: .gray, radius: 5, opacity: 5)
+//        Utils.add_shadow_around_view(view: view_topBG, color: .gray, radius: 5, opacity: 5)
         Utils.add_shadow_around_view(view: view_SecondBG, color: .gray, radius: 5, opacity: 5)
         Utils.add_shadow_around_view(view: view_ThardBG, color: .gray, radius: 5, opacity: 5)
-        Utils.Set_Same_Corner_Radius(views: [btn_Save,btn_Discard], cornerRadius: 5)
+       // Utils.Set_Same_Corner_Radius(views: [btn_Save,btn_Discard], cornerRadius: 5)
         Utils.EnableTextField(textFields: [txt_Name,txt_InputNumber,txt_Revisionnumber,txt_PONumber,txt_Project,txt_Vendor,txt_PickupLocation,txt_ContactDetails,txt_NameOfGoods,txt_InspectionTime,txt_CountryOfOrigin,txt_Address,txt_Structure,txt_GrossWeight,txt_NetWeight,txt_TotalVolume])
     }
     func Set_PackageDetail() {
-        print(Arr_PLDetail)
         self.btn_PackagesList.addSubview(Utils.set_Badge(Count: Arr_PLDetail[0].packingCount!))
         self.txt_Name.text = Arr_PLDetail[0].name!
         self.txt_InputNumber.text = Arr_PLDetail[0].inputNo!
@@ -123,7 +123,7 @@ class PLinputDetails: UIViewController {
         self.txt_NameOfGoods.text = Arr_PLDetail[0].nameOfGoods!
         self.txt_InspectionTime.text = (Arr_PLDetail[0].inspectionDate == nil) ? "" : Arr_PLDetail[0].inspectionDate!
         self.btn_Active.isUserInteractionEnabled = false
-        self.btn_Active.setImage(UIImage(named: (Arr_PLDetail[0].isActive == true) ? "ic_check":"ic_not_released"), for: .normal)
+        self.btn_Active.setBackgroundImage(UIImage(named: (Arr_PLDetail[0].isActive == true) ? "ic_check":"ic_not_released"), for: .normal)
         self.Arr_Address = DEFAULTS.Get_AddressStruct().filter{$0.id! == Arr_PLDetail[0].addressID!}
         self.Arr_Country = DEFAULTS.Get_MasterCoutry().filter{$0.id! == Arr_PLDetail[0].countryOfOrigin!}
         self.Arr_Purchase = DEFAULTS.Get_MasterPurchase().filter {$0.number! == Arr_PLDetail[0].purchaseID!}
@@ -132,22 +132,22 @@ class PLinputDetails: UIViewController {
         self.txt_Address.text = Arr_Address[0].name!
         self.txt_Structure.text = Arr_Strucher[0].structureID! + " (\(Arr_Strucher[0].revNo!))"
         if Arr_PLDetail[0].approveStatus == "draft" {
-            btn_Draft.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+            self.btn_Draft.setBackgroundImage(ImageNames.kActiveYes, for: .normal)
+            self.btn_Approved.setBackgroundImage(ImageNames.kActiveNo, for: .normal)
+            self.btn_Submitted.setBackgroundImage(ImageNames.kActiveNo, for: .normal)
             btn_Draft.setTitleColor(.white, for: .normal)
-            btn_Submitted.backgroundColor = .white
-            btn_Approved.backgroundColor = .white
         } else if Arr_PLDetail[0].approveStatus == "submitted" {
-            btn_Draft.backgroundColor = .white
-            btn_Submitted.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+            self.btn_Draft.setBackgroundImage(ImageNames.kActiveNo, for: .normal)
+            self.btn_Approved.setBackgroundImage(ImageNames.kActiveNo, for: .normal)
+            self.btn_Submitted.setBackgroundImage(ImageNames.kActiveYes, for: .normal)
             btn_Submitted.setTitleColor(.white, for: .normal)
-            btn_Approved.backgroundColor = .white
         } else {
-            btn_Draft.backgroundColor = .white
-            btn_Submitted.backgroundColor = .white
-            btn_Approved.backgroundColor = UIColor(red: 0.21, green: 0.20, blue: 0.51, alpha: 1.00)
+            self.btn_Draft.setBackgroundImage(ImageNames.kActiveNo, for: .normal)
+            self.btn_Approved.setBackgroundImage(ImageNames.kActiveYes, for: .normal)
+            self.btn_Submitted.setBackgroundImage(ImageNames.kActiveNo, for: .normal)
             btn_Approved.setTitleColor(.white, for: .normal)
         }
-        self.lbl_ShowPagination.text = "Showing \(1) to \(startIndex + 10) of \(Arr_PLDetail[0].inputMasterIDS!.count) results"
+        self.lbl_ShowPagination.text = "Showing 1 to \(((startIndex + 10) > Arr_PLDetail[0].inputMasterIDS!.count) ? Arr_PLDetail[0].inputMasterIDS!.count : (startIndex + 10)) of \(Arr_PLDetail[0].inputMasterIDS!.count) results"
     }
     func Set_Quantites() {
         self.txt_GrossWeight.text = Arr_PLDetail[0].totalGrossWeight!
@@ -168,6 +168,7 @@ class PLinputDetails: UIViewController {
             view_Details.isHidden = false
             view_Quantities.isHidden = true
             view_Rejectionview.isHidden = true
+            self.view_tbl_Package_DetailPagination.isHidden = false
             self.tbl_Package_Detail.isHidden = false
             // self.tbl_Package_Detail.reloadData()
         } else if sender.tag == 2{
@@ -177,6 +178,7 @@ class PLinputDetails: UIViewController {
             view_Details.isHidden = true
             view_Quantities.isHidden = false
             view_Rejectionview.isHidden = true
+            self.view_tbl_Package_DetailPagination.isHidden = true
             self.tbl_Package_Detail.isHidden = true
             self.Set_Quantites()
         } else if sender.tag == 3{
@@ -188,12 +190,18 @@ class PLinputDetails: UIViewController {
             view_Rejectionview.isHidden = false
             self.tbl_Package_Detail.isHidden = true
             self.tbl_RejectionHistory.isHidden = false
+            self.view_tbl_Package_DetailPagination.isHidden = true
             if Arr_PLDetail[0].rejectReasons!.count == 0 {
                 TableViewHelper.EmptyMessage(message: "No records found", tableview: tbl_RejectionHistory, textColor: .black)
             }else {
-                self.tbl_RejectionHistory.reloadData()
+                if Arr_PLDetail[0].rejectReasons!.count == 0 {
+                    TableViewHelper.EmptyMessage(message: "No records found", tableview: tbl_RejectionHistory, textColor: .black)
+                    self.ViewRejectionPagination.isHidden = true
+                    self.view_tbl_Package_DetailPagination.isHidden = true
+                }else {
+                    self.tbl_RejectionHistory.reloadData()
+                }
             }
-            
         }
     }
     @IBAction func btn_SaveClick_Action(_ sender: UIButton) {
@@ -208,7 +216,7 @@ class PLinputDetails: UIViewController {
             startIndex = startIndex + 10
             self.PageNumber = PageNumber + 1
             self.lbl_PageNum.text = String(describing: PageNumber)
-            self.lbl_ShowPagination.text = "Showing \(startIndex) to \(startIndex + 10) of \(Arr_PLDetail[0].inputMasterIDS!.count) results"
+            self.lbl_ShowPagination.text = "Showing \(startIndex) to \(((startIndex + 10) > Arr_PLDetail[0].inputMasterIDS!.count) ? Arr_PLDetail[0].inputMasterIDS!.count : (startIndex + 10)) of \(Arr_PLDetail[0].inputMasterIDS!.count) results"
             self.tbl_Package_Detail.reloadData()
         }
     }
@@ -218,10 +226,29 @@ class PLinputDetails: UIViewController {
         } else {
             startIndex = startIndex - 10
             self.PageNumber = PageNumber - 1
-            self.lbl_ShowPagination.text = "Showing \(startIndex) to \((startIndex == 0) ? 10 : startIndex - 10 ) of \(Arr_PLDetail[0].inputMasterIDS!.count) results"
+            self.lbl_ShowPagination.text = "Showing \(startIndex) to \((startIndex == 0) ? 10 : startIndex + 10 ) of \(Arr_PLDetail[0].inputMasterIDS!.count) results"
             self.lbl_PageNum.text = String(describing: PageNumber)
             self.tbl_Package_Detail.reloadData()
         }
+    }
+    // MARK: - Edit,Delete,Puase Buttons Clicks
+    @objc func cell_Button_Clicks(_ sender : UIBarButtonItem) {
+       if sender.accessibilityHint == "0" {
+          let PackageDetails_VC = Config.StoryBoard.instantiateViewController(identifier: "PackageDetailsVC") as! PackageDetailsVC
+          PackageDetails_VC.Arr_PLDetail = Arr_PLDetail
+        PackageDetails_VC.IndexpathRow = sender.tag
+          self.navigationController?.pushViewController(PackageDetails_VC, animated: true)
+
+       }
+    }
+
+    // MARK: - Bind Buttons Clicks
+    func set_Button_Target(buttons : [UIButton], action : Selector, tag : Int) {
+       for i in 0..<buttons.count{
+           buttons[i].addTarget(self, action: action, for: .touchUpInside)
+           buttons[i].accessibilityHint = String(i)
+           buttons[i].tag = tag
+       }
     }
 }
 extension PLinputDetails: UITableViewDelegate,UITableViewDataSource {
@@ -256,6 +283,7 @@ extension PLinputDetails: UITableViewDelegate,UITableViewDataSource {
             } else {
                 let cell : PL_PackageDetailsCell = tableView.dequeueReusableCell(withIdentifier: "PL_PackageDetailsCell") as! PL_PackageDetailsCell
                 cell.Display_Cell(viewController: self, indexPath: indexPath)
+                 self.set_Button_Target(buttons: [cell.btn_view], action: #selector(self.cell_Button_Clicks(_:)), tag : indexPath.row)
                 cell.selectionStyle = .none
                 return cell
             }
@@ -267,6 +295,7 @@ extension PLinputDetails: UITableViewDelegate,UITableViewDataSource {
             } else {
                 let cell : RejectionHistoryCell = tableView.dequeueReusableCell(withIdentifier: "RejectionHistoryCell") as! RejectionHistoryCell
                 cell.Display_Cell(arr: arr_rejectH, indexPath: indexPath.row)
+                
                 cell.selectionStyle = .none
                 return cell
             }
@@ -286,25 +315,6 @@ extension PLinputDetails: UITableViewDelegate,UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
-    }
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if tableView == tbl_Package_Detail { // Detail Table
-            if indexPath.section == 1 {
-                let viewAction = UIContextualAction(style: .normal, title: "") { (action, view, completion) in
-                    // Perform your action here
-                    completion(true)
-                    
-                    let AddedItems_VC = Config.StoryBoard.instantiateViewController(identifier: "AddedItemsVC") as! AddedItemsVC
-                    AddedItems_VC.Arr_PLDetail = self.Arr_PLDetail
-                    AddedItems_VC.IndexpathRow = indexPath.row
-                    self.navigationController?.pushViewController(AddedItems_VC, animated: true)
-                }
-                viewAction.image = UIImage(named: "ic_eye")
-                viewAction.backgroundColor = Config.bgColor
-                return UISwipeActionsConfiguration(actions: [viewAction])
-            }
-        }
-        return UISwipeActionsConfiguration(actions: [])
     }
 }
 

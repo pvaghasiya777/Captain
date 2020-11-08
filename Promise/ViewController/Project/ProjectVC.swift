@@ -14,13 +14,14 @@ class ProjectVC: UIViewController
     @IBOutlet var btn_Profile: UIBarButtonItem!
     @IBOutlet var View_Tbl_Header: UIView!
     @IBOutlet var View_Tbl_pagination: UIView!
+    @IBOutlet weak var view_filterBG: UIView!
     @IBOutlet var View_Tbl_Header_Height: NSLayoutConstraint!
     @IBOutlet var btn_menubar: UIBarButtonItem!
     @IBOutlet var btn_Notification: UIBarButtonItem!
-    @IBOutlet var Searc_project: UISearchBar!
     @IBOutlet var btn_CollectionView: UIButton!
     @IBOutlet var btn_Filter: UIButton!
     @IBOutlet var btn_TableView: UIButton!
+    @IBOutlet var CollectionView_Filter: UICollectionView!
     @IBOutlet var CollectionView_Project: UICollectionView!
     @IBOutlet var tbl_Project: UITableView!
     @IBOutlet weak var btn_Previous: UIButton!
@@ -34,6 +35,7 @@ class ProjectVC: UIViewController
     var Is_ListView : Bool = false
     var Is_GridView : Bool = false
     var arrProject = [MasterProjectModel]()
+    var arrFilterData = [FilterData]()
     var KLC_obj: KLCPopup?
     var obj_popUpVC : FilterPopup!
     //MARK:- Life Cycle
@@ -55,7 +57,10 @@ class ProjectVC: UIViewController
     {
         ServiceCall.shareInstance.Get_getProject(ViewController: self, Api_Str: Api_Urls.GET_API_masterProject, Param: ["is_active": true])
         self.CollectionView_Project.register(UINib(nibName: "Project_CollectionCell", bundle: nil), forCellWithReuseIdentifier: "Project_CollectionCell")
+         self.CollectionView_Filter.register(UINib(nibName: "FilterCollectionCell", bundle: nil), forCellWithReuseIdentifier: "FilterCollectionCell")
         self.tbl_Project.register(UINib(nibName: "Project_tbl_Cell", bundle: nil), forCellReuseIdentifier: "Project_tbl_Cell")
+        Utils.setborder(view: view_filterBG, bordercolor: .gray, borderwidth: 1)
+        Utils.setcornerRadius(view: view_filterBG, cornerradius: 5)
         self.View_Tbl_pagination.isHidden = true
         self.navigationController?.navigationBar.isTranslucent = false
         self.CollectionView_Project.backgroundColor = .clear
@@ -76,7 +81,6 @@ class ProjectVC: UIViewController
         UIDevice.current.setValue(value, forKey: "orientation")
     }
     @IBAction func switch_FinalRevisionAction(_ sender: UISwitch) {
-        print(sender.isOn)
         ServiceCall.shareInstance.Get_getProject(ViewController: self, Api_Str: Api_Urls.GET_API_masterProject, Param: ["is_active": sender.isOn])
     }
     // MARK: - Show Filter Popup// MARK: - Show Filter Popup Project
@@ -96,11 +100,10 @@ class ProjectVC: UIViewController
                     let SecondFilter = (self.obj_popUpVC?.btn_SecondFilter.currentTitle!)
                     let FilterValue = (self.obj_popUpVC?.txt_ValueFilter!.text)!
                     let FilterParam = (self.obj_popUpVC?.Str_Filter_String)!
-                    print("==============Filter Value==============")
-                    print(FirstFilter!)
-                    print(SecondFilter!)
-                    print(FilterValue)
-                    print(FilterParam)
+                    var arrFilter = [FilterData]()
+                    arrFilter.append((FilterData(SelectAttribute: FirstFilter!, SelectCriteria: SecondFilter!, FilterParam: FilterParam, Value: String(FilterValue))))
+                    self.arrFilterData.append(contentsOf: arrFilter)
+                    self.CollectionView_Filter.reloadData()
                     if FirstFilter == "Project Code" || FirstFilter == "Project Name" || FirstFilter == "Site Location" || FirstFilter == "Manager Name" || FirstFilter == "Refrences" {
                         ServiceCall.shareInstance.Get_getProject(ViewController: self, Api_Str: Api_Urls.GET_API_masterProject, Param: [FilterParam : FilterValue])
                     }else {
@@ -119,7 +122,6 @@ class ProjectVC: UIViewController
         return .landscapeRight
     }
     @IBAction func btn_Click_Mode(_ sender: UIButton) {
-        print(sender.tag)
         if sender.tag == 1 {
             self.Is_GridView = !self.Is_GridView
             self.btn_CollectionView.setImage(UIImage(named: Is_GridView ? "ic_tiles_view_Active" : "ic_tilesview"), for: .normal)
@@ -148,11 +150,24 @@ class ProjectVC: UIViewController
     //MARK:- Button next previous Click
     @IBAction func btn_Click_Next(_ sender: UIButton) {
         print("Next Button Click")
-       
     }
     @IBAction func btn_Click_Previous(_ sender: UIButton) {
         print("Next Button Click")
-        
+    }
+    //MARK:- Button CollectionView Filter Click
+    @objc func btn_RejectSelected(sender: UIButton){
+        self.arrFilterData.remove(at: sender.tag)
+        if arrFilterData == nil {
+            let rowdata = arrFilterData[sender.tag]
+            if rowdata.SelectAttribute == "Project Code" || rowdata.SelectAttribute == "Project Name" || rowdata.SelectAttribute == "Site Location" || rowdata.SelectAttribute == "Manager Name" || rowdata.SelectAttribute == "Refrences" {
+                ServiceCall.shareInstance.Get_getProject(ViewController: self, Api_Str: Api_Urls.GET_API_masterProject, Param: [rowdata.FilterParam : rowdata.Value])
+            } else {
+                ServiceCall.shareInstance.Get_getProject(ViewController: self, Api_Str: Api_Urls.GET_API_masterProject, Param: [rowdata.FilterParam : rowdata.SelectCriteria as Any])
+            }
+        } else {
+            ServiceCall.shareInstance.Get_getProject(ViewController: self, Api_Str: Api_Urls.GET_API_masterProject, Param: ["is_active": true])
+        }
+        CollectionView_Filter.reloadData()
     }
 }
 // MARK: - Collection View Datasource Methods
@@ -161,15 +176,27 @@ extension ProjectVC : UICollectionViewDataSource {
         return 1
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrProject.count
+        if collectionView == CollectionView_Project {
+            return arrProject.count
+        } else {
+            return arrFilterData.count
+        }
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: Project_CollectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "Project_CollectionCell", for: indexPath) as! Project_CollectionCell
-        cell.DisplayCell(arr: arrProject, indexPath: indexPath)
-        return cell
+      
+         if collectionView == CollectionView_Project {
+            let cell: Project_CollectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "Project_CollectionCell", for: indexPath) as! Project_CollectionCell
+            cell.DisplayCell(arr: arrProject, indexPath: indexPath)
+            return cell
+         } else {
+            let cell: FilterCollectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "FilterCollectionCell", for: indexPath) as! FilterCollectionCell
+            cell.DisplayCell(arr: arrFilterData, indexPath: indexPath.row)
+            cell.btn_Close.tag = indexPath.row
+            cell.btn_Close.addTarget(self, action: #selector(btn_RejectSelected), for: .touchUpInside)
+            return cell
+        }
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.section)
         let ProjectDetailsFormView_VC = Config.StoryBoard.instantiateViewController(withIdentifier: "ProjectDetailsFormViewVC" )as! ProjectDetailsFormViewVC
         ProjectDetailsFormView_VC.Str_ID = String(describing: arrProject[indexPath.row].id!)
         ProjectDetailsFormView_VC.Str_Title = arrProject[indexPath.row].name!
@@ -208,10 +235,7 @@ extension ProjectVC : UITableViewDataSource,UITableViewDelegate {
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return arrProject.count
-        
-        
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -219,11 +243,8 @@ extension ProjectVC : UITableViewDataSource,UITableViewDelegate {
         cell.DisplayCell(arr: arrProject, indexPath: indexPath.row)
         cell.selectionStyle = .none
         return cell
-        
-        
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.section)
         let ProjectDetail_VC = Config.StoryBoard.instantiateViewController(withIdentifier: "ProjectDetailsFormViewVC" ) as! ProjectDetailsFormViewVC
         ProjectDetail_VC.Str_ID = String(describing: arrProject[indexPath.row].id!)
         ProjectDetail_VC.Str_Title = arrProject[indexPath.row].name!
@@ -246,12 +267,10 @@ extension ProjectVC : SWRevealViewControllerDelegate {
     // MARK: - Reveal View Controller Delagate Methods
     func revealController(_ revealController: SWRevealViewController, didMoveTo position: FrontViewPosition) {
         print(position)
-        print("Parent View")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
     func revealController(_ revealController: SWRevealViewController, willMoveTo position: FrontViewPosition) {
         print(position)
-        print("HomeVC")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
 }

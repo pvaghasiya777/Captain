@@ -98,7 +98,6 @@ class UpdateProfileVC: UIViewController
             {() -> Void in
                 if !(self.obj_popUpVC?.Is_CancelButtonClick)! {
                     self.navigationController?.navigationBar.isTranslucent = true
-                   print("Filter Did select")
                     if self.obj_popUpVC.str_Navigate == "TimeZone" {
                         self.btn_Timezone.setTitle(self.obj_popUpVC.str_Selected, for: .normal)
                     }else if self.obj_popUpVC.str_Navigate == "Disciple" {
@@ -121,17 +120,14 @@ class UpdateProfileVC: UIViewController
     
     @IBAction func btn_Click_TD(_ sender: UIButton) {
         if sender.tag == 1 {
-            print("TimeZone Button Selected")
             self.Get_Selection_Popup(str_Navigate: "TimeZone")
         }else if sender.tag == 2 {
-            print("Default Project Button Selected")
             self.Get_Selection_Popup(str_Navigate: "Project")
         }else if sender.tag == 3 {
             self.Get_Selection_Popup(str_Navigate: "Disciple")
         }
     } 
     @IBAction func btn_Click_Save(_ sender: UIButton) {
-        print("Save Button Click")
         ServiceCall.shareInstance.Set_UpdateProfile(ViewController: self, param: ["default_discipline" : Str_DisciplineId,
         "default_project" : Str_ProjectId,
         "email": self.txt_Email.text!,
@@ -159,12 +155,10 @@ extension UpdateProfileVC : SWRevealViewControllerDelegate {
     // MARK: - Reveal View Controller Delagate Methods
     func revealController(_ revealController: SWRevealViewController, didMoveTo position: FrontViewPosition) {
         print(position)
-        print("Parent View")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
     func revealController(_ revealController: SWRevealViewController, willMoveTo position: FrontViewPosition) {
         print(position)
-        print("SideView")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
 }

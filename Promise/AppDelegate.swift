@@ -9,7 +9,6 @@
 import UIKit
 import IQKeyboardManagerSwift
 import SCLAlertView
-import SVProgressHUD
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -23,13 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AppDelegate.appDelegate = self
         AppDelegate.window1 = self.window
         IQKeyboardManager.shared.enable = true
-        if #available(iOS 13.0, *) {
-            window = UIWindow(frame: UIScreen.main.bounds)
-        }
-//        let containerOrigin = requiredView.origin
-//        SVProgressHUD.setOffsetFromCenter(UIOffset(horizontal: -containerOrigin.x, vertical: -containerOrigin.y))
+       // if #available(iOS 13.0, *) {
+          //  window = UIWindow(frame: UIScreen.main.bounds)
+      //  }
 
-        SVProgressHUD.setDefaultMaskType(.black)
+
         return true
     }
 

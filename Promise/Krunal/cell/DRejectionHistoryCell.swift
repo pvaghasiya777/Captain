@@ -22,7 +22,7 @@ class DRejectionHistoryCell: UITableViewCell {
     func DisplayCell(arr : [Reject_reasons],indexPath : IndexPath) {
         let rowdata = arr[indexPath.row]
         lbl_RejectedLevel.text = rowdata.reject_level!
-        lbl_RejectedBy.text = rowdata.rejected_by!
+        lbl_RejectedBy.text = (rowdata.rejected_by != nil) ? rowdata.rejected_by! : ""
         lbl_ReasonforRejection.text = rowdata.reason!
         lbl_Description.text = rowdata.description!
     }

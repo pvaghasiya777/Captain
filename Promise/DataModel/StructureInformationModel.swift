@@ -10,12 +10,12 @@
 
 import Foundation
 struct StructureInformationModel : Codable {
-    let id : Int?
+    let id : Double?
     let contract_doc_no : String?
     let rev_no : String?
     let purchase_id : String?
-    let project_id : Int?
-    let vendor_id : Int?
+    let project_id : Double?
+    let vendor_id : Double?
     let sub_contractor_doc_no : String?
     let prepared_by : Int?
     let checked_by : Int?
@@ -26,27 +26,27 @@ struct StructureInformationModel : Codable {
     let group_name : String?
     let lot : String?
     let sub_lot : String?
-    let created_by : Int?
+    let created_by : Double?
     let is_active : Bool?
     let pl_input_created : Bool?
     let shop_drawing_excel : String?
-    let total_quantity : Int?
+    let total_quantity : Double?
     let total_net_weight : String?
     let total_painting_weight : String?
     let total_fireproofing_weight : String?
     let shop_drawing_pdf : String?
     let is_group_structure : Bool?
     let is_hybrid : Bool?
-    let level : Int?
+    let level : Double?
     let upgrade : Bool?
-    let submit_by : Int?
+    let submit_by : Double?
     let submitted_for_approval : Bool?
     let approve_status : String?
     let is_revision : Bool?
     let shop_drawing_id : String?
-    let package_count : Int?
-    let packing_count : Int?
-    let history_count : Int?
+    let package_count : Double?
+    let packing_count : Double?
+    let history_count : Double?
     let reject_reasons : [Reject_reasons]?
 
     enum CodingKeys: String, CodingKey {
@@ -93,12 +93,12 @@ struct StructureInformationModel : Codable {
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decodeIfPresent(Int.self, forKey: .id)
+        id = try values.decodeIfPresent(Double.self, forKey: .id)
         contract_doc_no = try values.decodeIfPresent(String.self, forKey: .contract_doc_no)
         rev_no = try values.decodeIfPresent(String.self, forKey: .rev_no)
         purchase_id = try values.decodeIfPresent(String.self, forKey: .purchase_id)
-        project_id = try values.decodeIfPresent(Int.self, forKey: .project_id)
-        vendor_id = try values.decodeIfPresent(Int.self, forKey: .vendor_id)
+        project_id = try values.decodeIfPresent(Double.self, forKey: .project_id)
+        vendor_id = try values.decodeIfPresent(Double.self, forKey: .vendor_id)
         sub_contractor_doc_no = try values.decodeIfPresent(String.self, forKey: .sub_contractor_doc_no)
         prepared_by = try values.decodeIfPresent(Int.self, forKey: .prepared_by)
         checked_by = try values.decodeIfPresent(Int.self, forKey: .checked_by)
@@ -109,32 +109,32 @@ struct StructureInformationModel : Codable {
         group_name = try values.decodeIfPresent(String.self, forKey: .group_name)
         lot = try values.decodeIfPresent(String.self, forKey: .lot)
         sub_lot = try values.decodeIfPresent(String.self, forKey: .sub_lot)
-        created_by = try values.decodeIfPresent(Int.self, forKey: .created_by)
+        created_by = try values.decodeIfPresent(Double.self, forKey: .created_by)
         is_active = try values.decodeIfPresent(Bool.self, forKey: .is_active)
         pl_input_created = try values.decodeIfPresent(Bool.self, forKey: .pl_input_created)
         shop_drawing_excel = try values.decodeIfPresent(String.self, forKey: .shop_drawing_excel)
-        total_quantity = try values.decodeIfPresent(Int.self, forKey: .total_quantity)
+        total_quantity = try values.decodeIfPresent(Double.self, forKey: .total_quantity)
         total_net_weight = try values.decodeIfPresent(String.self, forKey: .total_net_weight)
         total_painting_weight = try values.decodeIfPresent(String.self, forKey: .total_painting_weight)
         total_fireproofing_weight = try values.decodeIfPresent(String.self, forKey: .total_fireproofing_weight)
         shop_drawing_pdf = try values.decodeIfPresent(String.self, forKey: .shop_drawing_pdf)
         is_group_structure = try values.decodeIfPresent(Bool.self, forKey: .is_group_structure)
         is_hybrid = try values.decodeIfPresent(Bool.self, forKey: .is_hybrid)
-        level = try values.decodeIfPresent(Int.self, forKey: .level)
+        level = try values.decodeIfPresent(Double.self, forKey: .level)
         upgrade = try values.decodeIfPresent(Bool.self, forKey: .upgrade)
-        submit_by = try values.decodeIfPresent(Int.self, forKey: .submit_by)
+        submit_by = try values.decodeIfPresent(Double.self, forKey: .submit_by)
         submitted_for_approval = try values.decodeIfPresent(Bool.self, forKey: .submitted_for_approval)
         approve_status = try values.decodeIfPresent(String.self, forKey: .approve_status)
         is_revision = try values.decodeIfPresent(Bool.self, forKey: .is_revision)
         shop_drawing_id = try values.decodeIfPresent(String.self, forKey: .shop_drawing_id)
-        package_count = try values.decodeIfPresent(Int.self, forKey: .package_count)
-        packing_count = try values.decodeIfPresent(Int.self, forKey: .packing_count)
-        history_count = try values.decodeIfPresent(Int.self, forKey: .history_count)
+        package_count = try values.decodeIfPresent(Double.self, forKey: .package_count)
+        packing_count = try values.decodeIfPresent(Double.self, forKey: .packing_count)
+        history_count = try values.decodeIfPresent(Double.self, forKey: .history_count)
         reject_reasons = try values.decodeIfPresent([Reject_reasons].self, forKey: .reject_reasons)
     }
 }
 struct Reject_reasons : Codable {
-    let id : Int?
+    let id : Double?
     let reason : String?
     let rejected_by : String?
     let reject_level : String?
@@ -153,7 +153,7 @@ struct Reject_reasons : Codable {
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decodeIfPresent(Int.self, forKey: .id)
+        id = try values.decodeIfPresent(Double.self, forKey: .id)
         reason = try values.decodeIfPresent(String.self, forKey: .reason)
         rejected_by = try values.decodeIfPresent(String.self, forKey: .rejected_by)
         reject_level = try values.decodeIfPresent(String.self, forKey: .reject_level)

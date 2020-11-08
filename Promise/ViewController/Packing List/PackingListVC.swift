@@ -8,15 +8,15 @@
 
 import UIKit
 import QuickLook
+import KRProgressHUD
 class PackingListVC: UIViewController, SWRevealViewControllerDelegate
 {
-    
     //MARK:- IBOutlet
     @IBOutlet weak var tbl_data: UITableView!
     @IBOutlet weak var searchview: UISearchBar!
+    @IBOutlet var CollectionView_Filter: UICollectionView!
+    @IBOutlet weak var view_filterBG: UIView!
     @IBOutlet weak var btn_Filter: UIButton!
-    @IBOutlet weak var btn_Short: UIButton!
-    @IBOutlet weak var btn_More: UIButton!
     @IBOutlet weak var btn_M_Released: UIButton!
     @IBOutlet weak var btn_Previous: UIButton!
     @IBOutlet weak var btn_Next: UIButton!
@@ -34,6 +34,7 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
     var Arr_Data : NSMutableArray = []
     var Arr_Packing_Data : NSMutableArray = NSMutableArray()
     var Arr_Packing_DataChack : NSMutableArray = NSMutableArray()
+    var arrFilterData = [FilterData]()
     var Str_NextLink : String = String()
     var Str_PreviousLink : String = String()
     var KLC_obj: KLCPopup?
@@ -69,6 +70,8 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
         Utils.setcornerRadius(view: btn_Previous, cornerradius: 5)
         Utils.setcornerRadius(view: btn_Next, cornerradius: 5)
         Utils.setcornerRadius(view: lbl_PageNum, cornerradius: 5)
+        Utils.setborder(view: view_filterBG, bordercolor: .gray, borderwidth: 1)
+        Utils.setcornerRadius(view: view_filterBG, cornerradius: 5)
     }
     func Initialization() {
         tbl_data.allowsMultipleSelectionDuringEditing = true
@@ -89,14 +92,13 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
             self.Load_Dashboard()
             DEFAULTS.Set_Revision_Count(Count: 0)
         }
-        
+        self.CollectionView_Filter.register(UINib(nibName: "FilterCollectionCell", bundle: nil), forCellWithReuseIdentifier: "FilterCollectionCell")
         self.btn_Filter.addTarget(self, action: #selector(Get_Filter_popUp(_:)), for: .touchUpInside)
         //        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         //        longPressGesture.minimumPressDuration = 0.5
         //        self.tbl_data.addGestureRecognizer(longPressGesture)
     }
     @IBAction func switch_FinalRevisionAction(_ sender: UISwitch) {
-        print(sender.isOn)
          ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: ["ordering": "project_id__name","is_active" : sender.isOn])
     }
     func Load_Dashboard() {
@@ -118,22 +120,29 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
         }
     }
     func storeAndShare(withURLString: String) {
-        guard let url = URL(string: withURLString) else { return }
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            let tmpURL = FileManager.default.temporaryDirectory
-                .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
-            do {
-                try data.write(to: tmpURL)
-            } catch {
-                print(error)
-            }
-            DispatchQueue.main.async {
-                self.arrDocuments = [tmpURL as! NSURL]
-                self.docViewController.reloadData()
-                self.present(self.docViewController, animated: true, completion: nil)
-            }
-        }.resume()
+        if AppDelegate.NetworkRechability(){
+            Utils.ShowActivityIndicator(message: Strings.kLoading)
+            guard let url = URL(string: withURLString) else { return }
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                guard let data = data, error == nil else { return }
+                let tmpURL = FileManager.default.temporaryDirectory
+                    .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
+                do {
+                    try data.write(to: tmpURL)
+                } catch {
+                    print(error)
+                }
+                DispatchQueue.main.async {
+                    self.arrDocuments = [tmpURL as! NSURL]
+                    self.docViewController.reloadData()
+                    KRProgressHUD.dismiss()
+                    self.present(self.docViewController, animated: true, completion: nil)
+                }
+            }.resume()
+        }else {
+            Utils.showToastWithMessage(message: Strings.kNoInternetMessage)
+        }
+        
     }
     // MARK: - Show Filter Popup Packing_List
     @objc func Get_Filter_popUp(_ Button : UIButton) {
@@ -152,11 +161,10 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
                     let SecondFilter = (self.obj_popUpVC?.btn_SecondFilter.currentTitle!)
                     let FilterValue = (self.obj_popUpVC?.txt_ValueFilter!.text)!
                     let FilterParam = (self.obj_popUpVC?.Str_Filter_String)!
-                    print("==============Filter Value==============")
-                    print(FirstFilter!)
-                    print(SecondFilter!)
-                    print(FilterValue)
-                    print(FilterParam)
+                    var arrFilter = [FilterData]()
+                    arrFilter.append((FilterData(SelectAttribute: FirstFilter!, SelectCriteria: SecondFilter!, FilterParam: FilterParam, Value: String(FilterValue))))
+                    self.arrFilterData.append(contentsOf: arrFilter)
+                    self.CollectionView_Filter.reloadData()
                     if  FirstFilter == "Project Name" || FirstFilter == "Vendor Name" || FirstFilter == "Purchase Order" || FirstFilter == "Group name" || FirstFilter == "Strucher Id" || FirstFilter == "PL Number" || FirstFilter == "Package Name" || FirstFilter == "Approval Status" || FirstFilter == "Status"
                     {
                         ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: [FilterParam : FilterValue])
@@ -169,16 +177,9 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
         }
         self.KLC_obj?.show(withRoot: self.view)
     }
-    
-    //Action Button Click
-    @IBAction func btn_Click_First(_ sender: UIButton) {
-        print("First Button Click")
-    }
     @IBAction func btn_Click_Previous(_ sender: UIButton) {
-        print("Previous Button Click")
         if startIndex - 8 <= -1 {
-            print("No More Data Availabel")
-            Utils.showToastWithMessageAtCenter(message: "Data not availabel")
+            Utils.showToastWithMessageAtCenter(message: Strings.kNoMoreData)
         } else {
             startIndex = startIndex - 8
             tbl_data.reloadData()
@@ -187,18 +188,14 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
         self.lbl_PageNum.text = String(describing: Int((startIndex + 8)/8))
     }
     @IBAction func btn_click_Next(_ sender: UIButton) {
-        print("Next Button Click")
         if startIndex + 8 > Arr_Data.count - 1 {
-            print("No More Data Availabel")
+            Utils.showToastWithMessageAtCenter(message: Strings.kNoMoreData)
         } else {
             startIndex = startIndex + 8
             tbl_data.reloadData()
         }
         self.lbl_ShowPageNum.text = "Showing \(startIndex/8) to \(Arr_Data.count/8) of \(Arr_Data.count) entriess"
         self.lbl_PageNum.text = String(describing: Int((startIndex + 8)/8))
-    }
-    @IBAction func btn_Click_Last(_ sender: UIButton) {
-        print("Last Button Click")
     }
     // MARK: - Bind Buttons Clicks
     func set_Button_Target(buttons : [UIButton], action : Selector, tag : Int) {
@@ -209,26 +206,27 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
         }
     }
     @objc func btn_Cell_selectHeader_Clicks(_ sender: UIButton) {
-        markbool = false
+        markbool = true
         tbl_data.reloadData()
-        
     }
     @objc func btn_Cell_select_Clicks(_ sender: UIButton) {
         if sender.accessibilityHint == "0" {
             if markbool == true {
                 if sender.isSelected {
                     sender.isSelected = false
-                      Arr_Packing_DataChack.removeObject(at: sender.tag)
-                      print(Arr_Packing_DataChack)
-                      Utils.setborder(view: sender, bordercolor: .gray, borderwidth: 1)
+                    let rowdata = Arr_Packing_Data[sender.tag]
+                    Arr_Packing_DataChack.remove(rowdata)
+                    sender.setBackgroundImage(UIImage(named: " "), for: .normal)
                 } else {
                     // checkmark it
                     sender.isSelected = true
-                      sender.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
-                      Arr_Packing_DataChack.add(Arr_Packing_Data[sender.tag])
-                      print(Arr_Packing_DataChack)
+                    sender.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
+                    Arr_Packing_DataChack.add(Arr_Packing_Data[sender.tag])
                 }
             } else {
+                sender.isSelected = true
+                sender.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
+                Arr_Packing_DataChack.add(Arr_Packing_Data[sender.tag])
                 sender.isSelected = false
             }
         } else if sender.accessibilityHint == "1" {
@@ -238,16 +236,28 @@ class PackingListVC: UIViewController, SWRevealViewControllerDelegate
         } else if sender.accessibilityHint == "2" {
             self.storeAndShare(withURLString: ((self.Arr_Packing_Data[sender.tag] as! PackingListModel).plExcel!).replacingOccurrences(of: ":8000", with: ""))
         } else if sender.accessibilityHint == "3" {
-                   
+        }
     }
-
+    //MARK:- Button CollectionView Filter Click
+    @objc func btn_RejectSelected(sender: UIButton){
+         self.arrFilterData.remove(at: sender.tag)
+        if arrFilterData == nil {
+            let rowdata = arrFilterData[sender.tag]
+            if  rowdata.SelectAttribute == "Project Name" || rowdata.SelectAttribute == "Vendor Name" || rowdata.SelectAttribute == "Purchase Order" || rowdata.SelectAttribute == "Group name" || rowdata.SelectAttribute == "Strucher Id" || rowdata.SelectAttribute == "PL Number" || rowdata.SelectAttribute == "Package Name" || rowdata.SelectAttribute == "Approval Status" || rowdata.SelectAttribute == "Status"
+            {
+                ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: [rowdata.FilterParam : rowdata.Value])
+            }else {
+                ServiceCall.shareInstance.Get_packingList(ViewController: self, Api_Str: Api_Urls.GET_API_packingList, params: [rowdata.FilterParam : rowdata.SelectCriteria])
+            }
+        }
+        CollectionView_Filter.reloadData()
     }
 }
 extension PackingListVC : UITableViewDataSource , UITableViewDelegate{
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
-        //       return min (8, (Arr_Data.count - startIndex))
+//        return min (8, (Arr_Data.count - startIndex))
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
@@ -262,18 +272,16 @@ extension PackingListVC : UITableViewDataSource , UITableViewDelegate{
             let cell : TableViewHeaderCell = tableView.dequeueReusableCell(withIdentifier: "TableViewHeaderCell") as! TableViewHeaderCell
             self.set_Button_Target(buttons: [cell.btn_Select], action: #selector(self.btn_Cell_selectHeader_Clicks), tag: indexPath.row)
             cell.selectionStyle = .none
-            
             return cell
         } else {
             let cell : TableViewCell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell") as! TableViewCell
             cell.Display_Cell(arr_data: Arr_Packing_Data, indexPath: indexPath)
-           self.set_Button_Target(buttons: [cell.btn_Select,cell.btn_Edit,cell.btn_Download,cell.btn_Delete], action: #selector(self.btn_Cell_select_Clicks(_:)), tag: indexPath.row)
+            self.set_Button_Target(buttons: [cell.btn_Select,cell.btn_PackingListView,cell.btn_Edit,cell.btn_Download], action: #selector(self.btn_Cell_select_Clicks(_:)), tag: indexPath.row)
             cell.selectionStyle = .none
             return cell
         }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
         if indexPath.section == 1 {
             let Packing_Edit = Config.StoryBoard.instantiateViewController(identifier: "PackingListsEdit") as! PackingListsEdit
             Packing_Edit.str_ID =  String((Arr_Packing_Data[indexPath.row] as! PackingListModel).id)
@@ -290,7 +298,6 @@ extension PackingListVC : UITableViewDataSource , UITableViewDelegate{
 }
 extension PackingListVC: QLPreviewControllerDataSource {
  func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        print("view was cancelled")
         dismiss(animated: true, completion: nil)
     }
     //MARK: Document Viewer Delegate methods
@@ -300,5 +307,21 @@ extension PackingListVC: QLPreviewControllerDataSource {
     
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         return self.arrDocuments[index] as QLPreviewItem
+    }
+}
+// MARK: - Collection View Datasource Methods
+extension PackingListVC : UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return arrFilterData.count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: FilterCollectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "FilterCollectionCell", for: indexPath) as! FilterCollectionCell
+        cell.DisplayCell(arr: arrFilterData, indexPath: indexPath.row)
+        cell.btn_Close.tag = indexPath.row
+        cell.btn_Close.addTarget(self, action: #selector(btn_RejectSelected), for: .touchUpInside)
+        return cell
     }
 }

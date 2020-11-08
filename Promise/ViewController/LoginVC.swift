@@ -46,7 +46,6 @@ class LoginVC: UIViewController,SWRevealViewControllerDelegate
        }
     }
     @IBAction func btn_Forgot(_ sender: UIButton) {
-        print("Forgot Button Click")
         let ForgotVC = Config.StoryBoard.instantiateViewController(withIdentifier: "ForgotVC") as! ForgotVC
         ForgotVC.navigationController?.isNavigationBarHidden = true
         self.navigationController?.pushViewController(ForgotVC, animated: true)
@@ -68,14 +67,5 @@ class LoginVC: UIViewController,SWRevealViewControllerDelegate
         print("Login Status : \(DEFAULTS.Is_User_LoggedIn())")
         Utils.Set_Root_ViewController()
         Utils.showToastWithMessage_withPosition(message: "Login Sucessfully", position: PositionBottom)
-        //        let revealController = SWRevealViewController()
-        //        let sidebar_vc = Config.StoryBoard.instantiateViewController(withIdentifier:  "SidebarVC")as! SidebarVC
-        //        let Homevc = Config.StoryBoard.instantiateViewController(withIdentifier:  "HomeVC")as! HomeVC
-        //        revealController.frontViewController = UINavigationController(rootViewController: Homevc)
-        //        revealController.rearViewController = UINavigationController(rootViewController: sidebar_vc)
-        //        revealController.delegate = self as SWRevealViewControllerDelegate?
-        //        Utils.Set_Navigationbar_Shadow(viewController: revealController)
-        //        UIApplication.shared.windows.first?.rootViewController = revealController
-        //        UIApplication.shared.windows.first?.makeKeyAndVisible()
     }
 }

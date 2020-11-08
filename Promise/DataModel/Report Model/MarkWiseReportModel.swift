@@ -13,14 +13,14 @@ class MarkWiseReportModel : NSObject, NSCoding{
     var heatNo : String!
     var mark : String!
     var markIdentCode : String!
-    var markWeight : Float!
+    var markWeight : Double!
     var masterGrossWeight : Int!
-    var masterTotalVolume : Float!
+    var masterTotalVolume : Double!
     var mtcNo : String!
-    var netWeight : Float!
+    var netWeight : Double!
     var onsiteDate : String!
     var paintIdentCode : String!
-    var paintingWeight : Float!
+    var paintingWeight : Double!
     var plName : String!
     var progressive : String!
     var progressivePieceNr : Int!
@@ -43,14 +43,14 @@ class MarkWiseReportModel : NSObject, NSCoding{
         heatNo = dictionary["heat_no"] as? String
         mark = dictionary["mark"] as? String
         markIdentCode = dictionary["mark_ident_code"] as? String
-        markWeight = dictionary["mark_weight"] as? Float
+        markWeight = dictionary["mark_weight"] as? Double
         masterGrossWeight = dictionary["master_gross_weight"] as? Int
-        masterTotalVolume = dictionary["master_total_volume"] as? Float
+        masterTotalVolume = dictionary["master_total_volume"] as? Double
         mtcNo = dictionary["mtc_no"] as? String
-        netWeight = dictionary["net_weight"] as? Float
+        netWeight = dictionary["net_weight"] as? Double
         onsiteDate = dictionary["onsite_date"] as? String
         paintIdentCode = dictionary["paint_ident_code"] as? String
-        paintingWeight = dictionary["painting_weight"] as? Float
+        paintingWeight = dictionary["painting_weight"] as? Double
         plName = dictionary["pl_name"] as? String
         progressive = dictionary["progressive"] as? String
         progressivePieceNr = dictionary["progressive_piece_nr"] as? Int
@@ -163,14 +163,14 @@ class MarkWiseReportModel : NSObject, NSCoding{
         heatNo = aDecoder.decodeObject(forKey: "heat_no") as? String
         mark = aDecoder.decodeObject(forKey: "mark") as? String
         markIdentCode = aDecoder.decodeObject(forKey: "mark_ident_code") as? String
-        markWeight = aDecoder.decodeObject(forKey: "mark_weight") as? Float
+        markWeight = aDecoder.decodeObject(forKey: "mark_weight") as? Double
         masterGrossWeight = aDecoder.decodeObject(forKey: "master_gross_weight") as? Int
-        masterTotalVolume = aDecoder.decodeObject(forKey: "master_total_volume") as? Float
+        masterTotalVolume = aDecoder.decodeObject(forKey: "master_total_volume") as? Double
         mtcNo = aDecoder.decodeObject(forKey: "mtc_no") as? String
-        netWeight = aDecoder.decodeObject(forKey: "net_weight") as? Float
+        netWeight = aDecoder.decodeObject(forKey: "net_weight") as? Double
         onsiteDate = aDecoder.decodeObject(forKey: "onsite_date") as? String
         paintIdentCode = aDecoder.decodeObject(forKey: "paint_ident_code") as? String
-        paintingWeight = aDecoder.decodeObject(forKey: "painting_weight") as? Float
+        paintingWeight = aDecoder.decodeObject(forKey: "painting_weight") as? Double
         plName = aDecoder.decodeObject(forKey: "pl_name") as? String
         progressive = aDecoder.decodeObject(forKey: "progressive") as? String
         progressivePieceNr = aDecoder.decodeObject(forKey: "progressive_piece_nr") as? Int

@@ -282,6 +282,5 @@ struct Pl_single_ids : Codable {
         net_weight = try values.decodeIfPresent(Double.self, forKey: .net_weight)
         mtc_no = try values.decodeIfPresent(String.self, forKey: .mtc_no)
     }
-
 }
 

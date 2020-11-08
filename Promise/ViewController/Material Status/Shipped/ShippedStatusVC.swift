@@ -11,6 +11,8 @@ import UIKit
 class ShippedStatusVC: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var tbl_data: UITableView!
+    @IBOutlet var CollectionView_Filter: UICollectionView!
+    @IBOutlet weak var view_filterBG: UIView!
     @IBOutlet weak var searchview: UISearchBar!
     @IBOutlet weak var btn_Filter: UIButton!
     @IBOutlet weak var btn_M_Released: UIButton!
@@ -24,11 +26,13 @@ class ShippedStatusVC: UIViewController {
     @IBOutlet weak var switch_FinalRevision: UISwitch!
     //MARK:- variable
     var Arr_onSiteStatusData : NSMutableArray = NSMutableArray()
+    var arrFilterData = [FilterData]()
     var Str_NextLink : String = String()
     var Str_PreviousLink : String = String()
     var KLC_obj: KLCPopup?
     var obj_popUpVC : FilterPopup!
     var Arr_onSiteStatusChack = NSMutableArray()
+    var markbool = false
     //MARK:- Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +42,7 @@ class ShippedStatusVC: UIViewController {
     {
         super.viewWillAppear(true)
         self.navigationItem.title = "Shipped Status"
+        markbool = false
         self.tbl_data.reloadData()
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -56,16 +61,17 @@ class ShippedStatusVC: UIViewController {
             self.revealViewController()?.rearViewRevealWidth = 280
         }
         self.tbl_data.rowHeight = UITableView.automaticDimension
-               self.tbl_data.tableFooterView = UIView()
-               self.tbl_data.separatorStyle = .singleLine
-        
+        self.tbl_data.tableFooterView = UIView()
+        self.tbl_data.separatorStyle = .singleLine
+        self.CollectionView_Filter.register(UINib(nibName: "FilterCollectionCell", bundle: nil), forCellWithReuseIdentifier: "FilterCollectionCell")
         ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: ["is_active" : switch_FinalRevision.isOn],tag : 1)
         self.btn_Filter.addTarget(self, action: #selector(Get_Filter_popUp(_:)), for: .touchUpInside)
         let value = UIInterfaceOrientation.landscapeRight.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
+        Utils.setborder(view: view_filterBG, bordercolor: .gray, borderwidth: 1)
+        Utils.setcornerRadius(view: view_filterBG, cornerradius: 5)
     }
     @IBAction func switch_FinalRevisionAction(_ sender: UISwitch) {
-        print(sender.isOn)
         ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: ["is_active" : sender.isOn],tag : 1)
     }
     // MARK: - Show Filter Popup Shipped_Status
@@ -85,11 +91,10 @@ class ShippedStatusVC: UIViewController {
                     let SecondFilter = (self.obj_popUpVC?.btn_SecondFilter.currentTitle!)
                     let FilterValue = (self.obj_popUpVC?.txt_ValueFilter!.text)!
                     let FilterParam = (self.obj_popUpVC?.Str_Filter_String)!
-                    print("==============Filter Value==============")
-                    print(FirstFilter!)
-                    print(SecondFilter!)
-                    print(FilterValue)
-                    print(FilterParam)
+                    var arrFilter = [FilterData]()
+                    arrFilter.append((FilterData(SelectAttribute: FirstFilter!, SelectCriteria: SecondFilter!, FilterParam: FilterParam, Value: String(FilterValue))))
+                    self.arrFilterData.append(contentsOf: arrFilter)
+                    self.CollectionView_Filter.reloadData()
                     if FirstFilter == "Project Name" || FirstFilter == "Vendor Name" || FirstFilter == "Purchase Order Number" || FirstFilter == "PL Number" {
                         ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: [FilterParam: FilterValue] ,tag : 1)
                     }else {
@@ -98,18 +103,15 @@ class ShippedStatusVC: UIViewController {
                 } else {
                     print("Filter PopUp Dismiss")
                 }
-                
         }
         self.KLC_obj?.show(withRoot: self.view)
     }
     //MARK:- Button next previous Click
     @IBAction func btn_Click_Next(_ sender: UIButton) {
-        print("Next Button Click")
-        (Str_NextLink == "") ? Utils.showToastWithMessageAtCenter(message: "No Data Availabel")  : ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Str_NextLink, Param: [:] ,tag : 1)
+        (Str_NextLink == "") ? Utils.showToastWithMessageAtCenter(message: Strings.kNoMoreData)  : ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Str_NextLink, Param: [:] ,tag : 1)
     }
     @IBAction func btn_Click_Previous(_ sender: UIButton) {
-        print("Next Button Click")
-        (Str_PreviousLink == "") ? Utils.showToastWithMessageAtCenter(message: "No Data Availabel")  :ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Str_PreviousLink, Param: [:] ,tag : 1)
+        (Str_PreviousLink == "") ? Utils.showToastWithMessageAtCenter(message: Strings.kNoMoreData)  :ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Str_PreviousLink, Param: [:] ,tag : 1)
     }
     //MARK:- Interface Orientations
     override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -118,6 +120,22 @@ class ShippedStatusVC: UIViewController {
     override public var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         return .landscapeRight
     }
+    //MARK:- Button CollectionView Filter Click
+    @objc func btn_RejectSelected(sender: UIButton){
+         self.arrFilterData.remove(at: sender.tag)
+        if arrFilterData == nil {
+            let rowdata = arrFilterData[sender.tag]
+            if rowdata.SelectAttribute == "Project Name" || rowdata.SelectAttribute == "Vendor Name" || rowdata.SelectAttribute == "Purchase Order Number" || rowdata.SelectAttribute == "PL Number" {
+                ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: [rowdata.FilterParam: rowdata.Value] ,tag : 1)
+            }else {
+                ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: [rowdata.FilterParam: rowdata.SelectCriteria] ,tag : 1)
+            }
+        } else {
+            ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: ["is_active" : switch_FinalRevision.isOn],tag : 1)
+        }
+        CollectionView_Filter.reloadData()
+    }
+
     // MARK: - Bind Buttons Clicks
     func set_Button_Target(buttons : [UIButton], action : Selector, tag : Int) {
         for i in 0..<buttons.count{
@@ -131,23 +149,23 @@ class ShippedStatusVC: UIViewController {
         
     }
     @objc func btn_Cell_select_Clicks(_ sender: UIButton) {
-        
-//        if markbool == true {
+        if markbool == true {
             if sender.isSelected {
                 sender.isSelected = false
-                  Arr_onSiteStatusChack.removeObject(at: sender.tag)
-                  print(Arr_onSiteStatusChack)
-                  Utils.setborder(view: sender, bordercolor: .gray, borderwidth: 1)
+                let rowdata = Arr_onSiteStatusData[sender.tag]
+                Arr_onSiteStatusChack.remove(rowdata)
+                sender.setBackgroundImage(UIImage(named: ""), for: .normal)
             } else {
                 // checkmark it
                 sender.isSelected = true
-                  sender.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
-                  Arr_onSiteStatusChack.add(Arr_onSiteStatusData[sender.tag])
-                  print(Arr_onSiteStatusChack)
+                sender.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
+                Arr_onSiteStatusChack.add(Arr_onSiteStatusData[sender.tag])
             }
-//        } else {
-//            sender.isSelected = false
-//        }
+        } else {
+            sender.isSelected = false
+            Arr_onSiteStatusChack.removeAllObjects()
+            sender.setBackgroundImage(UIImage(named: ""), for: .normal)
+        }
     }
 }
 //MARK:- TableView Initialization
@@ -171,6 +189,7 @@ extension ShippedStatusVC : UITableViewDataSource , UITableViewDelegate{
             let cell : ShippedStatusCell = tableView.dequeueReusableCell(withIdentifier: "ShippedStatusCell") as! ShippedStatusCell
             cell.Display_Cell(viewController: self, indexPath: indexPath)
             self.set_Button_Target(buttons: [cell.btn_Select], action: #selector(self.btn_Cell_select_Clicks(_:)), tag: indexPath.row)
+            markbool = true
             cell.selectionStyle = .none
             return cell
         }
@@ -179,7 +198,6 @@ extension ShippedStatusVC : UITableViewDataSource , UITableViewDelegate{
         return 50
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("onSiteDetail did select")
         let OnsiteDetail_VC = Config.StoryBoard.instantiateViewController(withIdentifier: "OnsiteDetailVC") as! OnsiteDetailVC
         OnsiteDetail_VC.Str_ID = String(describing: (Arr_onSiteStatusData[indexPath.row] as! onSiteStatusModel).id!)
         OnsiteDetail_VC.Str_PLNumber = String(describing: (Arr_onSiteStatusData[indexPath.row] as! onSiteStatusModel).number!)
@@ -192,12 +210,26 @@ extension ShippedStatusVC : SWRevealViewControllerDelegate {
     // MARK: - Reveal View Controller Delagate Methods
     func revealController(_ revealController: SWRevealViewController, didMoveTo position: FrontViewPosition) {
         print(position)
-        print("Parent View")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
     func revealController(_ revealController: SWRevealViewController, willMoveTo position: FrontViewPosition) {
         print(position)
-        print("HomeVC")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
+    }
+}
+// MARK: - Collection View Datasource Methods
+extension ShippedStatusVC : UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return arrFilterData.count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: FilterCollectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "FilterCollectionCell", for: indexPath) as! FilterCollectionCell
+        cell.DisplayCell(arr: arrFilterData, indexPath: indexPath.row)
+        cell.btn_Close.tag = indexPath.row
+        cell.btn_Close.addTarget(self, action: #selector(btn_RejectSelected), for: .touchUpInside)
+        return cell
     }
 }

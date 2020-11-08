@@ -21,15 +21,12 @@ class Project_tbl_Cell: UITableViewCell
     }
     func DisplayCell(arr: [MasterProjectModel], indexPath: Int) {
         let rowdata = arr[indexPath]
-        print(rowdata)
         self.lbl_Project_Name.text = rowdata.code!
         self.lbl_Project_Code.text = rowdata.name!
         self.lbl_Project_Status.text = (rowdata.isActive == true) ? "Yes" : "No"
     }
-
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
 }

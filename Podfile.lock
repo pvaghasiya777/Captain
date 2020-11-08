@@ -4,10 +4,12 @@ PODS:
   - DropDown (2.3.13)
   - iOSDropDown (0.3.4)
   - IQKeyboardManagerSwift (6.5.5)
-  - PatrickMultipleSelectionTableview (0.1.3)
+  - KRActivityIndicatorView (3.0.7)
+  - KRProgressHUD (3.4.7):
+    - KRActivityIndicatorView (= 3.0.7)
   - SCLAlertView (0.8)
   - SKActivityIndicatorView (0.1.0)
-  - SVProgressHUD (2.2.5)
+  - SwiftDataTables (0.8.1)
 
 DEPENDENCIES:
   - ABGaugeViewKit
@@ -15,10 +17,10 @@ DEPENDENCIES:
   - DropDown
   - iOSDropDown
   - IQKeyboardManagerSwift
-  - PatrickMultipleSelectionTableview
+  - KRProgressHUD
   - SCLAlertView
   - SKActivityIndicatorView
-  - SVProgressHUD
+  - SwiftDataTables
 
 SPEC REPOS:
   trunk:
@@ -27,10 +29,11 @@ SPEC REPOS:
     - DropDown
     - iOSDropDown
     - IQKeyboardManagerSwift
-    - PatrickMultipleSelectionTableview
+    - KRActivityIndicatorView
+    - KRProgressHUD
     - SCLAlertView
     - SKActivityIndicatorView
-    - SVProgressHUD
+    - SwiftDataTables
 
 SPEC CHECKSUMS:
   ABGaugeViewKit: b69c855c2878e5ba49605b0662d409c1577ed198
@@ -38,11 +41,12 @@ SPEC CHECKSUMS:
   DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   iOSDropDown: c10a761f9a00c3f1cc9d3bce43ae504628e2f692
   IQKeyboardManagerSwift: 0fb93310284665245591f50f7a5e38de615960b7
-  PatrickMultipleSelectionTableview: c5a5fd5a6cbdd224e79923122574e49dc4c3673b
+  KRActivityIndicatorView: ad69e89c4ce40c986cf580595be4829dcad0e35a
+  KRProgressHUD: a248f0bc6c9c2aed40a37b76e03ffecc7f85c887
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
   SKActivityIndicatorView: f46936f760d33eb8235333242269bf01cc9248ae
-  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SwiftDataTables: 9e5f2ad7e7430c8008a31e66a0237ed29bf6fca8
 
-PODFILE CHECKSUM: 265b0b8e6d9d092dc0ed25f085d66a335ac27613
+PODFILE CHECKSUM: dfcde6d003fe90dc70b8260e09ce803cd70eef52
 
 COCOAPODS: 1.9.3

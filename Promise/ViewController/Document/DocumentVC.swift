@@ -8,6 +8,7 @@
 
 import UIKit
 import QuickLook
+import KRProgressHUD
 class DocumentVC: UIViewController {
     //MARK:-
     @IBOutlet weak var sampleTreeView: CITreeView!
@@ -26,6 +27,7 @@ class DocumentVC: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
        super.viewWillAppear(animated)
+        self.title = "Documents"
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -63,14 +65,11 @@ class DocumentVC: UIViewController {
         for i in 0..<rootKeys.count {
             if dic.value(forKey: rootKeys[i] as! String) as? NSArray != nil {
                 let files : NSArray = NSArray(array: dic.value(forKey: rootKeys[i] as! String) as! NSArray)
-                print("Cabinet")
-                print(files)
                 var arrChilds : [CITreeViewData] = []
                 for file in files {
                     arrChilds.append( CITreeViewData(name: file as! String))
                 }
                 let parent1 = CITreeViewData(name: rootKeys[i] as! String, children: arrChilds)
-                //print(arrChilds)
                 self.arrFinal.add(parent1)//([String(describing: rootKeys[i]) : files])
             } else if dic.value(forKey: rootKeys[i] as! String) as? NSDictionary != nil {
                 let anotherLevel : NSDictionary = NSDictionary(dictionary: dic.value(forKey: rootKeys[i] as! String) as! NSDictionary)
@@ -78,7 +77,6 @@ class DocumentVC: UIViewController {
                 self.arrFinal.add(obj)
             }
         }
-        print(arrFinal)
         self.data = [CITreeViewData(name: "Cabinet", children: self.arrFinal as! [CITreeViewData])]
         sampleTreeView.expandAllRows()
         sampleTreeView.reloadDataWithoutChangingRowStates()
@@ -104,22 +102,29 @@ class DocumentVC: UIViewController {
         return arrNodes as! [CITreeViewData]
     }
     func storeAndShare(withURLString: String) {
-        guard let url = URL(string: withURLString) else { return }
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            let tmpURL = FileManager.default.temporaryDirectory
-                .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
-            do {
-                try data.write(to: tmpURL)
-            } catch {
-                print(error)
-            }
-            DispatchQueue.main.async {
-                self.arrDocuments = [tmpURL as! NSURL]
-                self.docViewController.reloadData()
-                self.present(self.docViewController, animated: true, completion: nil)
-            }
-        }.resume()
+        if AppDelegate.NetworkRechability(){
+            Utils.ShowActivityIndicator(message: Strings.kLoading)
+            guard let url = URL(string: withURLString) else { return }
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                guard let data = data, error == nil else { return }
+                let tmpURL = FileManager.default.temporaryDirectory
+                    .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
+                do {
+                    try data.write(to: tmpURL)
+                } catch {
+                    print(error)
+                }
+                DispatchQueue.main.async {
+                    self.arrDocuments = [tmpURL as! NSURL]
+                    self.docViewController.reloadData()
+                    KRProgressHUD.dismiss()
+                    self.present(self.docViewController, animated: true, completion: nil)
+                }
+            }.resume()
+        }else {
+            Utils.showToastWithMessage(message: Strings.kNoInternetMessage)
+        }
+        
     }
 }
 extension DocumentVC : CITreeViewDelegate {
@@ -130,27 +135,19 @@ extension DocumentVC : CITreeViewDelegate {
     func treeViewNode(_ treeViewNode: CITreeViewNode, willCollapseAt indexPath: IndexPath) {}
     
     func treeViewNode(_ treeViewNode: CITreeViewNode, didCollapseAt indexPath: IndexPath) {
-        print("Did Collapse")
     }
-    
     func willExpandTreeViewNode(treeViewNode: CITreeViewNode, atIndexPath: IndexPath) {}
     
     func didExpandTreeViewNode(treeViewNode: CITreeViewNode, atIndexPath: IndexPath) {
         print("Did Expand")
     }
-    
     func willCollapseTreeViewNode(treeViewNode: CITreeViewNode, atIndexPath: IndexPath) {}
-    
     func didCollapseTreeViewNode(treeViewNode: CITreeViewNode, atIndexPath: IndexPath) {}
     func treeView(_ treeView: CITreeView, heightForRowAt indexPath: IndexPath, with treeViewNode: CITreeViewNode) -> CGFloat {
         return 60
     }
-    
     func treeView(_ treeView: CITreeView, didSelectRowAt treeViewNode: CITreeViewNode, at indexPath: IndexPath) {
-        print("Did Select Call")
-        print("Did Select Call")
         if ((treeViewNode.item as! CITreeViewData).name).contains(".xlsx") || ((treeViewNode.item as! CITreeViewData).name).contains(".pdf") || ((treeViewNode.item as! CITreeViewData).name).contains(".png") {
-            print(((treeViewNode.item as! CITreeViewData).name))
             self.storeAndShare(withURLString: ((treeViewNode.item as! CITreeViewData).name).replacingOccurrences(of: ":8000", with: ""))
         }
     }
@@ -174,9 +171,11 @@ extension DocumentVC : CITreeViewDataSource {
         let cell = treeView.dequeueReusableCell(withIdentifier: treeViewCellIdentifier) as! CITreeViewCell
         let dataObj = treeViewNode.item as! CITreeViewData
         if ((treeViewNode.item as! CITreeViewData).name).contains(".xlsx") || ((treeViewNode.item as! CITreeViewData).name).contains(".pdf") {
-           cell.nameLabel.text = (dataObj.name as NSString).lastPathComponent
+            cell.nameLabel.text = (dataObj.name as NSString).lastPathComponent
+            cell.avatarImageView?.image = UIImage(named: "ic_file")
         }else {
-         cell.nameLabel.text = dataObj.name
+            cell.nameLabel.text = dataObj.name
+            cell.avatarImageView?.image = UIImage(named: "icfolder")
         }
         cell.setupCell(level: treeViewNode.level)
         return cell;
@@ -186,19 +185,14 @@ extension DocumentVC : CITreeViewDataSource {
 extension DocumentVC : SWRevealViewControllerDelegate {
     // MARK: - Reveal View Controller Delagate Methods
     func revealController(_ revealController: SWRevealViewController, didMoveTo position: FrontViewPosition) {
-        print(position)
-        print("HomeVC")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
-    func revealController(_ revealController: SWRevealViewController, willMoveTo position: FrontViewPosition) {
-        print(position)
-        print("HomeVC")
+    func revealController(_ revealController: SWRevealViewController, willMoveTo position: FrontViewPosition){
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
 }
 extension DocumentVC : QLPreviewControllerDataSource {
  func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        print("view was cancelled")
         dismiss(animated: true, completion: nil)
     }
     //MARK: Document Viewer Delegate methods

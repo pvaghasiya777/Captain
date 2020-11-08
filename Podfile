@@ -5,14 +5,11 @@ target 'Promise' do
   use_frameworks!
   pod 'Alamofire', '~> 4.3’
   pod 'IQKeyboardManagerSwift'
-  pod 'SVProgressHUD'
   pod 'SCLAlertView'
-  #  pod 'GaugeMeterView'
   pod 'ABGaugeViewKit'
   pod 'DropDown'
   pod 'iOSDropDown'
   pod 'SKActivityIndicatorView'
-  # Pods for Promise
-  pod 'PatrickMultipleSelectionTableview'
-
+  pod "KRProgressHUD"
+  pod 'SwiftDataTables'
 end

@@ -28,7 +28,6 @@ class PackageView_MasterDetails1Cell: UITableViewCell {
     //MARK:- Display Cell
     func DisplayCell(Arr_Data : [PlreportDetailModel] ,indexPath : IndexPath) {
         let Arr_MasterDetail = Arr_Data[0].inputMasterIDS![indexPath.row]
-        print(Arr_MasterDetail)
         self.lbl_PackageName.text = String(describing: Arr_MasterDetail.package!)
         self.lbl_Length.text = Arr_MasterDetail.length!
         self.lbl_Width.text = Arr_MasterDetail.width!

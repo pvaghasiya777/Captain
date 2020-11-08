@@ -24,12 +24,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>PatrickMultipleSelectionTableview-PatrickMultipleSelectionTableview.xcscheme</key>
+		<key>KRActivityIndicatorView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>PatrickMultipleSelectionTableview.xcscheme</key>
+		<key>KRProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -49,7 +49,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>SVProgressHUD.xcscheme</key>
+		<key>SwiftDataTables.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

@@ -43,7 +43,6 @@ class PurchaseOrderformCell: UITableViewCell {
     
     
     func DisplayCell(Arr_Data : [SingleMasterPurchaseModel],indexpath : IndexPath) {
-        print(Arr_Data)
         if Arr_Data.count != 0 {
             self.txt_Number.text = Arr_Data[0].number!
             self.txt_WeightUOM.text = Arr_Data[0].weight_uom!

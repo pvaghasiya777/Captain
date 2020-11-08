@@ -27,7 +27,6 @@ class Project_CollectionCell: UICollectionViewCell
     }
     func DisplayCell(arr : [MasterProjectModel], indexPath: IndexPath) {
         let rowdata = arr[indexPath.row]
-        print(rowdata)
         self.lbl_ProjectName.text = rowdata.name!
 //        let Str_img  = (rowdata.logo == "") ? rowdata.logo! : "ic_projectview"
 //        self.img_Project.sd_setImage(with: URL(string: (rowdata.logo == "") ? rowdata.logo! : "ic_projectview")!, placeholderImage: UIImage(named: "ic_projectview"))
@@ -37,6 +36,6 @@ class Project_CollectionCell: UICollectionViewCell
         self.lbl_Active.text = "Active : \((rowdata.isActive! ? "Yes" : "No"))"
         self.lbl_Structures.text = "- Structures : \(rowdata.drawingCount!)"
         self.lbl_TPackingLists.text = "- Packing Lists : \(rowdata.packingCount!)"
-        self.lbl_Weight.text = "- Weight : \(rowdata.structureWeight!)"
+        self.lbl_Weight.text = "- Weight : \(((rowdata.structureWeight != nil) ? String(describing: rowdata.structureWeight!) : ""))"
     }
 }

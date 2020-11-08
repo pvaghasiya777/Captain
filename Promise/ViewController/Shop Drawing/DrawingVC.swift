@@ -11,12 +11,13 @@
 import UIKit
 import iOSDropDown
 import QuickLook
+import KRProgressHUD
 class DrawingVC: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var tbl_Drawing: UITableView!
-    @IBOutlet var Searc_project: UISearchBar!
+    @IBOutlet var CollectionView_Filter: UICollectionView!
+    @IBOutlet weak var view_filterBG: UIView!
     @IBOutlet var btn_Filter: UIButton!
-    
     @IBOutlet weak var btn_Previous: UIButton!
     @IBOutlet weak var btn_Next: UIButton!
     @IBOutlet weak var lbl_ShowPageNum_Count: UILabel!
@@ -29,6 +30,7 @@ class DrawingVC: UIViewController {
     var Str_NavigateFrom = ""
     var Str_ID = ""
     var arrDrawing = [Result]()
+    var arrFilterData = [FilterData]()
     var Home_Barbutton: UIBarButtonItem!
     var KLC_obj: KLCPopup?
     var obj_popUpVC : FilterPopup!
@@ -64,6 +66,7 @@ class DrawingVC: UIViewController {
             self.Load_Dashboard()
             DEFAULTS.Set_Revision_Count(Count: 0)
         }
+        self.CollectionView_Filter.register(UINib(nibName: "FilterCollectionCell", bundle: nil), forCellWithReuseIdentifier: "FilterCollectionCell")
         self.UIdesign()
         self.tbl_Drawing.rowHeight = UITableView.automaticDimension
         self.tbl_Drawing.tableFooterView = UIView()
@@ -73,7 +76,6 @@ class DrawingVC: UIViewController {
         btn_Previous.addTarget(self, action: #selector(btn_PreviousClick(_:)), for: .touchUpInside)
     }
     @IBAction func switch_FinalRevisionAction(_ sender: UISwitch) {
-        print(sender.isOn)
         ServiceCall.shareInstance.Get_getDrawing(ViewController: self,param: ["is_active": sender.isOn,"ordering" : "project_id__name"])
     }
     func Load_Dashboard() {
@@ -87,8 +89,8 @@ class DrawingVC: UIViewController {
     }
     //MARK:- UI design
     func UIdesign() {
-        
-        
+        Utils.setborder(view: view_filterBG, bordercolor: .gray, borderwidth: 1)
+        Utils.setcornerRadius(view: view_filterBG, cornerradius: 5)
     }
     override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .landscapeRight
@@ -117,11 +119,10 @@ class DrawingVC: UIViewController {
                     let SecondFilter = (self.obj_popUpVC?.btn_SecondFilter.currentTitle!)
                     let FilterValue = (self.obj_popUpVC?.txt_ValueFilter!.text)!
                     let FilterParam = (self.obj_popUpVC?.Str_Filter_String)!
-                    print("==============Filter Value==============")
-                    print(FirstFilter!)
-                    print(SecondFilter!)
-                    print(FilterValue)
-                    print(FilterParam)
+                    var arrFilter = [FilterData]()
+                    arrFilter.append((FilterData(SelectAttribute: FirstFilter!, SelectCriteria: SecondFilter!, FilterParam: FilterParam, Value: String(FilterValue))))
+                    self.arrFilterData.append(contentsOf: arrFilter)
+                    self.CollectionView_Filter.reloadData()
                     if FirstFilter == "Project Name" || FirstFilter == "Group Name" || FirstFilter == "Structure id" || FirstFilter == "Approval Status" || FirstFilter == "Doc Status" || FirstFilter == "Purchase Order"  {
                         ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: [FilterParam : FilterValue])
                     }else {
@@ -134,22 +135,29 @@ class DrawingVC: UIViewController {
         self.KLC_obj?.show(withRoot: self.view)
     }
     func storeAndShare(withURLString: String) {
-        guard let url = URL(string: withURLString) else { return }
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            let tmpURL = FileManager.default.temporaryDirectory
-                .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
-            do {
-                try data.write(to: tmpURL)
-            } catch {
-                print(error)
-            }
-            DispatchQueue.main.async {
-                self.arrDocuments = [tmpURL as! NSURL]
-                self.docViewController.reloadData()
-                self.present(self.docViewController, animated: true, completion: nil)
-            }
-        }.resume()
+        if AppDelegate.NetworkRechability(){
+            Utils.ShowActivityIndicator(message: Strings.kLoading)
+            guard let url = URL(string: withURLString) else { return }
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                guard let data = data, error == nil else { return }
+                let tmpURL = FileManager.default.temporaryDirectory
+                    .appendingPathComponent(response?.suggestedFilename ?? "fileName.png")
+                do {
+                    try data.write(to: tmpURL)
+                } catch {
+                    print(error)
+                }
+                DispatchQueue.main.async {
+                    self.arrDocuments = [tmpURL as! NSURL]
+                    self.docViewController.reloadData()
+                    KRProgressHUD.dismiss()
+                    self.present(self.docViewController, animated: true, completion: nil)
+                }
+            }.resume()
+        }else {
+            Utils.showToastWithMessage(message: Strings.kNoInternetMessage)
+        }
+        
     }
     @objc func btn_NextClick(_ sender: UIButton) {
      
@@ -161,17 +169,42 @@ class DrawingVC: UIViewController {
     // MARK: - Edit,Delete,Puase Buttons Clicks
     @objc func cell_Button_Clicks(_ sender : UIBarButtonItem) {
         if sender.accessibilityHint == "0" {
-           let DrwaingViewVC1 = Config.StoryBoard.instantiateViewController(withIdentifier: "DrwaingViewVC_1") as! DrwaingViewVC_1
+           let DrwaingViewVC1 = Config.StoryBoard2.instantiateViewController(withIdentifier: "DrwaingViewVC_1") as! DrwaingViewVC_1
             DrwaingViewVC1.id = String(self.arrDrawing[sender.tag].id)
            self.navigationController?.pushViewController(DrwaingViewVC1, animated: true)
 
         } else if sender.accessibilityHint == "1" {
           self.storeAndShare(withURLString: Api_Urls.GET_API_drawing + "\(String(self.arrDrawing[sender.tag].id))/export/")
         } else {
-            print("Delete")
+            print("Delete Button Click")
         }
     }
-    
+    //MARK:- Button CollectionView Filter Click
+    @objc func btn_RejectSelected(sender: UIButton){
+         self.arrFilterData.remove(at: sender.tag)
+        if arrFilterData == nil {
+            let rowdata = arrFilterData[sender.tag]
+            if rowdata.SelectAttribute == "Project Name" || rowdata.SelectAttribute == "Group Name" || rowdata.SelectAttribute == "Structure id" || rowdata.SelectAttribute == "Approval Status" || rowdata.SelectAttribute == "Doc Status" || rowdata.SelectAttribute == "Purchase Order"  {
+                ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: [rowdata.FilterParam : rowdata.Value])
+            }else {
+                ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: [rowdata.FilterParam : rowdata.SelectCriteria])
+            }
+        } else {
+            if Str_NavigateFrom == "Purchase" {
+                ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: ["is_active": switch_FinalRevision.isOn,"ordering" : "project_id__name","purchase_id" : Str_ID])
+            }else if Str_NavigateFrom == "Project" {
+                ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: ["is_active": switch_FinalRevision.isOn,"ordering" : "project_id__name","project_id" : Str_ID])
+            }else if Str_NavigateFrom == "Drawing_Revision" {
+                ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: ["is_active": switch_FinalRevision.isOn,"ordering" : "project_id__name","structure_id" : Str_ID])
+                DEFAULTS.Set_Revision_Count(Count: 1)
+            }else {
+                ServiceCall.shareInstance.Get_getDrawing(ViewController: self, param: ["is_active": switch_FinalRevision.isOn,"ordering" : "project_id__name"])
+                self.Load_Dashboard()
+                DEFAULTS.Set_Revision_Count(Count: 0)
+            }
+        }
+        CollectionView_Filter.reloadData()
+    }
     // MARK: - Bind Buttons Clicks
     func set_Button_Target(buttons : [UIButton], action : Selector, tag : Int) {
         for i in 0..<buttons.count{
@@ -180,7 +213,6 @@ class DrawingVC: UIViewController {
             buttons[i].tag = tag
         }
     }
-    
 }
 //MARK:- TableView Initialisation
 extension DrawingVC : UITableViewDataSource,UITableViewDelegate {
@@ -202,7 +234,7 @@ extension DrawingVC : UITableViewDataSource,UITableViewDelegate {
         } else {
             let cell : DrawingCell = tableView.dequeueReusableCell(withIdentifier: "DrawingCell") as! DrawingCell
             cell.DisplayCell(arr: arrDrawing, indexPath: indexPath)
-            self.set_Button_Target(buttons: [cell.btn_DrawingView,cell.btn_Edit,cell.btn_Delete], action: #selector(self.cell_Button_Clicks(_:)), tag : indexPath.section)
+            self.set_Button_Target(buttons: [cell.btn_DrawingView,cell.btn_Edit], action: #selector(self.cell_Button_Clicks(_:)), tag : indexPath.section)
             cell.selectionStyle = .none
             return cell
         }
@@ -226,21 +258,17 @@ extension DrawingVC : SWRevealViewControllerDelegate {
     // MARK: - Reveal View Controller Delagate Methods
     func revealController(_ revealController: SWRevealViewController, didMoveTo position: FrontViewPosition) {
         print(position)
-        print("Parent View")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
     func revealController(_ revealController: SWRevealViewController, willMoveTo position: FrontViewPosition) {
         print(position)
-        print("HomeVC")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
 }
 extension DrawingVC: QLPreviewControllerDataSource {
  func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        print("view was cancelled")
         dismiss(animated: true, completion: nil)
     }
-    
     //MARK: Document Viewer Delegate methods
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return self.arrDocuments.count
@@ -248,5 +276,21 @@ extension DrawingVC: QLPreviewControllerDataSource {
     
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         return self.arrDocuments[index] as QLPreviewItem
+    }
+}
+// MARK: - Collection View Datasource Methods
+extension DrawingVC : UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return arrFilterData.count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: FilterCollectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "FilterCollectionCell", for: indexPath) as! FilterCollectionCell
+        cell.DisplayCell(arr: arrFilterData, indexPath: indexPath.row)
+        cell.btn_Close.tag = indexPath.row
+        cell.btn_Close.addTarget(self, action: #selector(btn_RejectSelected), for: .touchUpInside)
+        return cell
     }
 }

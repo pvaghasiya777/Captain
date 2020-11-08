@@ -27,18 +27,15 @@ class SReports: UIViewController, SWRevealViewControllerDelegate {
     @IBOutlet weak var btn_SummaryReport: UIButton!
     
     var arrheader : NSMutableArray = ["Mark Reports","Structure Reports","PL Reports",""]
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-               if revealViewController() != nil {
-                   self.revealViewController().delegate = self
-                   btn_menubar.target = self.revealViewController()
-                   btn_menubar.action = #selector(SWRevealViewController.revealToggle(_:))
-                   self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-                   self.revealViewController()?.rearViewRevealWidth = 280
-               }
-        // Do any additional setup after loading the view.
+       if revealViewController() != nil {
+           self.revealViewController().delegate = self
+           btn_menubar.target = self.revealViewController()
+           btn_menubar.action = #selector(SWRevealViewController.revealToggle(_:))
+           self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+           self.revealViewController()?.rearViewRevealWidth = 280
+       }
     }
     override func viewWillAppear(_ animated: Bool){
        super.viewWillAppear(animated)
@@ -50,25 +47,22 @@ class SReports: UIViewController, SWRevealViewControllerDelegate {
     }
     //Mark Reports
     @IBAction func btn_MarkReportsClick(_ sender: UIButton) {
-        if sender.tag == 1 {
-            let Filter_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportsFiltersVC") as! ReportsFiltersVC
-            Filter_VC.str_FilterName = sender.currentTitle!
-            self.navigationController?.pushViewController(Filter_VC, animated: true)
-        } else if sender.tag == 2 {
-            let Filter_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportsFiltersVC") as! ReportsFiltersVC
-            Filter_VC.str_FilterName = sender.currentTitle!
-            self.navigationController?.pushViewController(Filter_VC, animated: true)
-        }
+        let Filter_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportsFiltersVC") as! ReportsFiltersVC
+        Filter_VC.str_FilterName = sender.currentTitle!
+        Filter_VC.StrNavigate = "Sreport" 
+        self.navigationController?.pushViewController(Filter_VC, animated: true)
     }
     //Structure Reports
     @IBAction func btn_StructureReportsClick(_ sender: UIButton) {
         if sender.tag == 3 {
             let Filter_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportsFiltersVC") as! ReportsFiltersVC
             Filter_VC.str_FilterName = sender.currentTitle!
+            Filter_VC.StrNavigate = "Sreport" 
             self.navigationController?.pushViewController(Filter_VC, animated: true)
         } else if sender.tag == 4 {
             let Filter_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportsFiltersVC") as! ReportsFiltersVC
             Filter_VC.str_FilterName = sender.currentTitle!
+            Filter_VC.StrNavigate = "Sreport"
             self.navigationController?.pushViewController(Filter_VC, animated: true)
         }
     }
@@ -77,18 +71,22 @@ class SReports: UIViewController, SWRevealViewControllerDelegate {
         if sender.tag == 5 {
             let Filter_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportsFiltersVC") as! ReportsFiltersVC
             Filter_VC.str_FilterName = sender.currentTitle!
+            Filter_VC.StrNavigate = "Sreport"
             self.navigationController?.pushViewController(Filter_VC, animated: true)
         } else if sender.tag == 6 {
             let Filter_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportsFiltersVC") as! ReportsFiltersVC
             Filter_VC.str_FilterName = sender.currentTitle!
+            Filter_VC.StrNavigate = "Sreport"
             self.navigationController?.pushViewController(Filter_VC, animated: true)
         } else if sender.tag == 7 {
            let Filter_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportsFiltersVC") as! ReportsFiltersVC
             Filter_VC.str_FilterName = sender.currentTitle!
+            Filter_VC.StrNavigate = "Sreport"
            self.navigationController?.pushViewController(Filter_VC, animated: true)
         } else if sender.tag == 8 {
            let Filter_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportsFiltersVC") as! ReportsFiltersVC
             Filter_VC.str_FilterName = sender.currentTitle!
+            Filter_VC.StrNavigate = "Sreport"
            self.navigationController?.pushViewController(Filter_VC, animated: true)
         }
     }
@@ -97,10 +95,12 @@ class SReports: UIViewController, SWRevealViewControllerDelegate {
         if sender.tag == 9 {
            let Filter_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportsFiltersVC") as! ReportsFiltersVC
             Filter_VC.str_FilterName = sender.currentTitle!
+            Filter_VC.StrNavigate = "Sreport"
            self.navigationController?.pushViewController(Filter_VC, animated: true)
         } else if sender.tag == 10 {
            let Filter_VC = Config.StoryBoard.instantiateViewController(identifier: "ReportsFiltersVC") as! ReportsFiltersVC
             Filter_VC.str_FilterName = sender.currentTitle!
+            Filter_VC.StrNavigate = "Sreport"
            self.navigationController?.pushViewController(Filter_VC, animated: true)
         }
     }

@@ -9,7 +9,7 @@
 import UIKit
 
 class PlinputsCell: UITableViewCell {
-
+    @IBOutlet var ViewPackages: UIView!
     @IBOutlet var lbl_InputNumber: UILabel!
     @IBOutlet var lbl_ProjectName: UILabel!
     @IBOutlet var lbl_vendorName: UILabel!
@@ -20,21 +20,18 @@ class PlinputsCell: UITableViewCell {
     @IBOutlet weak var btn_PackagesView: UIButton!
     @IBOutlet weak var btn_Edit: UIButton!
     @IBOutlet weak var btn_Delete: UIButton!
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
     func Display_Cell(viewController : PlinputsVc , indexPath : IndexPath) {
-        print(indexPath.row)
         var Arr_data = viewController.Arr_PLInputs_Data[indexPath.row] as! PLreportsModel
-        print(Arr_data)
         self.lbl_InputNumber.text = Arr_data.name!
         self.lbl_ProjectName.text = Arr_data.projectName!
         self.lbl_vendorName.text = Arr_data.vendorName!
@@ -42,7 +39,6 @@ class PlinputsCell: UITableViewCell {
         self.lbl_strucherID.text = Arr_data.shopDrawingName!
         self.lbl_approvalStatus.text = Arr_data.approveStatus!
         self.lbl_ActiveStatus.text = (Arr_data.isActive == true) ? "Active" : "Deactivated"
-        
+        self.ViewPackages.backgroundColor = (Arr_data.isActive == true) ? UIColor.white : UIColor(hexString: "ffd8d9")
     }
-
 }

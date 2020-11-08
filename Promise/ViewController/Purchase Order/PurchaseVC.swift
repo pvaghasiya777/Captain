@@ -55,11 +55,7 @@ class PurchaseVC: UIViewController {
    }
    @objc func btn_PreviousClick(_ sender: UIButton) {
      
-   }
-  
-    
-    
-    
+   }  
 }
 //MARK:- TableView Initialization
 extension PurchaseVC : UITableViewDataSource,UITableViewDelegate {
@@ -100,12 +96,10 @@ extension PurchaseVC : SWRevealViewControllerDelegate {
     // MARK: - Reveal View Controller Delagate Methods
     func revealController(_ revealController: SWRevealViewController, didMoveTo position: FrontViewPosition) {
         print(position)
-        print("Parent View")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
     func revealController(_ revealController: SWRevealViewController, willMoveTo position: FrontViewPosition) {
         print(position)
-        print("HomeVC")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
 }

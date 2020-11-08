@@ -10,7 +10,6 @@ import UIKit
 
 class ProjectDetailsFormViewVC: UIViewController {
     //MARK:- IBOutlet
-    @IBOutlet weak var view_topBG: UIView!
     @IBOutlet weak var view_SecondBG : UIView!
     @IBOutlet weak var btn_Structure : UIButton!
     @IBOutlet weak var btn_Packages : UIButton!
@@ -54,14 +53,13 @@ class ProjectDetailsFormViewVC: UIViewController {
     func Initialization() {
         Utils.EnableTextField(textFields: [txt_Name,txt_ProjectCode,txt_ContractNumber,txt_ConsigneeBuyer,txt_Reference,txt_SiteLocation,txt_Description,txt_StartDate,txt_EndDate,txt_Manager])
         Utils.Set_Same_Corner_Radius(views: [txt_Name,txt_ProjectCode,txt_ContractNumber,txt_ConsigneeBuyer,txt_Reference,txt_SiteLocation,txt_Description,txt_StartDate,txt_EndDate,txt_Manager,btn_Shipper,btn_Active], cornerRadius: 5)
-        Utils.add_shadow_around_view_Multiple(views: [view_SecondBG,view_topBG], color: .gray, radius: 3, opacity: 3)
+        Utils.add_shadow_around_view_Multiple(views: [view_SecondBG], color: .gray, radius: 3, opacity: 3)
         Utils.set_Image_on_RightView_of_Textfield(textfield: txt_StartDate, imagename: "ic_calendar", width: 20, height:20)
         Utils.set_Image_on_RightView_of_Textfield(textfield: txt_EndDate, imagename: "ic_calendar", width: 20, height: 20)
-
+        Utils.add_shadow_around_view_Multiple(views: [btn_Structure,btn_Packages,btn_PackingList], color: .gray, radius: 3, opacity: 1)
     }
     
     func SetData(){
-        print(Arr_Project)
         self.txt_Name.text = Arr_Project[0].name!
         self.txt_ProjectCode.text = Arr_Project[0].code!
         self.txt_ContractNumber.text = Arr_Project[0].contractNumber!
@@ -69,14 +67,15 @@ class ProjectDetailsFormViewVC: UIViewController {
         self.txt_Reference.text = Arr_Project[0].reference!
         self.txt_SiteLocation.text = Arr_Project[0].siteLocation!
         self.txt_Description.text = Arr_Project[0].Description!
-        self.txt_StartDate.text = Arr_Project[0].startDate!
-        self.txt_EndDate.text = Arr_Project[0].endDate!
+        self.txt_StartDate.text = (Arr_Project[0].startDate != nil) ? Arr_Project[0].startDate! : ""
+        self.txt_EndDate.text = (Arr_Project[0].endDate != nil) ? Arr_Project[0].endDate! : ""
         self.btn_Active.setBackgroundImage(UIImage(named: (Arr_Project[0].isActive!) ? "ic_check" : "ic_Uncheck"), for: .normal)
         self.btn_Shipper.setBackgroundImage(UIImage(named: (Arr_Project[0].isShipper!) ? "ic_check" : "ic_Uncheck"), for: .normal)
-        self.txt_Manager.text = (Arr_Project[0].managerID == nil) ? "" : Arr_Project[0].managerID!
         self.btn_Structure.addSubview(Utils.set_Badge(Count: Arr_Project[0].structureCount!))
         self.btn_Packages.addSubview(Utils.set_Badge(Count: Arr_Project[0].packageCount!))
         self.btn_PackingList.addSubview(Utils.set_Badge(Count: Arr_Project[0].packingCount!))
+        let Arr_Employee = DEFAULTS.Get_MasterEmployee()
+        self.txt_Manager.text = (Arr_Project[0].managerID != nil) ? Arr_Employee[0].results!.filter{(String(describing:$0.id!)) == "2"}[0].firstName! : ""
     }
     @IBAction func btn_Click(_ sender: UIButton) {
         if sender.tag == 1 {

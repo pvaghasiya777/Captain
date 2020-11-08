@@ -60,7 +60,6 @@ extension UserProfilePopUP : UITableViewDataSource,UITableViewDelegate {
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Select Value :- \(Arr_Data[indexPath.section])")
         if str_Navigate == "Project" {
             self.Str_id = String(describing:Arr_ProjectID[indexPath.section])
             self.str_Selected = (Arr_Data[indexPath.section]) as! String

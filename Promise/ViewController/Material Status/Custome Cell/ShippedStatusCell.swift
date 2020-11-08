@@ -24,6 +24,7 @@ class ShippedStatusCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         Utils.set_Image_on_RightView_of_Textfield(textfield: txt_OnsiteDate, imagename: "ic_calendar", width: 30, height: 30)
+        Utils.setborder(view: btn_Select, bordercolor: .gray, borderwidth: 1)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -33,9 +34,7 @@ class ShippedStatusCell: UITableViewCell {
     }
     //MARK:- Display
     func Display_Cell(viewController : ShippedStatusVC , indexPath : IndexPath) {
-           print(indexPath.row)
            var Arr_data = viewController.Arr_onSiteStatusData[indexPath.row] as! onSiteStatusModel
-           print(Arr_data)
            self.lbl_ProjectName.text = Arr_data.projectName!
            self.lbl_PLNumber.text = Arr_data.number!
            self.lbl_Package.text = String(describing: Arr_data.packageField!)

@@ -23,9 +23,9 @@ class PackageView_SingleDetailsCell: UITableViewCell {
         // Initialization code
     }
     //MARK:- Display Cell
-    func DisplayCell(Arr_Data : [InputSingleID] ,indexPath : IndexPath) {
-        let Arr_SingleInputData = Arr_Data[indexPath.row]
-        print(Arr_SingleInputData)
+    func DisplayCell(ViewController : PlinputViewVC ,indexPath : IndexPath) {
+        let cellIndex = ViewController.startIndex + indexPath.row
+        let Arr_SingleInputData = ViewController.Arr_SingleDetail[cellIndex]
         self.lbl_PackageName.text = String(describing: Arr_SingleInputData.package!)
         self.lbl_Mark.text = Arr_SingleInputData.mark!
         self.lbl_Quantity.text = String(describing: Arr_SingleInputData.marksQty!)

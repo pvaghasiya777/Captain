@@ -1,6 +1,7 @@
 //Utils.swift
 import UIKit
 import SKActivityIndicatorView
+import KRProgressHUD
 class Utils: NSObject,SWRevealViewControllerDelegate
 {
     class func Disable_Front_ViewController(viewController: UIViewController, position : FrontViewPosition) {
@@ -13,12 +14,16 @@ class Utils: NSObject,SWRevealViewControllerDelegate
         }
     }
     class func ShowActivityIndicator(message : String) {
-        SKActivityIndicator.show(message, userInteractionStatus: false)
-        SKActivityIndicator.spinnerStyle(.spinningFadeCircle)
-        SKActivityIndicator.spinnerColor(.darkGray)
+        KRProgressHUD.show(withMessage: message)
+        KRProgressHUD.set(activityIndicatorViewColors: [.darkGray])
     }
+//    class func ShowActivityIndicator(message : String) {
+//        SKActivityIndicator.show(message, userInteractionStatus: false)
+//        SKActivityIndicator.spinnerStyle(.spinningFadeCircle)
+//        SKActivityIndicator.spinnerColor(.darkGray)
+//    }
     class func set_Badge(Count : Int)  -> UILabel {
-        let badgeCount = UILabel(frame: CGRect(x: 0, y: 0, width: 20, height: 20)),()
+        let badgeCount = UILabel(frame: CGRect(x: 5, y: 0, width: 20, height: 20)),()
         badgeCount.layer.borderColor = UIColor.clear.cgColor
         badgeCount.layer.borderWidth = 2
         badgeCount.layer.cornerRadius = badgeCount.bounds.size.height / 2
@@ -47,6 +52,14 @@ class Utils: NSObject,SWRevealViewControllerDelegate
         }
         return mutableDict
     }
+    class func checkStringNil(valueString: String,blankString : String) -> String {
+        let finalStr = (valueString != nil) ? String(describing: valueString) : blankString
+        return finalStr
+    }
+    class func checkDoubleNil(valueDouble: Double,blankString : String) -> String {
+        let finalStr = (valueDouble != nil) ? String(describing: valueDouble) : blankString
+        return finalStr
+    }
     class func Get_Navigation_Bar_Button(str_Iconname : String, action : Selector, viewController : UIViewController)  -> UIBarButtonItem
     {
         let button = UIButton(type: .custom)
@@ -55,9 +68,8 @@ class Utils: NSObject,SWRevealViewControllerDelegate
         button.isUserInteractionEnabled = true
         button.tintColor = .black
         button.addTarget(viewController, action: action, for: .touchUpInside)
-        
         let barButton = UIBarButtonItem(customView: button)
-        //        barButton.tintColor = UIColor.black
+        barButton.tintColor = App_Colors.ThemBlue
         return barButton
     }
     class func Logout_Reset_Data() {

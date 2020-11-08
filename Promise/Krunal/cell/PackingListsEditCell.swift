@@ -18,8 +18,9 @@ class PackingListsEditCell: UITableViewCell {
         // Initialization code
     }
     func Display_Cell(Arr_Data : [PackinglistIDModel], indexPath: IndexPath) {
-        let Arr_RejectReson = Arr_Data[0].reject_reasons![indexPath.row]
-//        self.lbl_RejectedBy.text = Arr_RejectReson
+        let Arr_RejectReson = Arr_Data[0].reject_reasons
+//        self.lbl_RejectedBy.text = Arr_RejectReson.
+        
         
     }
     override func setSelected(_ selected: Bool, animated: Bool) {

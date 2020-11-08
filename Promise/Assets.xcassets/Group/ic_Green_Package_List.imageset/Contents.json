@@ -1,23 +1,26 @@
 {
   "images" : [
     {
+      "filename" : "icons8-todo-list-30.png",
       "idiom" : "universal",
-      "filename" : "green package list.png",
       "scale" : "1x"
     },
     {
+      "filename" : "icons8-todo-list-60.png",
       "idiom" : "universal",
-      "filename" : "green package list@2x.png",
       "scale" : "2x"
     },
     {
+      "filename" : "icons8-todo-list-90.png",
       "idiom" : "universal",
-      "filename" : "green package list@3x.png",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
   }
 }

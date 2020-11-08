@@ -92,7 +92,6 @@ class PackagesViewVC: UIViewController {
 //       Utils.EnableTextField(textFields: [txt_Name,txt_InputNumber,txt_Revisionnumber,txt_PurchaseOrderNumber,txt_Project,txt_Project,txt_Status,txt_Vendor,txt_Structure,txt_Address,txt_CountryOfOrigin,txt_PickupLocation,txt_ContactDetails,txt_NameOfGoods,txt_InspectionTime,txt_TotalNetWeightkg,txt_TotalGrossWeightkg,txt_TotalVolumem])
     }
     func SetData(){
-        print(Arr_PLDetail)
         self.txt_Name.text = Arr_PLDetail[0].name!
         self.txt_InputNumber.text = Arr_PLDetail[0].inputNo!
         self.txt_Revisionnumber.text = String(describing: Arr_PLDetail[0].revNo!)
@@ -222,7 +221,7 @@ extension PackagesViewVC : UITableViewDataSource {
                 return cell
             } else {
                 let cell : PackageView_SingleDetailsCell = tableView.dequeueReusableCell(withIdentifier: "PackageView_SingleDetailsCell") as! PackageView_SingleDetailsCell
-                cell.DisplayCell(Arr_Data: Arr_SingleDetail, indexPath: indexPath)
+//                cell.DisplayCell(Arr_Data: Arr_SingleDetail, indexPath: indexPath)
                 return cell
             }
         }

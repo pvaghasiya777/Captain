@@ -30,7 +30,6 @@ class OnsiteStatusCell: UITableViewCell {
     }
     func Display_Cell(viewController : OnsiteStatusVC , indexPath : IndexPath) {
         var Arr_data = viewController.Arr_onSiteStatusData[indexPath.row] as! onSiteStatusModel
-        print(Arr_data)
         self.lbl_ProjectName.text = Arr_data.projectName!
         self.lbl_PLNumber.text = Arr_data.number!
         self.lbl_Package.text = String(describing: Arr_data.packageField!)

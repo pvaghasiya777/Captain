@@ -9,7 +9,7 @@
 import UIKit
 
 class PL_PackageDetailsCell: UITableViewCell {
-
+    
     @IBOutlet var lbl_PackageName: UILabel!
     @IBOutlet var lbl_KindofPackage: UILabel!
     @IBOutlet var lbl_Length: UILabel!
@@ -18,6 +18,7 @@ class PL_PackageDetailsCell: UITableViewCell {
     @IBOutlet var lbl_GrossWeight: UILabel!
     @IBOutlet var lbl_NetWeight: UILabel!
     @IBOutlet var lbl_PLSeq: UILabel!
+    @IBOutlet weak var btn_view: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -25,7 +26,6 @@ class PL_PackageDetailsCell: UITableViewCell {
     func Display_Cell(viewController : PLinputDetails , indexPath : IndexPath) {
         let cellIndex = viewController.startIndex + indexPath.row
         let Arr_Data = viewController.Arr_PLDetail[0].inputMasterIDS![cellIndex]
-        print(Arr_Data)
         let KOP = DEFAULTS.Get_MasterKindOfPackage().filter {$0.id! == Arr_Data.packageID!}
         self.lbl_PackageName.text = String(describing: Arr_Data.package!)
         self.lbl_KindofPackage.text = KOP[0].name!
@@ -38,8 +38,8 @@ class PL_PackageDetailsCell: UITableViewCell {
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
-
+    
 }

@@ -24,11 +24,10 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var btn_Download: UIButton!
     @IBOutlet weak var btn_Delete: UIButton!
     
-    
-
     override func awakeFromNib() {
         super.awakeFromNib()
         Utils.set_Image_on_RightView_of_Textfield(textfield: txt_ReleasedDate, imagename: "ic_calendar", width: 25, height: 25)
+        Utils.setborder(view: btn_Select, bordercolor: .gray, borderwidth: 1)
     }
     func Display_Cell(arr_data: NSMutableArray,indexPath:IndexPath) {
         //reverse Solution
@@ -63,7 +62,7 @@ class TableViewHeaderCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-       
+       Utils.setborder(view: btn_Select, bordercolor: .gray, borderwidth: 1)
     }
 //    func Display_Cell(arr_data: NSMutableArray,indexPath:IndexPath) {
 //        //reverse Solution

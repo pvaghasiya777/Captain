@@ -25,7 +25,6 @@ class PackageView_MasterDetails2Cell: UITableViewCell {
     //MARK:- Display Cell
     func DisplayCell(Arr_Data : [PlreportDetailModel] ,indexPath : IndexPath) {
         let Arr_MasterDetail = Arr_Data[0].inputMasterIDS![indexPath.row]
-        print(Arr_MasterDetail)
         self.lbl_Storage_Symbol.text = Arr_MasterDetail.storageSymbol!
         self.lbl_Min_Temperature.text = Arr_MasterDetail.minTemp!
         self.lbl_Max_Temperature.text = Arr_MasterDetail.maxTemp!

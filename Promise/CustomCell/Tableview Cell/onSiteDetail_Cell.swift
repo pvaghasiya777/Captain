@@ -45,7 +45,6 @@ class onSiteDetail_Cell: UITableViewCell {
     }
     func DisplayCell(Arr_Data : NSMutableArray,indexpath : IndexPath) {
         let Arr_SiteData = Arr_Data[indexpath.row] as! onSiteStatusDetailModel
-        print(Arr_SiteData)
         self.lbl_Number.text = Arr_SiteData.number!
                 self.lbl_Revision.text = Arr_SiteData.revision!
         self.lbl_Package.text = String(describing: Arr_SiteData.packageField!)
@@ -62,9 +61,9 @@ class onSiteDetail_Cell: UITableViewCell {
         self.txt_Shipped_Date.text = String(describing: nullToNil(value: Arr_SiteData.shippedDate!))
         self.txt_Onsite_Date.text = String(describing: nullToNil(value: Arr_SiteData.onsiteDate!))
         
-        btn_Active.setBackgroundImage(UIImage(named:  String((Arr_SiteData.isActive == true) ? "ic_correct":"ic_not_released")), for: .normal)
-                btn_Shipped.setBackgroundImage(UIImage(named: String((Arr_SiteData.shipped == true) ? "ic_correct":"ic_not_released")), for: .normal)
-        btn_onSite.setBackgroundImage(UIImage(named: String((Arr_SiteData.onSite == true) ? "ic_correct":"ic_not_released")), for: .normal)
+        btn_Active.setBackgroundImage(UIImage(named:  String((Arr_SiteData.isActive == true) ? "ic_check":"ic_not_released")), for: .normal)
+                btn_Shipped.setBackgroundImage(UIImage(named: String((Arr_SiteData.shipped == true) ? "ic_check":"ic_not_released")), for: .normal)
+        btn_onSite.setBackgroundImage(UIImage(named: String((Arr_SiteData.onSite == true) ? "ic_check":"ic_not_released")), for: .normal)
     }
     @IBAction func btn_Click_Save(_ sender: UIButton) {
         

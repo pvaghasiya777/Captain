@@ -2,26 +2,29 @@
 
 import Foundation
 
-// MARK: - EmployeeModelElement
+// MARK: - EmployeeModel
 struct EmployeeModel: Codable {
-    let id: Int?
-    let name, workEmail, mobile, workLocation: String?
-    let workPhone, gender: String?
-    let isActive: Bool?
-    let code, phoneCountryCode: String?
+    let count: Int?
+    let next, previous: String?
+    let results: [EmployeeResult]?
+}
 
+// MARK: - Result
+struct EmployeeResult: Codable {
+    let id: Int?
+    let username, firstName, lastName, email: String?
+    let isActive, isStaff, timeBased: Bool?
     enum CodingKeys: String, CodingKey {
-        case id, name
-        case workEmail = "work_email"
-        case mobile
-        case workLocation = "work_location"
-        case workPhone = "work_phone"
-        case gender
+        case id, username
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case email
         case isActive = "is_active"
-        case code
-        case phoneCountryCode = "phone_country_code"
+        case isStaff = "is_staff"
+        case timeBased = "time_based"
     }
 }
+
 //MARK:- VendorModel
 //   let vendorModel = try? newJSONDecoder().decode(VendorModel.self, from: jsonData)
 struct VendorModel: Codable {

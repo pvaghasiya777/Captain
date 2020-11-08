@@ -1,8 +1,5 @@
 //
 //  ReportsFiltersVC.swift
-//  report
-//
-//  Created by macbook on 25/06/1942 Saka.
 //  Copyright © 1942 com.mac. All rights reserved.
 //
 
@@ -11,61 +8,62 @@ import UIKit
 class ViewSelectFilter: UIViewController {
     //MARK:- Outlet
     //Filter Details
-    @IBOutlet weak var dropProject: UITextField!
-    @IBOutlet weak var dropPurchaseOrder: UITextField!
-    @IBOutlet weak var dropStructure: UITextField!
-    @IBOutlet weak var dropPackingList: UITextField!
+    @IBOutlet weak var lbl_Project: UILabel!
+    @IBOutlet weak var lbl_PurchaseOrder: UILabel!
+    @IBOutlet weak var lbl_Structure: UILabel!
+    @IBOutlet weak var lbl_PackingList: UILabel!
+    @IBOutlet weak var lbl_Marks: UILabel!
     //Material Type
-     @IBOutlet weak var btnSteel: UIButton!
-     @IBOutlet weak var btnBolt: UIButton!
-     //Material Status
-     @IBOutlet weak var btnReleased: UIButton!
-     @IBOutlet weak var btnNotReleased: UIButton!
-     @IBOutlet weak var btnShipped: UIButton!
-     @IBOutlet weak var btnNotShipped: UIButton!
-     @IBOutlet weak var btnOnsite: UIButton!
-     @IBOutlet weak var btnNotOnsite: UIButton!
+    @IBOutlet weak var btnSteel: UIButton!
+    @IBOutlet weak var btnBolt: UIButton!
+    //Material Status
+    @IBOutlet weak var btnReleased: UIButton!
+    @IBOutlet weak var btnNotReleased: UIButton!
+    @IBOutlet weak var btnShipped: UIButton!
+    @IBOutlet weak var btnNotShipped: UIButton!
+    @IBOutlet weak var btnOnsite: UIButton!
+    @IBOutlet weak var btnNotOnsite: UIButton!
     // Excess Quantity
-     @IBOutlet weak var btnWithExtraPieces: UIButton!
-     @IBOutlet weak var btnWithoutExtraPieces: UIButton!
+    @IBOutlet weak var btnWithExtraPieces: UIButton!
+    @IBOutlet weak var btnWithoutExtraPieces: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         Initialisation()
-               // Do any additional setup after loading the view.
-           }
-       //MARK:- Initialisation
-       func Initialisation(){
-           Utils.Set_Corner_Radius(views: [btnSteel,btnBolt,btnReleased,btnNotReleased,btnShipped,btnNotShipped,btnOnsite,btnNotOnsite,btnWithExtraPieces,btnWithoutExtraPieces], radius: 5)
-           Utils.Set_Same_View_Border(views:[btnSteel,btnBolt,btnReleased,btnNotReleased,btnShipped,btnNotShipped,btnOnsite,btnNotOnsite,btnWithExtraPieces,btnWithoutExtraPieces] , borderColor: .gray, border_Width: 1)
-        Utils.EnableTextField(textFields: [dropStructure,dropPackingList,dropPurchaseOrder,dropProject])
-        setfilterdata()
-       }
+    }
+    //MARK:- Initialisation
+    func Initialisation(){
+        Utils.Set_Corner_Radius(views: [btnSteel,btnBolt,btnReleased,btnNotReleased,btnShipped,btnNotShipped,btnOnsite,btnNotOnsite,btnWithExtraPieces,btnWithoutExtraPieces], radius: 5)
+        Utils.Set_Same_View_Border(views:[btnSteel,btnBolt,btnReleased,btnNotReleased,btnShipped,btnNotShipped,btnOnsite,btnNotOnsite,btnWithExtraPieces,btnWithoutExtraPieces] , borderColor: .gray, border_Width: 1)
+        Utils.Set_Same_View_Border(views:[lbl_PackingList,lbl_Structure,lbl_PurchaseOrder,lbl_Project,lbl_Marks] , borderColor: .gray, border_Width: 1)
+        self.SetFilterData()
+    }
     //MARK:- set data From geting filter
-    func setfilterdata() {
+    func SetFilterData() {
         let Project = DEFAULTS.Get_View_Filter().value(forKey: "Project")!
-        self.dropProject.text = (Project as AnyObject).componentsJoined(by: ",")
+        self.lbl_Project.text = (Project as AnyObject).componentsJoined(by: ", ")
         let PurchaseOrder = DEFAULTS.Get_View_Filter().value(forKey: "PurchaseOrder")!
-        self.dropPurchaseOrder.text = (PurchaseOrder as AnyObject).componentsJoined(by: ",")
+        self.lbl_PurchaseOrder.text = (PurchaseOrder as AnyObject).componentsJoined(by: ", ")
         let Strucher = DEFAULTS.Get_View_Filter().value(forKey: "Strucher")!
-        self.dropStructure.text = (Strucher as AnyObject).componentsJoined(by: ",")
+        self.lbl_Structure.text = (Strucher as AnyObject).componentsJoined(by: ", ")
         let PackingList = DEFAULTS.Get_View_Filter().value(forKey: "PackingList")!
-        self.dropPackingList.text = (PackingList as AnyObject).componentsJoined(by: ",")
-        
+        self.lbl_PackingList.text = (PackingList as AnyObject).componentsJoined(by: ", ")
+        let Marks = DEFAULTS.Get_View_Filter().value(forKey: "Mark")!
+        self.lbl_Marks.text = (Marks as AnyObject).componentsJoined(by: ", ")
         //Material Type
         btnSteel.setBackgroundImage(DEFAULTS.Get_View_Filter().value(forKey: "is_Steel") as! Bool == true ? UIImage(named: "ic_check") : UIImage(named: " "), for:  .normal)
         btnBolt.setBackgroundImage(DEFAULTS.Get_View_Filter().value(forKey: "is_Bolt") as! Bool == true ? UIImage(named: "ic_check") : UIImage(named: " "), for:  .normal)
 
 //       Material Status
         btnReleased.setBackgroundImage(DEFAULTS.Get_View_Filter().value(forKey: "Released") as! Bool == true ? UIImage(named: "ic_check") : UIImage(named: " "), for:  .normal)
-        btnNotReleased.setBackgroundImage(DEFAULTS.Get_View_Filter().value(forKey: "Released") as! Bool == true ? UIImage(named: "") : UIImage(named: "ic_check"), for:  .normal)
+        btnNotReleased.setBackgroundImage(DEFAULTS.Get_View_Filter().value(forKey: "ReleasedNot") as! Bool == true ? UIImage(named: "ic_check") : UIImage(named: ""), for:  .normal)
 //
         
         btnShipped.setBackgroundImage(DEFAULTS.Get_View_Filter().value(forKey: "Shipped") as! Bool == true ? UIImage(named: "ic_check") : UIImage(named: " "), for:  .normal)
-        btnNotShipped.setBackgroundImage(DEFAULTS.Get_View_Filter().value(forKey: "Shipped") as! Bool == true ? UIImage(named: "") : UIImage(named: "ic_check"), for:  .normal)
+        btnNotShipped.setBackgroundImage(DEFAULTS.Get_View_Filter().value(forKey: "ShippedNot") as! Bool == true ? UIImage(named: "ic_check") : UIImage(named: ""), for:  .normal)
         
         btnOnsite.setBackgroundImage(DEFAULTS.Get_View_Filter().value(forKey: "Onsite") as! Bool == true ? UIImage(named: "ic_check") : UIImage(named: " "), for:  .normal)
-        btnNotOnsite.setBackgroundImage(DEFAULTS.Get_View_Filter().value(forKey: "Onsite") as! Bool == true ? UIImage(named: "") : UIImage(named: "ic_check"), for:  .normal)
+        btnNotOnsite.setBackgroundImage(DEFAULTS.Get_View_Filter().value(forKey: "OnsiteNot") as! Bool == true ? UIImage(named: "ic_check") : UIImage(named: ""), for:  .normal)
         
 //        Excess Quantity
         btnWithExtraPieces.setBackgroundImage(DEFAULTS.Get_View_Filter().value(forKey: "is_Extra") as! Bool == true ? UIImage(named: "ic_check") : UIImage(named: " "), for:  .normal)
@@ -123,3 +121,4 @@ class ViewSelectFilter: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 }
+

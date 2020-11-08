@@ -31,7 +31,6 @@ class PurchaseOrderCell: UITableViewCell {
     func DisplayCell(Arr_Data : [SingleMasterPurchaseModel],indexpath : IndexPath,viewController : PurchaseOrderVC) {
         let cellIndex = viewController.startIndex + indexpath.row
         let Arr_PurchaseData = Arr_Data[0].purchase_lines![cellIndex]
-        print(Arr_PurchaseData)
         self.lbl_POamd.text = Arr_PurchaseData.amendment!
         self.lbl_POPosition.text = String(describing: Arr_PurchaseData.po_position!)
         self.lbl_Item.text = Arr_PurchaseData.item!

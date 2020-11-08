@@ -32,8 +32,8 @@ class HomeVC: UIViewController
     @IBOutlet weak var OnSitePieces: ABGaugeView!
     @IBOutlet weak var lbl_OnSitePiecesload: UILabel!
     @IBOutlet weak var lbl_OnSitePiecespr: UILabel!
-  //MARK:- Variable
-    var Arr_Report_Section : NSMutableArray = ["Detail Figure Report","Markwise Report","Markwise Cumulative Report","Packagewise Report","Packing List Report","PO Positionwise Reportm","Ident Codewise Report","Structurewise Report","Group Structurewise Report","Summary Report"]
+    //MARK:- Variable
+    var Arr_Report_Section : NSMutableArray = ["Detail Figure Report","Markwise Report","Markwise Cumulative Report","Packagewise Report","Packing List Report","PO Positionwise Report","Ident Codewise Report","Structurewise Report","Group Structurewise Report","Summary Report"]
     var Arr_DashBoardResult = [DashBoardResult]()
     var Arr_DashBoardMarkwise = [DashBoardMarkWiseModel]()
     var Is_Mark : Bool = false
@@ -61,7 +61,7 @@ class HomeVC: UIViewController
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             self.revealViewController()?.rearViewRevealWidth = 280
         }
-          self.tbl_ReportSection.register(UINib(nibName: "ReportTblCell", bundle: nil), forCellReuseIdentifier: "ReportTblCell")
+        self.tbl_ReportSection.register(UINib(nibName: "ReportTblCell", bundle: nil), forCellReuseIdentifier: "ReportTblCell")
         btn_Dashboard.backgroundColor = UIColor(hexString: "2B3990")
         btn_Dashboard.tintColor = .white
         btn_Report.backgroundColor = .white
@@ -140,29 +140,18 @@ class HomeVC: UIViewController
     func Device_Orientaction() {
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
-        if UIDevice.isPad == true {
-            //            self.lbl_shipping_Weight.font = lbl_shipping_Weight.font.withSize(25)
-            //            self.lbl_Shipping_Weight_Height.constant = 25
-            //
-            //            self.lbl_Released_Weight.font = lbl_shipping_Weight.font.withSize(25)
-            //            self.lbl_Released_Weight_Height.constant = 25
-            //
-            //            self.lbl_Released_Pieces.font = lbl_shipping_Weight.font.withSize(25)
-            //            self.lbl_Released_Pieces_Height.constant = 25
-            //
-            //            self.lbl_Shipping_Pieces.font = lbl_shipping_Weight.font.withSize(25)
-            //            self.lbl_Shipping_Pieces_Height.constant = 25
-        }
     }
     @IBAction func btn_Filter_Click(_ sender: UIBarButtonItem) {
-        print("Filter Button Click")
         let DFilters_VC = Config.StoryBoard.instantiateViewController(withIdentifier: "DFiltersVC") as! DFiltersVC
         self.navigationController?.pushViewController(DFilters_VC, animated: true)
     }
     @IBAction func btn_ViewFilter_Click(_ sender: UIBarButtonItem) {
-        print("Filter Button Click")
-        let ViewFilterVC = Config.StoryBoard.instantiateViewController(withIdentifier: "ViewSelectFilter") as! ViewSelectFilter
-        self.navigationController?.pushViewController(ViewFilterVC, animated: true)
+        if DEFAULTS.Get_View_Filter().count == 0 {
+            Utils.showToastWithMessage(message: Strings.kNoFilterSelect)
+        }else{
+            let ViewFilterVC = Config.StoryBoard.instantiateViewController(withIdentifier: "ViewSelectFilter") as! ViewSelectFilter
+            self.navigationController?.pushViewController(ViewFilterVC, animated: true)
+        }
     }
     @IBAction func btn_heaerCklick(_ sender: UIButton) {
         if sender.tag == 0 {
@@ -208,51 +197,46 @@ extension HomeVC : UITableViewDataSource ,UITableViewDelegate{
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            let report_vc = Config.StoryBoard.instantiateViewController(identifier: "ReportVC6") as! ReportVC6
+        if indexPath.row == 0 { //DetailFigure
+            let report_vc = Config.StoryBoard2.instantiateViewController(identifier: "DReportVC") as! DReportVC
             report_vc.pageName = "Detail Figure Report"
             self.navigationController?.pushViewController(report_vc, animated: true)
-        } else if indexPath.row == 1 {
-           let report_vc = Config.StoryBoard.instantiateViewController(identifier: "ReportVC6") as! ReportVC6
-            report_vc.pageName = "Markwise Report" 
-            self.navigationController?.pushViewController(report_vc, animated: true)
-        }  else if indexPath.row == 2 {
-            let report_vc = Config.StoryBoard.instantiateViewController(identifier: "ReportVC6") as! ReportVC6
-            report_vc.pageName = "Markwise Cumulative Report"
-            self.navigationController?.pushViewController(report_vc, animated: true)
-        } else if indexPath.row == 3 {
-           let report_vc = Config.StoryBoard.instantiateViewController(identifier: "ReportVC1") as! ReportVC1
+        } else if indexPath.row == 1 { //MarkWise
+            let MarkwiseReport_VC = Config.StoryBoard2.instantiateViewController(identifier: "R_MarkwiseReportVC") as! R_MarkwiseReportVC
+            self.navigationController?.pushViewController(MarkwiseReport_VC, animated: true)
+        }  else if indexPath.row == 2 { //MarkWiseCummulative
+            let MarkwiseCumulativeReport_VC = Config.StoryBoard2.instantiateViewController(identifier: "MarkwiseCumulativeReportVC") as! MarkwiseCumulativeReportVC
+            self.navigationController?.pushViewController(MarkwiseCumulativeReport_VC, animated: true)
+        } else if indexPath.row == 3 { //Packagewise
+            let report_vc = Config.StoryBoard2.instantiateViewController(identifier: "DReportVC") as! DReportVC
             report_vc.pageName = "Packagewise Report"
             self.navigationController?.pushViewController(report_vc, animated: true)
-        } else if indexPath.row == 4 {
-            let report_vc = Config.StoryBoard.instantiateViewController(identifier: "ReportVC1") as! ReportVC1
-            report_vc.pageName = "Packing List Report"
+        } else if indexPath.row == 4 { //PackingList
+            let report_vc = Config.StoryBoard2.instantiateViewController(identifier: "PackingListReport_VC") as! PackingListReport_VC
             self.navigationController?.pushViewController(report_vc, animated: true)
-        } else if indexPath.row == 5 {
-            let report_vc = Config.StoryBoard.instantiateViewController(identifier: "Report2") as! Report2
+        } else if indexPath.row == 5 { //POPosition
+            let report_vc = Config.StoryBoard2.instantiateViewController(identifier: "DReportVC") as! DReportVC
             report_vc.pageName = "PO Positionwise Report"
             self.navigationController?.pushViewController(report_vc, animated: true)
-        } else if indexPath.row == 6 {
-            let report_vc = Config.StoryBoard.instantiateViewController(identifier: "Report2") as! Report2
+        } else if indexPath.row == 6 {//IdentCode Wise
+            let report_vc = Config.StoryBoard2.instantiateViewController(identifier: "DReportVC") as! DReportVC
             report_vc.pageName = "Ident Codewise Report"
             self.navigationController?.pushViewController(report_vc, animated: true)
-        } else if indexPath.row == 7 {
-            let report_vc = Config.StoryBoard.instantiateViewController(identifier: "Report2") as! Report2
-            report_vc.pageName = "Structurewise Report"
+        } else if indexPath.row == 7 { //StrucherwiseWise
+            let report_vc = Config.StoryBoard2.instantiateViewController(identifier: "StructurewiseReportVC") as! StructurewiseReportVC
             self.navigationController?.pushViewController(report_vc, animated: true)
-        } else if indexPath.row == 8 {
-            let report_vc = Config.StoryBoard.instantiateViewController(identifier: "ReportVC3") as! ReportVC3
-            report_vc.pageName = "Group Structurewise Report"
+        } else if indexPath.row == 8 {// Group Structurewise Report
+            let report_vc = Config.StoryBoard2.instantiateViewController(identifier: "GroupStructurewiseReportVC") as! GroupStructurewiseReportVC
             self.navigationController?.pushViewController(report_vc, animated: true)
-        } else {
-            let report_vc = Config.StoryBoard.instantiateViewController(identifier: "ReportVC4") as! ReportVC4
+        } else { // Summary report
+            let report_vc =  Config.StoryBoard2.instantiateViewController(identifier: "DReportVC") as! DReportVC
             report_vc.pageName = "Summary Report"
             self.navigationController?.pushViewController(report_vc, animated: true)
         }
     }
-     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-           return 60
-       }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
 }
 //MARK:- SWRevealViewController Methods
 extension HomeVC : SWRevealViewControllerDelegate {

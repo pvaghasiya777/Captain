@@ -11,7 +11,6 @@ class AFWrapper: NSObject
         print(final_strURL)
         print(params!)
         Alamofire.request(final_strURL, method: .get, parameters: params, encoding: URLEncoding.default, headers: headers).responseJSON { (responseObject) -> Void in
-            print(responseObject)
             var StatusCode : Int = 1;
             StatusCode = responseObject.response!.statusCode
             if responseObject.result.isSuccess {
@@ -49,7 +48,6 @@ class AFWrapper: NSObject
         let final_strURL : String = strURL
         print(final_strURL)
         Alamofire.request(final_strURL, method: .post, parameters: params, encoding: URLEncoding.default, headers: headers).responseJSON { (responseObject) -> Void in
-            print(responseObject)
             if responseObject.result.isSuccess {
                 print(responseObject.response?.statusCode)
                 var StatusCode : Int = 1;
@@ -79,7 +77,6 @@ class AFWrapper: NSObject
         let final_strURL : String = strURL
         print(final_strURL)
         Alamofire.request(final_strURL, method: method, parameters: params, encoding: URLEncoding.default, headers: headers).responseJSON { (responseObject) -> Void in
-            print(responseObject)
             if responseObject.result.isSuccess {
                 print(responseObject.response!.statusCode)
                 var StatusCode : Int = 1;
@@ -99,7 +96,6 @@ class AFWrapper: NSObject
         print(final_strURL)
         print(params!)
         Alamofire.request(final_strURL, method: .get, parameters: params, encoding: URLEncoding.default, headers: headers).responseData{ (responseObject) -> Void in
-            print(responseObject)
             var StatusCode : Int = 1;
             //            NSTemporaryDirectory()
             //            responseObject.data!.write(to: URL(fileURLWithPath: NSTemporaryDirectory() + "abc1.xlsx"), options: .atomicWrite)

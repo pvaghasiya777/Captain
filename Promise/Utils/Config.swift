@@ -6,6 +6,7 @@ struct Config
     static let Appname = "Promise"
     static let App_Alert_Logo = UIImage(named: "ic_splashscreen")
     static let StoryBoard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+    static let StoryBoard2 : UIStoryboard = UIStoryboard(name: "Main2", bundle: nil)
     static let AndroidLink : String = "https://web.whatsapp.com/"
     static let IosLink : String =  "https://web.whatsapp.com/"
     static let IosSharingText : String =  "https://web.whatsapp.com/"
@@ -32,6 +33,7 @@ struct App_Colors {
 extension Notification.Name
 {
     static let selected_Filter = Notification.Name(rawValue: "selected_Filter")
+    static let DFilter = Notification.Name(rawValue: "DFilter")
 }
 struct DeviceInfo
 {
@@ -80,7 +82,7 @@ struct Api_Urls
     static let GET_API_masterPurchase = BASE_URL + "masters/purchase/"
     static let GET_API_masterKOP = BASE_URL + "masters/package/"
     static let GET_API_masterProject = BASE_URL + "masters/project/"
-    static let GET_API_masterEmployee = BASE_URL + "masters/employee/"
+    static let GET_API_masterEmployee = BASE_URL + "accounts/users/"
     static let GET_API_masterVendor = BASE_URL + "masters/vendor/"
     static let GET_API_masterPOType = BASE_URL + "masters/potype/"
     static let GET_API_masterCurrency = BASE_URL + "masters/currency/"

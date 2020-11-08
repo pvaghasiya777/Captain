@@ -18,6 +18,7 @@ class DFiltersVC: UIViewController {
     @IBOutlet weak var btnWithExtraPieces: UIButton!
     @IBOutlet weak var btnWithoutExtraPieces: UIButton!
     //Material Status
+    @IBOutlet weak var View_MaterialStatus: UIView!
     @IBOutlet weak var btnReleased: UIButton!
     @IBOutlet weak var btnNotReleased: UIButton!
     @IBOutlet weak var btnShipped: UIButton!
@@ -62,11 +63,21 @@ class DFiltersVC: UIViewController {
     var Is_Select_Released : Bool = false
     var Is_Select_Shipped : Bool = false
     var Is_Select_Onsite : Bool = false
-    
+    var Is_Select_NotReleased : Bool = false
+    var Is_Select_NotShipped : Bool = false
+    var Is_Select_NotOnsite : Bool = false
     //TableView Selection
     var Selected_tag = 0
     var Str_Selected_Filter : String = String()
-    //Filter Selected Data  
+    var Indexes_Search_PurchaseOrder : [Int] = []
+    var Indexes_PurchaseOrder : [Int] = []
+    var Indexes_Search_Strucher : [Int] = []
+    var Indexes_Strucher : [Int] = []
+    var Indexes_Search_PackingList : [Int] = []
+    var Indexes_PackingList : [Int] = []
+    var Indexes_Search_Mark : [Int] = []
+    var Indexes_Mark : [Int] = []
+    //Filter Selected Data
     var arrSearch_Project = [String]()
     var arrProject = [String]()
     var arrSearch_PurchaseOrder = [String]()
@@ -84,13 +95,9 @@ class DFiltersVC: UIViewController {
     }
     //MARK:- Initialisation
     func Initialisation(){
+        View_MaterialStatus.isHidden = true
         Utils.Set_Corner_Radius(views: [btnAll,btnSteel,btnBolt,btnReleased,btnNotReleased,btnShipped,btnNotShipped,btnOnsite,btnNotOnsite,btnWithExtraPieces,btnWithoutExtraPieces], radius: 5)
         Utils.Set_Same_View_Border(views:[btnAll,btnSteel,btnBolt,btnReleased,btnNotReleased,btnShipped,btnNotShipped,btnOnsite,btnNotOnsite,btnWithExtraPieces,btnWithoutExtraPieces] , borderColor: .gray, border_Width: 1)
-//        self.Arr_Project = DEFAULTS.Get_FilterProject()
-//        self.Arr_PurchaseOrder = DEFAULTS.Get_FilterPurchaseOrder()
-//        self.Arr_Strucher = DEFAULTS.Get_FilterStrucher()
-//        self.Arr_PackingList = DEFAULTS.Get_FilterPackingList()
-//        self.Arr_Mark = DEFAULTS.Get_FilterMark()
         MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterProject, tag: 1,param: [:],ViewController: self,VC_Tag: 1)
         MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterPurchaseOrder, tag: 2,param: ["project_id": DEFAULTS.Get_ProjectID()],ViewController: self,VC_Tag: 1)
         MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterStrucher, tag: 3,param: ["project_id": DEFAULTS.Get_ProjectID()],ViewController: self,VC_Tag: 1)
@@ -145,7 +152,7 @@ class DFiltersVC: UIViewController {
         } else if sender.tag == 7 {
             btnReleased.setBackgroundImage(UIImage(named: ""), for: .normal)
             btnNotReleased.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
-            self.Is_Select_Released = false
+            self.Is_Select_NotReleased = true
         }
         //Shipped & Not Shipped
         if sender.tag == 8 {
@@ -155,7 +162,7 @@ class DFiltersVC: UIViewController {
         } else if sender.tag == 9 {
             btnShipped.setBackgroundImage(UIImage(named: ""), for: .normal)
             btnNotShipped.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
-            self.Is_Select_Shipped = false
+            self.Is_Select_NotShipped = true
         }
         //Onsite & Not Onsite
         if sender.tag == 10 {
@@ -165,18 +172,41 @@ class DFiltersVC: UIViewController {
         } else if sender.tag == 11 {
             btnOnsite.setBackgroundImage(UIImage(named: ""), for: .normal)
             btnNotOnsite.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
-            self.Is_Select_Onsite = false
+            self.Is_Select_NotOnsite = true
         }
     }
     @IBAction func btn_Click_CancellAndApply(_ sender: UIButton) {
         if sender.tag == 12 {
-            print("Reset Button Click")
-        }else if sender.tag == 13 {
-            print("Apply Button Click")
-//            var Arr_Test = ["Test"]
-//            NSMutableArray(array: arrStrucher as NSArray).map{($0)}.forEach { Arr_Test.append($0 as! String)}
-//            let Arr_SingleID = arrStrucher.map{($0)}.joined()
-//            Arr_SingleID.forEach { arrStrucher.append($0)}
+            btnAll.setBackgroundImage(UIImage(named: ""), for: .normal)
+            btnSteel.setBackgroundImage(UIImage(named: ""), for: .normal)
+            btnBolt.setBackgroundImage(UIImage(named: ""), for: .normal)
+            self.Is_Select_AllMaterialType = false
+            self.Is_Select_SteelMaterialType = false
+            self.Is_Select_BoltMaterialType = false
+            btnWithExtraPieces.setBackgroundImage(UIImage(named: ""), for: .normal)
+            btnWithoutExtraPieces.setBackgroundImage(UIImage(named: ""), for: .normal)
+            self.Is_Select_With_Extra_Pieces = false
+            self.Is_Select_Without_Extra_Pieces = false
+            arrSearch_Project.removeAll()
+            arrProject.removeAll()
+            arrPurchaseOrder.removeAll()
+            arrSearch_PurchaseOrder.removeAll()
+            arrStrucher.removeAll()
+            arrSearch_Strucher.removeAll()
+            arrPackingList.removeAll()
+            arrSearch_PackingList.removeAll()
+            arrMark.removeAll()
+            arrSearch_Mark.removeAll()
+            Indexes_Search_PurchaseOrder.removeAll()
+            Indexes_PurchaseOrder.removeAll()
+            Indexes_Search_Strucher.removeAll()
+            Indexes_Strucher.removeAll()
+            Indexes_Search_PackingList.removeAll()
+            Indexes_PackingList.removeAll()
+            Indexes_Search_Mark.removeAll()
+            Indexes_Mark.removeAll()
+            Initialisation()
+        } else if sender.tag == 13 {
             let filterData : NSDictionary = ["Str_SelectedFilter": Str_Selected_Filter,"SelectedTag" : Selected_tag,"is_All": self.Is_Select_AllMaterialType,"is_Steel": self.Is_Select_SteelMaterialType,"is_Bolt": self.Is_Select_BoltMaterialType,"is_Extra": self.Is_Select_With_Extra_Pieces,"Without_Extra" : self.Is_Select_Without_Extra_Pieces ]
             let ViewFilterData : NSDictionary = ["Project" : self.arrProject,
                                                  "PurchaseOrder" : self.arrPurchaseOrder,
@@ -190,7 +220,10 @@ class DFiltersVC: UIViewController {
                                                  "Without_Extra" : self.Is_Select_Without_Extra_Pieces,
                                                  "Released" : Is_Select_Released,
                                                  "Shipped" : Is_Select_Shipped,
-                                                 "Onsite" : Is_Select_Onsite
+                                                 "Onsite" : Is_Select_Onsite,
+                                                 "ReleasedNot" : Is_Select_NotReleased,
+                                                 "ShippedNot" : Is_Select_NotShipped,
+                                                 "OnsiteNot" : Is_Select_NotOnsite
                                                     ]
             NotificationCenter.default.post(name: NSNotification.Name.selected_Filter, object: nil, userInfo: filterData as? [AnyHashable : Any])
             DEFAULTS.Set_View_Filter(arr_Places: ViewFilterData)
@@ -248,23 +281,65 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
         }else if tableView == tblPurchaseOrder {
             if searchActive && self.searchPurchaseOrder.text!.trimmed != "" {
                 cell.textLabel?.text = Search_PurchaseOrder[indexPath.row].poNo!
+                if self.Indexes_Search_PurchaseOrder.contains(indexPath.row)
+                {
+                    cell.accessoryType = UITableViewCell.AccessoryType.checkmark
+                } else {
+                    cell.accessoryType = UITableViewCell.AccessoryType.none
+                }
             }else {
                 cell.textLabel?.text = Arr_PurchaseOrder[indexPath.row].poNo!
+                if self.Indexes_PurchaseOrder.contains(indexPath.row)
+                {
+                    cell.accessoryType = UITableViewCell.AccessoryType.checkmark
+                } else {
+                    cell.accessoryType = UITableViewCell.AccessoryType.none
+                }
             }
         }else if tableView == tblStructure {
             if searchActive && self.searchStructure.text!.trimmed != "" {
                 cell.textLabel?.text = Search_Strucher[indexPath.row].structure!
+                if self.Indexes_Search_Strucher.contains(indexPath.row)
+                {
+                    cell.accessoryType = UITableViewCell.AccessoryType.checkmark
+                } else {
+                    cell.accessoryType = UITableViewCell.AccessoryType.none
+                }
             }else {
                 cell.textLabel?.text = Arr_Strucher[indexPath.row].structure!
+                if self.Indexes_Strucher.contains(indexPath.row)
+                {
+                    cell.accessoryType = UITableViewCell.AccessoryType.checkmark
+                } else {
+                    cell.accessoryType = UITableViewCell.AccessoryType.none
+                }
             }
         }else if tableView == tblPackingList {
             if searchActive && self.searchPackingList.text!.trimmed != "" {
                 cell.textLabel?.text = Search_PackingList[indexPath.row].packingList!
+                if self.Indexes_Search_PackingList.contains(indexPath.row)
+                {
+                    cell.accessoryType = UITableViewCell.AccessoryType.checkmark
+                } else {
+                    cell.accessoryType = UITableViewCell.AccessoryType.none
+                }
             }else {
                 cell.textLabel?.text = Arr_PackingList[indexPath.row].packingList!
+                if self.Indexes_PackingList.contains(indexPath.row)
+                {
+                    cell.accessoryType = UITableViewCell.AccessoryType.checkmark
+                } else {
+                    cell.accessoryType = UITableViewCell.AccessoryType.none
+                }
             }
         }else { // tblmark
             cell.textLabel?.text = Arr_Mark[indexPath.row].mark!
+            if self.Indexes_Mark.contains(indexPath.row)
+            {
+                cell.accessoryType = UITableViewCell.AccessoryType.checkmark
+            } else {
+                cell.accessoryType = UITableViewCell.AccessoryType.none
+            }
         }
         return cell
     }
@@ -294,10 +369,14 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
                         var arrdata = String()
                         arrdata = Arr_PurchaseOrder[indexPath.row].poNo!
                         arrPurchaseOrder.removeAll(where: { $0 == arrdata})
+                        let indexOfItemToRemove = self.Indexes_PurchaseOrder.index(of: indexPath.row)
+                        self.Indexes_PurchaseOrder.remove(at: indexOfItemToRemove!)
                      }else{
                         var arrdata = String()
                         arrdata = Search_PurchaseOrder[indexPath.row].poNo!
                         arrSearch_PurchaseOrder.removeAll(where: { $0 == arrdata})
+                        let indexOfItemToRemove = self.Indexes_Search_PurchaseOrder.index(of: indexPath.row)
+                        self.Indexes_Search_PurchaseOrder.remove(at: indexOfItemToRemove!)
                     }
                 } else {
                     cell.accessoryType = .checkmark
@@ -305,11 +384,17 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
                         var arrdata = [String]()
                         arrdata.append(Arr_PurchaseOrder[indexPath.row].poNo!)
                         arrPurchaseOrder.append(contentsOf: arrdata)
+                        var index : [Int] = []
+                        index.append(indexPath.row)
+                        self.Indexes_PurchaseOrder.append(contentsOf: index)
                         selectcellrow(tableview: tblPurchaseOrder, indexPath: indexPath)
                     } else {
                         var arrdata = [String]()
                         arrdata.append(Search_PurchaseOrder[indexPath.row].poNo!)
                         arrSearch_PurchaseOrder.append(contentsOf: arrdata)
+                        var index : [Int] = []
+                        index.append(indexPath.row)
+                        self.Indexes_Search_Strucher.append(contentsOf: index)
                         selectcellrow(tableview: tblPurchaseOrder, indexPath: indexPath)
                     }
                 }
@@ -326,10 +411,16 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
                         var arrdata = String()
                         arrdata = Arr_Strucher[indexPath.row].structure!
                         arrStrucher.removeAll(where: { $0 == arrdata})
+                        cell.isSelected = false
+                        let indexOfItemToRemove = self.Indexes_Strucher.index(of: indexPath.row)
+                        self.Indexes_Strucher.remove(at: indexOfItemToRemove!)
                      } else {
+                        cell.isSelected = false
                         var arrdata = String()
                         arrdata = Search_Strucher[indexPath.row].structure!
                         arrSearch_Strucher.removeAll(where: { $0 == arrdata})
+                        let indexOfItemToRemove = self.Indexes_Search_Strucher.index(of: indexPath.row)
+                        self.Indexes_Search_Strucher.remove(at: indexOfItemToRemove!)
                     }
                 } else {
                     cell.accessoryType = .checkmark
@@ -337,11 +428,17 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
                         var arrdata = [String]()
                         arrdata.append(Arr_Strucher[indexPath.row].structure!)
                         arrStrucher.append(contentsOf: arrdata)
+                        var index : [Int] = []
+                        index.append(indexPath.row)
+                        self.Indexes_Strucher.append(contentsOf: index)
                         selectcellrow(tableview: tblStructure, indexPath: indexPath)
                     } else {
                         var arrdata = [String]()
                         arrdata.append(Search_Strucher[indexPath.row].structure!)
                         arrSearch_Strucher.append(contentsOf: arrdata)
+                        var index : [Int] = []
+                        index.append(indexPath.row)
+                        self.Indexes_Search_Strucher.append(contentsOf: index)
                         selectcellrow(tableview: tblStructure, indexPath: indexPath)
                     }
                 }
@@ -357,10 +454,14 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
                         var arrdata = String()
                         arrdata = Arr_PackingList[indexPath.row].packingList!
                         arrPackingList.removeAll(where: { $0 == arrdata})
+                        let indexOfItemToRemove = self.Indexes_PackingList.index(of: indexPath.row)
+                        self.Indexes_PackingList.remove(at: indexOfItemToRemove!)
                     } else {
                         var arrdata = String()
                         arrdata = Search_PackingList[indexPath.row].packingList!
                         arrSearch_PackingList.removeAll(where: { $0 == arrdata})
+                        let indexOfItemToRemove = self.Indexes_Search_PackingList.index(of: indexPath.row)
+                        self.Indexes_Search_PackingList.remove(at: indexOfItemToRemove!)
                     }
                 } else{
                     cell.accessoryType = .checkmark
@@ -368,11 +469,17 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
                         var arrdata = [String]()
                         arrdata.append(Arr_PackingList[indexPath.row].packingList!)
                         arrPackingList.append(contentsOf: arrdata)
+                        var index : [Int] = []
+                        index.append(indexPath.row)
+                        self.Indexes_PackingList.append(contentsOf: index)
                         selectcellrow(tableview: tblPackingList, indexPath: indexPath)
                     } else {
                         var arrdata = [String]()
                         arrdata.append(Search_PackingList[indexPath.row].packingList!)
                         arrSearch_PackingList.append(contentsOf: arrdata)
+                        var index : [Int] = []
+                        index.append(indexPath.row)
+                        self.Indexes_Search_PackingList.append(contentsOf: index)
                         selectcellrow(tableview: tblPackingList, indexPath: indexPath)
                     }
                 }
@@ -387,12 +494,14 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
                         var arrdata = String()
                         arrdata = Arr_Mark[indexPath.row].mark!
                         arrMark.removeAll(where: { $0 == arrdata})
-                        print(arrMark)
+                        let indexOfItemToRemove = self.Indexes_Mark.index(of: indexPath.row)
+                        self.Indexes_Mark.remove(at: indexOfItemToRemove!)
                      } else {
                         var arrdata = String()
                         arrdata = Search_Mark[indexPath.row].mark!
                         arrSearch_Mark.removeAll(where: { $0 == arrdata})
-                        print(arrMark)
+                        let indexOfItemToRemove = self.Indexes_Search_Mark.index(of: indexPath.row)
+                        self.Indexes_Search_Mark.remove(at: indexOfItemToRemove!)
                     }
                 } else {
                     cell.accessoryType = .checkmark
@@ -400,73 +509,77 @@ extension DFiltersVC : UITableViewDelegate,UITableViewDataSource {
                         var arrdata = [String]()
                         arrdata.append(Arr_Mark[indexPath.row].mark!)
                         arrMark.append(contentsOf: arrdata)
+                        var index : [Int] = []
+                        index.append(indexPath.row)
+                        self.Indexes_Mark.append(contentsOf: index)
                         selectcellrow(tableview: tblMark, indexPath: indexPath)
                     } else {
                         var arrdata = [String]()
                         arrdata.append(Search_Mark[indexPath.row].mark!)
                         arrSearch_Mark.append(contentsOf: arrdata)
+                        var index : [Int] = []
+                        index.append(indexPath.row)
+                        self.Indexes_Search_Mark.append(contentsOf: index)
                         selectcellrow(tableview: tblMark, indexPath: indexPath)
                     }
                 }
             }
         }
     }
-        func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-            if tableView == tblproject {
-                self.tblproject.cellForRow(at: indexPath)?.accessoryType = .none
-            } else if tableView == tblPurchaseOrder {
-                if let cell = tableView.cellForRow(at: indexPath.row) {
-                     if Search_PurchaseOrder.isEmpty  {
-                        var arrdata = String()
-                        arrdata = Arr_PurchaseOrder[indexPath.row].poNo!
-                        arrPurchaseOrder.removeAll(where: { $0 == arrdata})
-                     }else{
-                        var arrdata = String()
-                        arrdata = Search_PurchaseOrder[indexPath.row].poNo!
-                        arrSearch_PurchaseOrder.removeAll(where: { $0 == arrdata})
-                    }
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if tableView == tblproject {
+            self.tblproject.cellForRow(at: indexPath)?.accessoryType = .none
+        } else if tableView == tblPurchaseOrder {
+            if let cell = tableView.cellForRow(at: indexPath.row) {
+                 if Search_PurchaseOrder.isEmpty  {
+                    var arrdata = String()
+                    arrdata = Arr_PurchaseOrder[indexPath.row].poNo!
+                    arrPurchaseOrder.removeAll(where: { $0 == arrdata})
+                 }else{
+                    var arrdata = String()
+                    arrdata = Search_PurchaseOrder[indexPath.row].poNo!
+                    arrSearch_PurchaseOrder.removeAll(where: { $0 == arrdata})
                 }
-            } else if tableView == tblStructure {
-                if let cell = tableView.cellForRow(at: indexPath.row) {
-                     if Search_Strucher.isEmpty {
-                        var arrdata = String()
-                        arrdata = Arr_Strucher[indexPath.row].structure!
-                        arrStrucher.removeAll(where: { $0 == arrdata})
-                     } else {
-                        var arrdata = String()
-                        arrdata = Search_Strucher[indexPath.row].structure!
-                        arrSearch_Strucher.removeAll(where: { $0 == arrdata})
-                    }
+            }
+        } else if tableView == tblStructure {
+            if let cell = tableView.cellForRow(at: indexPath.row) {
+                 if Search_Strucher.isEmpty {
+                    var arrdata = String()
+                    arrdata = Arr_Strucher[indexPath.row].structure!
+                    arrStrucher.removeAll(where: { $0 == arrdata})
+                 } else {
+                    var arrdata = String()
+                    arrdata = Search_Strucher[indexPath.row].structure!
+                    arrSearch_Strucher.removeAll(where: { $0 == arrdata})
                 }
-            } else if tableView == tblPackingList {
-                 if let cell = tableView.cellForRow(at: indexPath.row) {
-                    if Search_PackingList.isEmpty {
-                        var arrdata = String()
-                        arrdata = Arr_PackingList[indexPath.row].packingList!
-                        arrPackingList.removeAll(where: { $0 == arrdata})
-                    } else {
-                        var arrdata = String()
-                        arrdata = Search_PackingList[indexPath.row].packingList!
-                        arrSearch_PackingList.removeAll(where: { $0 == arrdata})
-                    }
+            }
+        } else if tableView == tblPackingList {
+             if let cell = tableView.cellForRow(at: indexPath.row) {
+                if Search_PackingList.isEmpty {
+                    var arrdata = String()
+                    arrdata = Arr_PackingList[indexPath.row].packingList!
+                    arrPackingList.removeAll(where: { $0 == arrdata})
+                } else {
+                    var arrdata = String()
+                    arrdata = Search_PackingList[indexPath.row].packingList!
+                    arrSearch_PackingList.removeAll(where: { $0 == arrdata})
                 }
-            } else if tableView == tblMark {
-                 if let cell = tableView.cellForRow(at: indexPath.row) {
-                     if Search_Mark.isEmpty {
-                        var arrdata = String()
-                        arrdata = Arr_Mark[indexPath.row].mark!
-                        arrMark.removeAll(where: { $0 == arrdata})
-                        print(arrMark)
-                     } else {
-                        var arrdata = String()
-                        arrdata = Search_Mark[indexPath.row].mark!
-                        arrSearch_Mark.removeAll(where: { $0 == arrdata})
-                        print(arrMark)
-                    }
+            }
+        } else if tableView == tblMark {
+             if let cell = tableView.cellForRow(at: indexPath.row) {
+                 if Search_Mark.isEmpty {
+                    var arrdata = String()
+                    arrdata = Arr_Mark[indexPath.row].mark!
+                    arrMark.removeAll(where: { $0 == arrdata})
+                 } else {
+                    var arrdata = String()
+                    arrdata = Search_Mark[indexPath.row].mark!
+                    arrSearch_Mark.removeAll(where: { $0 == arrdata})
                 }
             }
         }
     }
+}
 extension DFiltersVC {
     func selectcellrow(tableview : UITableView , indexPath : IndexPath) {
         if tableview == tblproject {
@@ -483,6 +596,14 @@ extension DFiltersVC {
                 arrSearch_PackingList.removeAll()
                 arrMark.removeAll()
                 arrSearch_Mark.removeAll()
+                Indexes_Search_PurchaseOrder.removeAll()
+                Indexes_PurchaseOrder.removeAll()
+                Indexes_Search_Strucher.removeAll()
+                Indexes_Strucher.removeAll()
+                Indexes_Search_PackingList.removeAll()
+                Indexes_PackingList.removeAll()
+                Indexes_Search_Mark.removeAll()
+                Indexes_Mark.removeAll()
             } else {
                 arrProject.removeAll()
                 var array_Search_Project = [String]()
@@ -496,7 +617,14 @@ extension DFiltersVC {
                 arrSearch_PackingList.removeAll()
                 arrMark.removeAll()
                 arrSearch_Mark.removeAll()
-
+                Indexes_Search_PurchaseOrder.removeAll()
+                Indexes_PurchaseOrder.removeAll()
+                Indexes_Search_Strucher.removeAll()
+                Indexes_Strucher.removeAll()
+                Indexes_Search_PackingList.removeAll()
+                Indexes_PackingList.removeAll()
+                Indexes_Search_Mark.removeAll()
+                Indexes_Mark.removeAll()
             }
         } else if tableview == tblPurchaseOrder {
             if Search_PurchaseOrder.isEmpty {
@@ -507,6 +635,14 @@ extension DFiltersVC {
                 arrSearch_PackingList.removeAll()
                 arrMark.removeAll()
                 arrSearch_Mark.removeAll()
+                Indexes_Search_PurchaseOrder.removeAll()
+                Indexes_Search_Strucher.removeAll()
+                Indexes_Strucher.removeAll()
+                Indexes_Search_PackingList.removeAll()
+                Indexes_PackingList.removeAll()
+                Indexes_Search_Mark.removeAll()
+                Indexes_Mark.removeAll()
+
             } else {
                 arrPurchaseOrder.removeAll()
                 arrStrucher.removeAll()
@@ -515,6 +651,13 @@ extension DFiltersVC {
                 arrSearch_PackingList.removeAll()
                 arrMark.removeAll()
                 arrSearch_Mark.removeAll()
+                Indexes_PurchaseOrder.removeAll()
+                Indexes_Search_Strucher.removeAll()
+                Indexes_Strucher.removeAll()
+                Indexes_Search_PackingList.removeAll()
+                Indexes_PackingList.removeAll()
+                Indexes_Search_Mark.removeAll()
+                Indexes_Mark.removeAll()
             }
         } else if tableview == tblStructure {
             if Search_Strucher.isEmpty {
@@ -523,28 +666,46 @@ extension DFiltersVC {
                 arrSearch_PackingList.removeAll()
                 arrMark.removeAll()
                 arrSearch_Mark.removeAll()
+                Indexes_Search_Strucher.removeAll()
+                Indexes_Search_PackingList.removeAll()
+                Indexes_PackingList.removeAll()
+                Indexes_Search_Mark.removeAll()
+                Indexes_Mark.removeAll()
             } else {
                 arrStrucher.removeAll()
                 arrPackingList.removeAll()
                 arrSearch_PackingList.removeAll()
                 arrMark.removeAll()
                 arrSearch_Mark.removeAll()
+                Indexes_Strucher.removeAll()
+                Indexes_Search_PackingList.removeAll()
+                Indexes_PackingList.removeAll()
+                Indexes_Search_Mark.removeAll()
+                Indexes_Mark.removeAll()
             }
         } else if tableview == tblPackingList {
             if Search_PackingList.isEmpty {
                 arrSearch_PackingList.removeAll()
                 arrMark.removeAll()
                 arrSearch_Mark.removeAll()
+                Indexes_Search_PackingList.removeAll()
+                Indexes_Search_Mark.removeAll()
+                Indexes_Mark.removeAll()
             } else {
                 arrPackingList.removeAll()
                 arrMark.removeAll()
                 arrSearch_Mark.removeAll()
+                Indexes_PackingList.removeAll()
+                Indexes_Search_Mark.removeAll()
+                Indexes_Mark.removeAll()
             }
         } else if tableview == tblMark {
             if Search_Mark.isEmpty  {
                 arrSearch_Mark.removeAll()
+                Indexes_Search_Mark.removeAll()
             } else {
                 arrMark.removeAll()
+                Indexes_Mark.removeAll()
             }
         }
     }
@@ -594,37 +755,29 @@ extension DFiltersVC : UISearchBarDelegate {
                     self.Search_Project = (NSMutableArray().mutableCopy() as! NSMutableArray) as! [FilterProjectModel]
                     let filtered = Arr_Project.filter{(($0.project!).lowercased()).contains(searchText.trimmed.lowercased())}
                     self.Search_Project = filtered
-                    print(filtered)
                     self.tblproject?.reloadData()
                 }else if searchBar == searchPurchaseOrder {
                     self.Search_PurchaseOrder = (NSMutableArray().mutableCopy() as! NSMutableArray) as! [FilterPurchaseOrderModel]
                     let filtered = Arr_PurchaseOrder.filter{(($0.poNo!).lowercased()).contains(searchText.trimmed.lowercased())}
                     self.Search_PurchaseOrder = filtered
-                    print(filtered)
                     self.tblPurchaseOrder?.reloadData()
                 }else if searchBar == searchStructure {
                         self.Search_Strucher = (NSMutableArray().mutableCopy() as! NSMutableArray) as! [FilterStructureModel]
                         let filtered = Arr_Strucher.filter{(($0.structure!).lowercased()).contains(searchText.trimmed.lowercased())}
                         self.Search_Strucher = filtered
-                        print(filtered)
                         self.tblStructure?.reloadData()
                 }else if searchBar == searchPackingList {
                     self.Search_PackingList = (NSMutableArray().mutableCopy() as! NSMutableArray) as! [FilterPackingListModel]
                     let filtered = Arr_PackingList.filter{(($0.packingList!).lowercased()).contains(searchText.trimmed.lowercased())}
                     self.Search_PackingList = filtered
-                    print(filtered)
                     self.tblPackingList?.reloadData()
                 }else if searchBar == searchMark {
                      MasterServiceCall.shareInstance.Get_FilterApi(Api_Str: Api_Urls.GET_API_filterMark, tag: 5,param: ["search": searchText.trimmed.lowercased()],ViewController: self,VC_Tag: 1)
-//                    self.Search_Mark = (NSMutableArray().mutableCopy() as! NSMutableArray) as! [MarkResult]
-//                    let filtered = Arr_Mark.filter{(($0.mark!).lowercased()).contains(searchText.trimmed.lowercased())}
-//                    self.Search_Mark = filtered
-//                    print(filtered)
-//                    self.tblMark?.reloadData()
                 }
             }
         }
     }
 }
+
 
 

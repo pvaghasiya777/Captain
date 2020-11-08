@@ -11,6 +11,8 @@ import UIKit
 class OnsiteStatusVC: UIViewController {
     //MARK:- IBOutlet
     @IBOutlet weak var tbl_data: UITableView!
+    @IBOutlet var CollectionView_Filter: UICollectionView!
+    @IBOutlet weak var view_filterBG: UIView!
     @IBOutlet weak var searchview: UISearchBar!
     @IBOutlet weak var btn_Filter: UIButton!
     @IBOutlet weak var btn_M_Released: UIButton!
@@ -24,12 +26,15 @@ class OnsiteStatusVC: UIViewController {
     @IBOutlet weak var switch_FinalRevision: UISwitch!
     //MARK:- Variable
     var Arr_onSiteStatusData : NSMutableArray = NSMutableArray()
+    var Arr_onSiteStatusChack : NSMutableArray = NSMutableArray()
+    var arrFilterData = [FilterData]()
     var Str_NextLink : String = String()
     var Str_PreviousLink : String = String()
     var KLC_obj: KLCPopup?
     var obj_popUpVC : FilterPopup!
     var textFieldTag : Int = Int()
     let datepicker = UIDatePicker()
+    var markbool = false
     //MARK:- Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +59,7 @@ class OnsiteStatusVC: UIViewController {
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             self.revealViewController()?.rearViewRevealWidth = 280
         }
+        self.CollectionView_Filter.register(UINib(nibName: "FilterCollectionCell", bundle: nil), forCellWithReuseIdentifier: "FilterCollectionCell")
         self.tbl_data.rowHeight = UITableView.automaticDimension
         self.tbl_data.tableFooterView = UIView()
         self.tbl_data.separatorStyle = .singleLine
@@ -61,18 +67,17 @@ class OnsiteStatusVC: UIViewController {
         ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: ["is_active" : switch_FinalRevision.isOn] ,tag : 0)
         let value = UIInterfaceOrientation.landscapeRight.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
+        Utils.setborder(view: view_filterBG, bordercolor: .gray, borderwidth: 1)
+        Utils.setcornerRadius(view: view_filterBG, cornerradius: 5)
     }
     //MARK:- Button Click Event
     @IBAction func btn_Click_Next(_ sender: UIButton) {
-        print("Next Button Click")
-        (Str_NextLink == "") ? Utils.showToastWithMessageAtCenter(message: "No Data Availabel")  : ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Str_NextLink, Param: ["is_active" : switch_FinalRevision.isOn],tag : 0)
+        (Str_NextLink == "") ? Utils.showToastWithMessageAtCenter(message: Strings.kNoMoreData)  : ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Str_NextLink, Param: ["is_active" : switch_FinalRevision.isOn],tag : 0)
     }
     @IBAction func btn_Click_Previous(_ sender: UIButton) {
-        print("Next Button Click")
-        (Str_PreviousLink == "") ? Utils.showToastWithMessageAtCenter(message: "No Data Availabel")  :ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Str_PreviousLink, Param: ["is_active" : switch_FinalRevision.isOn],tag : 0)
+        (Str_PreviousLink == "") ? Utils.showToastWithMessageAtCenter(message: Strings.kNoMoreData)  :ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Str_PreviousLink, Param: ["is_active" : switch_FinalRevision.isOn],tag : 0)
     }
     @IBAction func switch_FinalRevisionAction(_ sender: UISwitch) {
-        print(sender.isOn)
          ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: ["is_active" : sender.isOn],tag : 0)
     }
     //MARK:- Show Filter Popup Onsite
@@ -91,11 +96,10 @@ class OnsiteStatusVC: UIViewController {
                     let SecondFilter = (self.obj_popUpVC?.btn_SecondFilter.currentTitle!)
                     let FilterValue = (self.obj_popUpVC?.txt_ValueFilter!.text)!
                     let FilterParam = (self.obj_popUpVC?.Str_Filter_String)!
-                    print("==============Filter Value==============")
-                    print(FirstFilter!)
-                    print(SecondFilter!)
-                    print(FilterValue)
-                    print(FilterParam)
+                    var arrFilter = [FilterData]()
+                    arrFilter.append((FilterData(SelectAttribute: FirstFilter!, SelectCriteria: SecondFilter!, FilterParam: FilterParam, Value: String(FilterValue))))
+                    self.arrFilterData.append(contentsOf: arrFilter)
+                    self.CollectionView_Filter.reloadData()
                     if FirstFilter == "Project Name" || FirstFilter == "Vendor Name" || FirstFilter == "Purchase Order Number" || FirstFilter == "PL Number" {
                         ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: [FilterParam: FilterValue] ,tag : 0)
                     }else {
@@ -111,6 +115,41 @@ class OnsiteStatusVC: UIViewController {
         var dateq  = String()
         dateq = OnsiteDate()
     }
+    @objc func tbl_cell_Button_Clicks(_ sender : UIButton) {
+        if markbool == true {
+            if sender.isSelected {
+                sender.isSelected = false
+                let rowdata = Arr_onSiteStatusData[sender.tag]
+                Arr_onSiteStatusChack.remove(rowdata)
+                sender.setBackgroundImage(UIImage(named: ""), for: .normal)
+            } else {
+                // checkmark it
+                sender.isSelected = true
+                sender.setBackgroundImage(UIImage(named: "ic_check"), for: .normal)
+                Arr_onSiteStatusChack.add(Arr_onSiteStatusData[sender.tag])
+            }
+        } else {
+            sender.isSelected = false
+            Arr_onSiteStatusChack.removeAllObjects()
+            sender.setBackgroundImage(UIImage(named: ""), for: .normal)
+        }
+    }
+    //MARK:- Button CollectionView Filter Click
+    @objc func btn_RejectSelected(sender: UIButton){
+         self.arrFilterData.remove(at: sender.tag)
+        if arrFilterData == nil {
+            let rowdata = arrFilterData[sender.tag]
+            if rowdata.SelectAttribute == "Project Name" || rowdata.SelectAttribute == "Vendor Name" || rowdata.SelectAttribute == "Purchase Order Number" || rowdata.SelectAttribute == "PL Number" {
+                ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: [rowdata.FilterParam: rowdata.Value] ,tag : 0)
+            }else {
+                ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: [rowdata.FilterParam: rowdata.SelectCriteria] ,tag : 0)
+            }
+        } else {
+            ServiceCall.shareInstance.Get_onSiteStatus(ViewController: self, API_Str: Api_Urls.GET_API_onSiteStatus, Param: ["is_active" : switch_FinalRevision.isOn] ,tag : 0)
+        }
+        CollectionView_Filter.reloadData()
+    }
+
     //MARK:- Bind Buttons Clicks
     func set_Button_Target(buttons : [UIButton], action : Selector, tag : Int) {
         for i in 0..<buttons.count{
@@ -146,6 +185,8 @@ extension OnsiteStatusVC : UITableViewDataSource , UITableViewDelegate{
             let cell : OnsiteStatusCell = tableView.dequeueReusableCell(withIdentifier: "OnsiteStatusCell") as! OnsiteStatusCell
             cell.Display_Cell(viewController: self, indexPath: indexPath)
             self.set_Button_Target(buttons: [cell.btn_Action], action: #selector(self.cell_Button_Clicks(_:)), tag: indexPath.row)
+            cell.btn_Select.tag = indexPath.row
+            cell.btn_Select.addTarget(self, action: #selector(tbl_cell_Button_Clicks(_:)), for: .touchUpInside)
             cell.selectionStyle = .none
             return cell
         }
@@ -154,7 +195,6 @@ extension OnsiteStatusVC : UITableViewDataSource , UITableViewDelegate{
         return 50
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("onSiteDetail did select")
         let OnsiteDetail_VC = Config.StoryBoard.instantiateViewController(withIdentifier: "OnsiteDetailVC") as! OnsiteDetailVC
         OnsiteDetail_VC.Str_ID = String(describing: (Arr_onSiteStatusData[indexPath.row] as! onSiteStatusModel).id!)
         OnsiteDetail_VC.Str_PLNumber = String(describing: (Arr_onSiteStatusData[indexPath.row] as! onSiteStatusModel).number!)
@@ -167,12 +207,10 @@ extension OnsiteStatusVC : SWRevealViewControllerDelegate {
     // MARK: - Reveal View Controller Delagate Methods
     func revealController(_ revealController: SWRevealViewController, didMoveTo position: FrontViewPosition) {
         print(position)
-        print("Parent View")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
     func revealController(_ revealController: SWRevealViewController, willMoveTo position: FrontViewPosition) {
         print(position)
-        print("HomeVC")
         Utils.Disable_Front_ViewController(viewController: self, position: position)
     }
 }
@@ -197,5 +235,21 @@ extension OnsiteStatusVC {
         let datePicker = TextField.inputView as? UIDatePicker
         TextField.text = Utils.stringFromDate(date: datePicker?.date as! NSDate, Format: "dd-MM-yyyy" , isCapitalAMPM: false) as String
         TextField.resignFirstResponder()
+    }
+}
+// MARK: - Collection View Datasource Methods
+extension OnsiteStatusVC : UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return arrFilterData.count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: FilterCollectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: "FilterCollectionCell", for: indexPath) as! FilterCollectionCell
+        cell.DisplayCell(arr: arrFilterData, indexPath: indexPath.row)
+        cell.btn_Close.tag = indexPath.row
+        cell.btn_Close.addTarget(self, action: #selector(btn_RejectSelected), for: .touchUpInside)
+        return cell
     }
 }

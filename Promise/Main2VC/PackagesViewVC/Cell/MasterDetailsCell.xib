@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="MasterDetailsCell" customModule="Promise" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="2048" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="2048" height="60"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ESE-Pi-Qfj">
+                        <rect key="frame" x="8" y="0.0" width="1016" height="60"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Package Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nBd-cc-kII">
+                                <rect key="frame" x="4" y="2" width="100.5" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="91" id="RhD-FP-cPd"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="ZXD-fY-fLN"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kind Of Package" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oKL-Af-mbb">
+                                <rect key="frame" x="112.5" y="2" width="101.5" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="mB5-Yo-kcN"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Length (cm)" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Re7-D8-UyM">
+                                <rect key="frame" x="222" y="2" width="113.5" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="Q1j-9x-juG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Width (cm)" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Glw-Nm-usa">
+                                <rect key="frame" x="343.5" y="2" width="176.5" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="8Um-EE-QBg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Height (cm)" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GEi-uG-wTD">
+                                <rect key="frame" x="528" y="2" width="77" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="5rk-35-7cL"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gross Weight (kg)" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jYM-3F-BWH">
+                                <rect key="frame" x="613" y="2" width="77" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="sLD-9q-QEn"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Net Weight (kg)" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n7a-RE-3FY">
+                                <rect key="frame" x="698" y="2" width="99.5" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="hzE-8G-LEK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stackable" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HlT-jZ-yhM">
+                                <rect key="frame" x="805.5" y="2" width="99" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="Baw-sF-g8t"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On Deck Shipment" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FUC-Yz-Iwp">
+                                <rect key="frame" x="912.5" y="2" width="99.5" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="Hmx-3Z-G64"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="FUC-Yz-Iwp" secondAttribute="bottom" constant="2" id="0dA-Ep-3jP"/>
+                            <constraint firstItem="Glw-Nm-usa" firstAttribute="width" secondItem="GEi-uG-wTD" secondAttribute="width" multiplier="2.28571" id="388-8r-K5Y"/>
+                            <constraint firstAttribute="bottom" secondItem="nBd-cc-kII" secondAttribute="bottom" constant="2" id="4mb-0Y-Gzj"/>
+                            <constraint firstItem="oKL-Af-mbb" firstAttribute="leading" secondItem="nBd-cc-kII" secondAttribute="trailing" constant="8" id="58k-sa-jAP"/>
+                            <constraint firstItem="jYM-3F-BWH" firstAttribute="top" secondItem="ESE-Pi-Qfj" secondAttribute="top" constant="2" id="5L6-1M-oSA"/>
+                            <constraint firstAttribute="trailing" secondItem="FUC-Yz-Iwp" secondAttribute="trailing" constant="4" id="5t4-hq-YUa"/>
+                            <constraint firstItem="GEi-uG-wTD" firstAttribute="top" secondItem="ESE-Pi-Qfj" secondAttribute="top" constant="2" id="7SF-QN-kgS"/>
+                            <constraint firstItem="nBd-cc-kII" firstAttribute="width" secondItem="oKL-Af-mbb" secondAttribute="width" multiplier="0.98913" id="7U6-OF-Fis"/>
+                            <constraint firstItem="GEi-uG-wTD" firstAttribute="width" secondItem="jYM-3F-BWH" secondAttribute="width" id="7ox-8V-2x1"/>
+                            <constraint firstItem="Re7-D8-UyM" firstAttribute="width" secondItem="Glw-Nm-usa" secondAttribute="width" multiplier="0.64375" id="8b4-1Z-4we"/>
+                            <constraint firstItem="Re7-D8-UyM" firstAttribute="leading" secondItem="oKL-Af-mbb" secondAttribute="trailing" constant="8" id="9xW-Zw-XyL"/>
+                            <constraint firstAttribute="height" constant="60" id="AbU-E1-NVs"/>
+                            <constraint firstItem="HlT-jZ-yhM" firstAttribute="top" secondItem="ESE-Pi-Qfj" secondAttribute="top" constant="2" id="CHC-mJ-tTf"/>
+                            <constraint firstAttribute="bottom" secondItem="GEi-uG-wTD" secondAttribute="bottom" constant="2" id="Dl7-do-VJA"/>
+                            <constraint firstItem="FUC-Yz-Iwp" firstAttribute="top" secondItem="ESE-Pi-Qfj" secondAttribute="top" constant="2" id="FHJ-FC-7LX"/>
+                            <constraint firstItem="HlT-jZ-yhM" firstAttribute="leading" secondItem="n7a-RE-3FY" secondAttribute="trailing" constant="8" id="GtA-vR-mCS"/>
+                            <constraint firstItem="jYM-3F-BWH" firstAttribute="leading" secondItem="GEi-uG-wTD" secondAttribute="trailing" constant="8" id="I5d-dF-p3W"/>
+                            <constraint firstItem="FUC-Yz-Iwp" firstAttribute="leading" secondItem="HlT-jZ-yhM" secondAttribute="trailing" constant="8" id="JBf-oM-F1z"/>
+                            <constraint firstItem="Re7-D8-UyM" firstAttribute="top" secondItem="ESE-Pi-Qfj" secondAttribute="top" constant="2" id="LVa-Bh-DCw"/>
+                            <constraint firstAttribute="bottom" secondItem="oKL-Af-mbb" secondAttribute="bottom" constant="2" id="NBR-KQ-dgC"/>
+                            <constraint firstAttribute="width" constant="1016" id="Omr-nV-kjX"/>
+                            <constraint firstAttribute="bottom" secondItem="jYM-3F-BWH" secondAttribute="bottom" constant="2" id="QLB-2x-ibU"/>
+                            <constraint firstAttribute="bottom" secondItem="HlT-jZ-yhM" secondAttribute="bottom" constant="2" id="SJg-W7-3Nz"/>
+                            <constraint firstItem="GEi-uG-wTD" firstAttribute="leading" secondItem="Glw-Nm-usa" secondAttribute="trailing" constant="8" id="TzP-He-ZXr"/>
+                            <constraint firstItem="nBd-cc-kII" firstAttribute="leading" secondItem="ESE-Pi-Qfj" secondAttribute="leading" constant="4" id="bdS-GN-E2b"/>
+                            <constraint firstItem="nBd-cc-kII" firstAttribute="top" secondItem="ESE-Pi-Qfj" secondAttribute="top" constant="2" id="cz6-Xv-EuI"/>
+                            <constraint firstItem="Glw-Nm-usa" firstAttribute="top" secondItem="ESE-Pi-Qfj" secondAttribute="top" constant="2" id="dGM-Jz-lEK"/>
+                            <constraint firstAttribute="bottom" secondItem="n7a-RE-3FY" secondAttribute="bottom" constant="2" id="eQD-3R-klq"/>
+                            <constraint firstItem="n7a-RE-3FY" firstAttribute="top" secondItem="ESE-Pi-Qfj" secondAttribute="top" constant="2" id="fZn-z3-fqn"/>
+                            <constraint firstItem="n7a-RE-3FY" firstAttribute="leading" secondItem="jYM-3F-BWH" secondAttribute="trailing" constant="8" id="gna-eQ-xkD"/>
+                            <constraint firstItem="oKL-Af-mbb" firstAttribute="top" secondItem="ESE-Pi-Qfj" secondAttribute="top" constant="2" id="h7d-Qb-BGk"/>
+                            <constraint firstItem="HlT-jZ-yhM" firstAttribute="width" secondItem="FUC-Yz-Iwp" secondAttribute="width" id="hJD-t4-36V"/>
+                            <constraint firstItem="jYM-3F-BWH" firstAttribute="width" secondItem="n7a-RE-3FY" secondAttribute="width" multiplier="0.777778" id="hJn-bd-2jz"/>
+                            <constraint firstItem="n7a-RE-3FY" firstAttribute="width" secondItem="HlT-jZ-yhM" secondAttribute="width" id="hry-2c-YQN"/>
+                            <constraint firstAttribute="bottom" secondItem="Re7-D8-UyM" secondAttribute="bottom" constant="2" id="hva-W0-y56"/>
+                            <constraint firstItem="Glw-Nm-usa" firstAttribute="leading" secondItem="Re7-D8-UyM" secondAttribute="trailing" constant="8" id="i81-gP-xKQ"/>
+                            <constraint firstAttribute="bottom" secondItem="Glw-Nm-usa" secondAttribute="bottom" constant="2" id="jpy-5z-m0h"/>
+                            <constraint firstItem="oKL-Af-mbb" firstAttribute="width" secondItem="Re7-D8-UyM" secondAttribute="width" multiplier="0.893204" id="rin-jQ-OI7"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HmN-cB-ZDF">
+                        <rect key="frame" x="1024" y="0.0" width="1016" height="60"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Storage Symbol" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQL-BF-Vv1">
+                                <rect key="frame" x="4" y="4" width="168.5" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="153" id="42l-pM-bj2"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="38" id="7Mt-vB-ZI0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Min. Temperature ()" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d18-w5-DtP">
+                                <rect key="frame" x="180.5" y="4" width="168" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="38" id="FUT-i7-ZaG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max. Temperature ()" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VZf-Kv-gzy">
+                                <rect key="frame" x="356.5" y="4" width="147.5" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="38" id="lIb-BH-ztu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PL Sequence" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8fr-6W-omZ">
+                                <rect key="frame" x="512" y="4" width="189" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="38" id="jhO-ZM-W7b"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vendor Package" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="08g-mq-63n">
+                                <rect key="frame" x="709" y="4" width="147.5" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="38" id="yVw-Sn-oJC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Truck Number" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VWA-xo-KJF">
+                                <rect key="frame" x="864.5" y="4" width="147.5" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="38" id="feD-nL-XcT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="08g-mq-63n" firstAttribute="width" secondItem="VWA-xo-KJF" secondAttribute="width" id="0jv-oW-5gz"/>
+                            <constraint firstAttribute="bottom" secondItem="VWA-xo-KJF" secondAttribute="bottom" constant="4" id="0sb-9r-3rn"/>
+                            <constraint firstAttribute="height" constant="60" id="2Dn-pp-6iq"/>
+                            <constraint firstAttribute="bottom" secondItem="08g-mq-63n" secondAttribute="bottom" constant="4" id="7YU-VW-hqf"/>
+                            <constraint firstItem="d18-w5-DtP" firstAttribute="width" secondItem="VZf-Kv-gzy" secondAttribute="width" multiplier="1.14179" id="8uT-aA-SNV"/>
+                            <constraint firstItem="NQL-BF-Vv1" firstAttribute="top" secondItem="HmN-cB-ZDF" secondAttribute="top" constant="4" id="EzZ-iH-4kF"/>
+                            <constraint firstItem="VZf-Kv-gzy" firstAttribute="leading" secondItem="d18-w5-DtP" secondAttribute="trailing" constant="8" id="KyK-cx-g8Y"/>
+                            <constraint firstAttribute="bottom" secondItem="d18-w5-DtP" secondAttribute="bottom" constant="4" id="OWF-yN-SSt"/>
+                            <constraint firstItem="8fr-6W-omZ" firstAttribute="width" secondItem="08g-mq-63n" secondAttribute="width" multiplier="1.28358" id="T1S-Gm-bHu"/>
+                            <constraint firstItem="NQL-BF-Vv1" firstAttribute="leading" secondItem="HmN-cB-ZDF" secondAttribute="leading" constant="4" id="UXa-9a-hze"/>
+                            <constraint firstAttribute="bottom" secondItem="VZf-Kv-gzy" secondAttribute="bottom" constant="4" id="XRR-GQ-sMv"/>
+                            <constraint firstItem="NQL-BF-Vv1" firstAttribute="width" secondItem="d18-w5-DtP" secondAttribute="width" id="Xsg-UF-LJr"/>
+                            <constraint firstItem="VWA-xo-KJF" firstAttribute="top" secondItem="HmN-cB-ZDF" secondAttribute="top" constant="4" id="acf-Pu-Mik"/>
+                            <constraint firstItem="d18-w5-DtP" firstAttribute="top" secondItem="HmN-cB-ZDF" secondAttribute="top" constant="4" id="eOi-q1-q8j"/>
+                            <constraint firstItem="VZf-Kv-gzy" firstAttribute="top" secondItem="HmN-cB-ZDF" secondAttribute="top" constant="4" id="gMh-80-2qb"/>
+                            <constraint firstItem="d18-w5-DtP" firstAttribute="leading" secondItem="NQL-BF-Vv1" secondAttribute="trailing" constant="8" id="iwf-LL-GQ0"/>
+                            <constraint firstAttribute="width" constant="1016" id="jbJ-Fg-vl2"/>
+                            <constraint firstItem="VZf-Kv-gzy" firstAttribute="width" secondItem="8fr-6W-omZ" secondAttribute="width" multiplier="0.77907" id="np3-j1-BRS"/>
+                            <constraint firstItem="VWA-xo-KJF" firstAttribute="leading" secondItem="08g-mq-63n" secondAttribute="trailing" constant="8" id="pW5-Ci-iGE"/>
+                            <constraint firstAttribute="bottom" secondItem="8fr-6W-omZ" secondAttribute="bottom" constant="4" id="q2T-ef-pkq"/>
+                            <constraint firstItem="8fr-6W-omZ" firstAttribute="top" secondItem="HmN-cB-ZDF" secondAttribute="top" constant="4" id="sRI-2h-mKW"/>
+                            <constraint firstItem="08g-mq-63n" firstAttribute="top" secondItem="HmN-cB-ZDF" secondAttribute="top" constant="4" id="sk5-xR-emk"/>
+                            <constraint firstItem="08g-mq-63n" firstAttribute="leading" secondItem="8fr-6W-omZ" secondAttribute="trailing" constant="8" id="usT-Ww-PWc"/>
+                            <constraint firstAttribute="bottom" secondItem="NQL-BF-Vv1" secondAttribute="bottom" constant="4" id="x6V-Zq-BdJ"/>
+                            <constraint firstItem="8fr-6W-omZ" firstAttribute="leading" secondItem="VZf-Kv-gzy" secondAttribute="trailing" constant="8" id="yCM-8Q-0Zk"/>
+                            <constraint firstAttribute="trailing" secondItem="VWA-xo-KJF" secondAttribute="trailing" constant="4" id="yj0-fD-vXp"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ESE-Pi-Qfj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="LeO-hI-GwR"/>
+                    <constraint firstItem="HmN-cB-ZDF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Mv7-fT-TQm"/>
+                    <constraint firstAttribute="bottom" secondItem="HmN-cB-ZDF" secondAttribute="bottom" id="ZIf-vg-Xbp"/>
+                    <constraint firstItem="HmN-cB-ZDF" firstAttribute="leading" secondItem="ESE-Pi-Qfj" secondAttribute="trailing" id="tN3-ca-Exm"/>
+                    <constraint firstItem="ESE-Pi-Qfj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="tjR-N2-rg4"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <point key="canvasLocation" x="-373.91304347826087" y="62.276785714285708"/>
+        </tableViewCell>
+    </objects>
+</document>

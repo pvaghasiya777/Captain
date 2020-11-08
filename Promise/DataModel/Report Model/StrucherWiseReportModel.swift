@@ -8,42 +8,42 @@ import Foundation
 
 class StrucherWiseReportModel : NSObject, NSCoding{
 
-    var balancePieces : Int!
-    var balanceWeight : Float!
-    var boltPieceProgress : Int!
-    var boltPieces : Int!
-    var boltPiecesReleased : Int!
-    var boltWeight : Float!
-    var boltWeightReleased : Int!
-    var extraPiecesReleased : Int!
-    var extraWeightReleased : Int!
+    var balancePieces : Double!
+    var balanceWeight : Double!
+    var boltPieceProgress : Double!
+    var boltPieces : Double!
+    var boltPiecesReleased : Double!
+    var boltWeight : Double!
+    var boltWeightReleased : Double!
+    var extraPiecesReleased : Double!
+    var extraWeightReleased : Double!
     var groupStructureName : String!
     var lot : String!
-    var mainProgressWeight : Int!
-    var mainReleasedWeight : Int!
-    var mainSteelWeight : Int!
-    var onsitePieces : Int!
-    var onsiteProgressPiece : Int!
-    var onsiteProgressWeight : Int!
-    var onsiteWeight : Int!
-    var othersProgressWeight : Int!
-    var othersReleasedWeight : Int!
-    var othersSteelWeight : Float!
-    var overallPiecesReleased : Int!
-    var overallProgressPiece : Int!
-    var overallProgressWeight : Int!
+    var mainProgressWeight : Double!
+    var mainReleasedWeight : Double!
+    var mainSteelWeight : Double!
+    var onsitePieces : Double!
+    var onsiteProgressPiece : Double!
+    var onsiteProgressWeight : Double!
+    var onsiteWeight : Double!
+    var othersProgressWeight : Double!
+    var othersReleasedWeight : Double!
+    var othersSteelWeight : Double!
+    var overallPiecesReleased : Double!
+    var overallProgressPiece : Double!
+    var overallProgressWeight : Double!
     var purchaseId : String!
     var releasedDate : String!
     var releasedStatus : String!
     var revNo : String!
-    var serialNo : Int!
-    var shippedPieces : Int!
-    var shippedProgressPiece : Int!
-    var shippedProgressWeight : Int!
-    var shippedWeight : Int!
-    var steelWeight : Float!
+    var serialNo : Double!
+    var shippedPieces : Double!
+    var shippedProgressPiece : Double!
+    var shippedProgressWeight : Double!
+    var shippedWeight : Double!
+    var steelWeight : Double!
     var structureId : String!
-    var totalPieces : Int!
+    var totalPieces : Double!
     var vendorName : String!
 
     override init() {
@@ -52,42 +52,42 @@ class StrucherWiseReportModel : NSObject, NSCoding{
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
     init(fromDictionary dictionary: [String:Any]){
-        balancePieces = dictionary["balance_pieces"] as? Int
-        balanceWeight = dictionary["balance_weight"] as? Float
-        boltPieceProgress = dictionary["bolt_piece_progress"] as? Int
-        boltPieces = dictionary["bolt_pieces"] as? Int
-        boltPiecesReleased = dictionary["bolt_pieces_released"] as? Int
-        boltWeight = dictionary["bolt_weight"] as? Float
-        boltWeightReleased = dictionary["bolt_weight_released"] as? Int
-        extraPiecesReleased = dictionary["extra_pieces_released"] as? Int
-        extraWeightReleased = dictionary["extra_weight_released"] as? Int
+        balancePieces = dictionary["balance_pieces"] as? Double
+        balanceWeight = dictionary["balance_weight"] as? Double
+        boltPieceProgress = dictionary["bolt_piece_progress"] as? Double
+        boltPieces = dictionary["bolt_pieces"] as? Double
+        boltPiecesReleased = dictionary["bolt_pieces_released"] as? Double
+        boltWeight = dictionary["bolt_weight"] as? Double
+        boltWeightReleased = dictionary["bolt_weight_released"] as? Double
+        extraPiecesReleased = dictionary["extra_pieces_released"] as? Double
+        extraWeightReleased = dictionary["extra_weight_released"] as? Double
         groupStructureName = dictionary["group_structure_name"] as? String
         lot = dictionary["lot"] as? String
-        mainProgressWeight = dictionary["main_progress_weight"] as? Int
-        mainReleasedWeight = dictionary["main_released_weight"] as? Int
-        mainSteelWeight = dictionary["main_steel_weight"] as? Int
-        onsitePieces = dictionary["onsite_pieces"] as? Int
-        onsiteProgressPiece = dictionary["onsite_progress_piece"] as? Int
-        onsiteProgressWeight = dictionary["onsite_progress_weight"] as? Int
-        onsiteWeight = dictionary["onsite_weight"] as? Int
-        othersProgressWeight = dictionary["others_progress_weight"] as? Int
-        othersReleasedWeight = dictionary["others_released_weight"] as? Int
-        othersSteelWeight = dictionary["others_steel_weight"] as? Float
-        overallPiecesReleased = dictionary["overall_pieces_released"] as? Int
-        overallProgressPiece = dictionary["overall_progress_piece"] as? Int
-        overallProgressWeight = dictionary["overall_progress_weight"] as? Int
+        mainProgressWeight = dictionary["main_progress_weight"] as? Double
+        mainReleasedWeight = dictionary["main_released_weight"] as? Double
+        mainSteelWeight = dictionary["main_steel_weight"] as? Double
+        onsitePieces = dictionary["onsite_pieces"] as? Double
+        onsiteProgressPiece = dictionary["onsite_progress_piece"] as? Double
+        onsiteProgressWeight = dictionary["onsite_progress_weight"] as? Double
+        onsiteWeight = dictionary["onsite_weight"] as? Double
+        othersProgressWeight = dictionary["others_progress_weight"] as? Double
+        othersReleasedWeight = dictionary["others_released_weight"] as? Double
+        othersSteelWeight = dictionary["others_steel_weight"] as? Double
+        overallPiecesReleased = dictionary["overall_pieces_released"] as? Double
+        overallProgressPiece = dictionary["overall_progress_piece"] as? Double
+        overallProgressWeight = dictionary["overall_progress_weight"] as? Double
         purchaseId = dictionary["purchase_id"] as? String
         releasedDate = dictionary["released_date"] as? String
         releasedStatus = dictionary["released_status"] as? String
         revNo = dictionary["rev_no"] as? String
-        serialNo = dictionary["serial_no"] as? Int
-        shippedPieces = dictionary["shipped_pieces"] as? Int
-        shippedProgressPiece = dictionary["shipped_progress_piece"] as? Int
-        shippedProgressWeight = dictionary["shipped_progress_weight"] as? Int
-        shippedWeight = dictionary["shipped_weight"] as? Int
-        steelWeight = dictionary["steel_weight"] as? Float
+        serialNo = dictionary["serial_no"] as? Double
+        shippedPieces = dictionary["shipped_pieces"] as? Double
+        shippedProgressPiece = dictionary["shipped_progress_piece"] as? Double
+        shippedProgressWeight = dictionary["shipped_progress_weight"] as? Double
+        shippedWeight = dictionary["shipped_weight"] as? Double
+        steelWeight = dictionary["steel_weight"] as? Double
         structureId = dictionary["structure_id"] as? String
-        totalPieces = dictionary["total_pieces"] as? Int
+        totalPieces = dictionary["total_pieces"] as? Double
         vendorName = dictionary["vendor_name"] as? String
     }
     func Load_Data_To_Array(arr_Data:NSMutableArray) -> NSMutableArray {
@@ -224,42 +224,42 @@ class StrucherWiseReportModel : NSObject, NSCoding{
      */
     @objc required init(coder aDecoder: NSCoder)
     {
-        balancePieces = aDecoder.decodeObject(forKey: "balance_pieces") as? Int
-        balanceWeight = aDecoder.decodeObject(forKey: "balance_weight") as? Float
-        boltPieceProgress = aDecoder.decodeObject(forKey: "bolt_piece_progress") as? Int
-        boltPieces = aDecoder.decodeObject(forKey: "bolt_pieces") as? Int
-        boltPiecesReleased = aDecoder.decodeObject(forKey: "bolt_pieces_released") as? Int
-        boltWeight = aDecoder.decodeObject(forKey: "bolt_weight") as? Float
-        boltWeightReleased = aDecoder.decodeObject(forKey: "bolt_weight_released") as? Int
-        extraPiecesReleased = aDecoder.decodeObject(forKey: "extra_pieces_released") as? Int
-        extraWeightReleased = aDecoder.decodeObject(forKey: "extra_weight_released") as? Int
+        balancePieces = aDecoder.decodeObject(forKey: "balance_pieces") as? Double
+        balanceWeight = aDecoder.decodeObject(forKey: "balance_weight") as? Double
+        boltPieceProgress = aDecoder.decodeObject(forKey: "bolt_piece_progress") as? Double
+        boltPieces = aDecoder.decodeObject(forKey: "bolt_pieces") as? Double
+        boltPiecesReleased = aDecoder.decodeObject(forKey: "bolt_pieces_released") as? Double
+        boltWeight = aDecoder.decodeObject(forKey: "bolt_weight") as? Double
+        boltWeightReleased = aDecoder.decodeObject(forKey: "bolt_weight_released") as? Double
+        extraPiecesReleased = aDecoder.decodeObject(forKey: "extra_pieces_released") as? Double
+        extraWeightReleased = aDecoder.decodeObject(forKey: "extra_weight_released") as? Double
         groupStructureName = aDecoder.decodeObject(forKey: "group_structure_name") as? String
         lot = aDecoder.decodeObject(forKey: "lot") as? String
-        mainProgressWeight = aDecoder.decodeObject(forKey: "main_progress_weight") as? Int
-        mainReleasedWeight = aDecoder.decodeObject(forKey: "main_released_weight") as? Int
-        mainSteelWeight = aDecoder.decodeObject(forKey: "main_steel_weight") as? Int
-        onsitePieces = aDecoder.decodeObject(forKey: "onsite_pieces") as? Int
-        onsiteProgressPiece = aDecoder.decodeObject(forKey: "onsite_progress_piece") as? Int
-        onsiteProgressWeight = aDecoder.decodeObject(forKey: "onsite_progress_weight") as? Int
-        onsiteWeight = aDecoder.decodeObject(forKey: "onsite_weight") as? Int
-        othersProgressWeight = aDecoder.decodeObject(forKey: "others_progress_weight") as? Int
-        othersReleasedWeight = aDecoder.decodeObject(forKey: "others_released_weight") as? Int
-        othersSteelWeight = aDecoder.decodeObject(forKey: "others_steel_weight") as? Float
-        overallPiecesReleased = aDecoder.decodeObject(forKey: "overall_pieces_released") as? Int
-        overallProgressPiece = aDecoder.decodeObject(forKey: "overall_progress_piece") as? Int
-        overallProgressWeight = aDecoder.decodeObject(forKey: "overall_progress_weight") as? Int
+        mainProgressWeight = aDecoder.decodeObject(forKey: "main_progress_weight") as? Double
+        mainReleasedWeight = aDecoder.decodeObject(forKey: "main_released_weight") as? Double
+        mainSteelWeight = aDecoder.decodeObject(forKey: "main_steel_weight") as? Double
+        onsitePieces = aDecoder.decodeObject(forKey: "onsite_pieces") as? Double
+        onsiteProgressPiece = aDecoder.decodeObject(forKey: "onsite_progress_piece") as? Double
+        onsiteProgressWeight = aDecoder.decodeObject(forKey: "onsite_progress_weight") as? Double
+        onsiteWeight = aDecoder.decodeObject(forKey: "onsite_weight") as? Double
+        othersProgressWeight = aDecoder.decodeObject(forKey: "others_progress_weight") as? Double
+        othersReleasedWeight = aDecoder.decodeObject(forKey: "others_released_weight") as? Double
+        othersSteelWeight = aDecoder.decodeObject(forKey: "others_steel_weight") as? Double
+        overallPiecesReleased = aDecoder.decodeObject(forKey: "overall_pieces_released") as? Double
+        overallProgressPiece = aDecoder.decodeObject(forKey: "overall_progress_piece") as? Double
+        overallProgressWeight = aDecoder.decodeObject(forKey: "overall_progress_weight") as? Double
         purchaseId = aDecoder.decodeObject(forKey: "purchase_id") as? String
         releasedDate = aDecoder.decodeObject(forKey: "released_date") as? String
         releasedStatus = aDecoder.decodeObject(forKey: "released_status") as? String
         revNo = aDecoder.decodeObject(forKey: "rev_no") as? String
-        serialNo = aDecoder.decodeObject(forKey: "serial_no") as? Int
-        shippedPieces = aDecoder.decodeObject(forKey: "shipped_pieces") as? Int
-        shippedProgressPiece = aDecoder.decodeObject(forKey: "shipped_progress_piece") as? Int
-        shippedProgressWeight = aDecoder.decodeObject(forKey: "shipped_progress_weight") as? Int
-        shippedWeight = aDecoder.decodeObject(forKey: "shipped_weight") as? Int
-        steelWeight = aDecoder.decodeObject(forKey: "steel_weight") as? Float
+        serialNo = aDecoder.decodeObject(forKey: "serial_no") as? Double
+        shippedPieces = aDecoder.decodeObject(forKey: "shipped_pieces") as? Double
+        shippedProgressPiece = aDecoder.decodeObject(forKey: "shipped_progress_piece") as? Double
+        shippedProgressWeight = aDecoder.decodeObject(forKey: "shipped_progress_weight") as? Double
+        shippedWeight = aDecoder.decodeObject(forKey: "shipped_weight") as? Double
+        steelWeight = aDecoder.decodeObject(forKey: "steel_weight") as? Double
         structureId = aDecoder.decodeObject(forKey: "structure_id") as? String
-        totalPieces = aDecoder.decodeObject(forKey: "total_pieces") as? Int
+        totalPieces = aDecoder.decodeObject(forKey: "total_pieces") as? Double
         vendorName = aDecoder.decodeObject(forKey: "vendor_name") as? String
     }
 

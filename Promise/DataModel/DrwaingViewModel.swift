@@ -164,3 +164,213 @@ struct DrwaingViewModel : Codable {
     }
 
 }
+public class Json4Swift_Base {
+    public var id : Int?
+    public var mark : String?
+    public var shop_drawing_id : Int?
+    public var rev_no : String?
+    public var document_no : String?
+    public var wbs : String?
+    public var construction_area : String?
+    public var quantity : Int?
+    public var mark_length : String?
+    public var profile_unit_weight : Double?
+    public var mark_unit_weight : Double?
+    public var mr_no : String?
+    public var mark_surface_paint : Double?
+    public var profile : String?
+    public var material_grade : String?
+    public var structure_role : String?
+    public var painting_unit_weight : Double?
+    public var mark_surface_fireproofing : Int?
+    public var unit : String?
+    public var fireproofing_unit_weight : Int?
+    public var shop_drawing_no : String?
+    public var mark_commodity_code : String?
+    public var paint_commodity_code : String?
+    public var fire_commodity_code : String?
+    public var mark_ident_code : String?
+    public var paint_ident_code : String?
+    public var fire_ident_code : String?
+    public var is_current_detail : Bool?
+    public var po_ref_mark : String?
+    public var po_ref_paint : String?
+    public var po_ref_fireproofing : String?
+    public var hs_code : String?
+    public var pl_number : String?
+    public var structure : String?
+    public var priority : String?
+    public var mark_total_weight : Double?
+    public var painting_total_weight : Double?
+    public var fireproofing_total_weight : Int?
+    public var is_active : Bool?
+    public var is_bolt : Bool?
+    public var available_quantity : Int?
+    public var pl_quantity : Int?
+    public var lot : String?
+    public var sub_lot : String?
+    public var excess_quantity : Int?
+    public var mark_sequence : Int?
+    public var sub_area : String?
+    public var po_uom : String?
+    public var single_mark_qty_po_uom : Int?
+    public var total_mark_qty_po_uom : Int?
+    public var mark_unit_price : String?
+    public var painting_unit_price : String?
+    public var fireproofing_unit_price : String?
+
+/**
+    Returns an array of models based on given dictionary.
+    
+    Sample usage:
+    let json4Swift_Base_list = Json4Swift_Base.modelsFromDictionaryArray(someDictionaryArrayFromJSON)
+
+    - parameter array:  NSArray from JSON dictionary.
+
+    - returns: Array of Json4Swift_Base Instances.
+*/
+    public class func modelsFromDictionaryArray(array:NSArray) -> [Json4Swift_Base]
+    {
+        var models:[Json4Swift_Base] = []
+        for item in array
+        {
+            models.append(Json4Swift_Base(dictionary: item as! NSDictionary)!)
+        }
+        return models
+    }
+
+/**
+    Constructs the object based on the given dictionary.
+    
+    Sample usage:
+    let json4Swift_Base = Json4Swift_Base(someDictionaryFromJSON)
+
+    - parameter dictionary:  NSDictionary from JSON.
+
+    - returns: Json4Swift_Base Instance.
+*/
+    required public init?(dictionary: NSDictionary) {
+
+        id = dictionary["id"] as? Int
+        mark = dictionary["mark"] as? String
+        shop_drawing_id = dictionary["shop_drawing_id"] as? Int
+        rev_no = dictionary["rev_no"] as? String
+        document_no = dictionary["document_no"] as? String
+        wbs = dictionary["wbs"] as? String
+        construction_area = dictionary["construction_area"] as? String
+        quantity = dictionary["quantity"] as? Int
+        mark_length = dictionary["mark_length"] as? String
+        profile_unit_weight = dictionary["profile_unit_weight"] as? Double
+        mark_unit_weight = dictionary["mark_unit_weight"] as? Double
+        mr_no = dictionary["mr_no"] as? String
+        mark_surface_paint = dictionary["mark_surface_paint"] as? Double
+        profile = dictionary["profile"] as? String
+        material_grade = dictionary["material_grade"] as? String
+        structure_role = dictionary["structure_role"] as? String
+        painting_unit_weight = dictionary["painting_unit_weight"] as? Double
+        mark_surface_fireproofing = dictionary["mark_surface_fireproofing"] as? Int
+        unit = dictionary["unit"] as? String
+        fireproofing_unit_weight = dictionary["fireproofing_unit_weight"] as? Int
+        shop_drawing_no = dictionary["shop_drawing_no"] as? String
+        mark_commodity_code = dictionary["mark_commodity_code"] as? String
+        paint_commodity_code = dictionary["paint_commodity_code"] as? String
+        fire_commodity_code = dictionary["fire_commodity_code"] as? String
+        mark_ident_code = dictionary["mark_ident_code"] as? String
+        paint_ident_code = dictionary["paint_ident_code"] as? String
+        fire_ident_code = dictionary["fire_ident_code"] as? String
+        is_current_detail = dictionary["is_current_detail"] as? Bool
+        po_ref_mark = dictionary["po_ref_mark"] as? String
+        po_ref_paint = dictionary["po_ref_paint"] as? String
+        po_ref_fireproofing = dictionary["po_ref_fireproofing"] as? String
+        hs_code = dictionary["hs_code"] as? String
+        pl_number = dictionary["pl_number"] as? String
+        structure = dictionary["structure"] as? String
+        priority = dictionary["priority"] as? String
+        mark_total_weight = dictionary["mark_total_weight"] as? Double
+        painting_total_weight = dictionary["painting_total_weight"] as? Double
+        fireproofing_total_weight = dictionary["fireproofing_total_weight"] as? Int
+        is_active = dictionary["is_active"] as? Bool
+        is_bolt = dictionary["is_bolt"] as? Bool
+        available_quantity = dictionary["available_quantity"] as? Int
+        pl_quantity = dictionary["pl_quantity"] as? Int
+        lot = dictionary["lot"] as? String
+        sub_lot = dictionary["sub_lot"] as? String
+        excess_quantity = dictionary["excess_quantity"] as? Int
+        mark_sequence = dictionary["mark_sequence"] as? Int
+        sub_area = dictionary["sub_area"] as? String
+        po_uom = dictionary["po_uom"] as? String
+        single_mark_qty_po_uom = dictionary["single_mark_qty_po_uom"] as? Int
+        total_mark_qty_po_uom = dictionary["total_mark_qty_po_uom"] as? Int
+        mark_unit_price = dictionary["mark_unit_price"] as? String
+        painting_unit_price = dictionary["painting_unit_price"] as? String
+        fireproofing_unit_price = dictionary["fireproofing_unit_price"] as? String
+    }
+
+        
+/**
+    Returns the dictionary representation for the current instance.
+    
+    - returns: NSDictionary.
+*/
+    public func dictionaryRepresentation() -> NSDictionary {
+
+        let dictionary = NSMutableDictionary()
+
+        dictionary.setValue(self.id, forKey: "id")
+        dictionary.setValue(self.mark, forKey: "mark")
+        dictionary.setValue(self.shop_drawing_id, forKey: "shop_drawing_id")
+        dictionary.setValue(self.rev_no, forKey: "rev_no")
+        dictionary.setValue(self.document_no, forKey: "document_no")
+        dictionary.setValue(self.wbs, forKey: "wbs")
+        dictionary.setValue(self.construction_area, forKey: "construction_area")
+        dictionary.setValue(self.quantity, forKey: "quantity")
+        dictionary.setValue(self.mark_length, forKey: "mark_length")
+        dictionary.setValue(self.profile_unit_weight, forKey: "profile_unit_weight")
+        dictionary.setValue(self.mark_unit_weight, forKey: "mark_unit_weight")
+        dictionary.setValue(self.mr_no, forKey: "mr_no")
+        dictionary.setValue(self.mark_surface_paint, forKey: "mark_surface_paint")
+        dictionary.setValue(self.profile, forKey: "profile")
+        dictionary.setValue(self.material_grade, forKey: "material_grade")
+        dictionary.setValue(self.structure_role, forKey: "structure_role")
+        dictionary.setValue(self.painting_unit_weight, forKey: "painting_unit_weight")
+        dictionary.setValue(self.mark_surface_fireproofing, forKey: "mark_surface_fireproofing")
+        dictionary.setValue(self.unit, forKey: "unit")
+        dictionary.setValue(self.fireproofing_unit_weight, forKey: "fireproofing_unit_weight")
+        dictionary.setValue(self.shop_drawing_no, forKey: "shop_drawing_no")
+        dictionary.setValue(self.mark_commodity_code, forKey: "mark_commodity_code")
+        dictionary.setValue(self.paint_commodity_code, forKey: "paint_commodity_code")
+        dictionary.setValue(self.fire_commodity_code, forKey: "fire_commodity_code")
+        dictionary.setValue(self.mark_ident_code, forKey: "mark_ident_code")
+        dictionary.setValue(self.paint_ident_code, forKey: "paint_ident_code")
+        dictionary.setValue(self.fire_ident_code, forKey: "fire_ident_code")
+        dictionary.setValue(self.is_current_detail, forKey: "is_current_detail")
+        dictionary.setValue(self.po_ref_mark, forKey: "po_ref_mark")
+        dictionary.setValue(self.po_ref_paint, forKey: "po_ref_paint")
+        dictionary.setValue(self.po_ref_fireproofing, forKey: "po_ref_fireproofing")
+        dictionary.setValue(self.hs_code, forKey: "hs_code")
+        dictionary.setValue(self.pl_number, forKey: "pl_number")
+        dictionary.setValue(self.structure, forKey: "structure")
+        dictionary.setValue(self.priority, forKey: "priority")
+        dictionary.setValue(self.mark_total_weight, forKey: "mark_total_weight")
+        dictionary.setValue(self.painting_total_weight, forKey: "painting_total_weight")
+        dictionary.setValue(self.fireproofing_total_weight, forKey: "fireproofing_total_weight")
+        dictionary.setValue(self.is_active, forKey: "is_active")
+        dictionary.setValue(self.is_bolt, forKey: "is_bolt")
+        dictionary.setValue(self.available_quantity, forKey: "available_quantity")
+        dictionary.setValue(self.pl_quantity, forKey: "pl_quantity")
+        dictionary.setValue(self.lot, forKey: "lot")
+        dictionary.setValue(self.sub_lot, forKey: "sub_lot")
+        dictionary.setValue(self.excess_quantity, forKey: "excess_quantity")
+        dictionary.setValue(self.mark_sequence, forKey: "mark_sequence")
+        dictionary.setValue(self.sub_area, forKey: "sub_area")
+        dictionary.setValue(self.po_uom, forKey: "po_uom")
+        dictionary.setValue(self.single_mark_qty_po_uom, forKey: "single_mark_qty_po_uom")
+        dictionary.setValue(self.total_mark_qty_po_uom, forKey: "total_mark_qty_po_uom")
+        dictionary.setValue(self.mark_unit_price, forKey: "mark_unit_price")
+        dictionary.setValue(self.painting_unit_price, forKey: "painting_unit_price")
+        dictionary.setValue(self.fireproofing_unit_price, forKey: "fireproofing_unit_price")
+
+        return dictionary
+    }
+
+}
